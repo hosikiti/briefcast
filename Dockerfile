@@ -3,6 +3,10 @@ FROM lukechannings/deno:v1.20.5
 # The port that your application listens to.
 EXPOSE 1993
 
+WORKDIR /app
+COPY public/ ./public/
+COPY ./run_dev.sh ./
+
 WORKDIR /app/src
 
 # Prefer not to run as root.
