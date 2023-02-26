@@ -25,13 +25,19 @@ export class NHKGenerator implements BriefCastGenerator {
     const rss = (data.rss as unknown) as NHKFeedRSS;
     const feed = rss.channel;
     const result: string[] = [];
+
     feed.item.forEach((item) => {
-      result.push(item.title + ": " + item.description);
+      result.push("・" + item.description);
     });
-    return result.join(" ");
+    return result.join("\n");
   }
 
   async summarize(text: string): Promise<string> {
-    return await gptSummarizer(text);
+    const now = new Date();
+    const greeting = now.getFullYear() + "年" + (now.getMonth() + 1) + "月" +
+      now.getDate() + "日のニュースです。";
+
+    return greeting + await gptSummarizer(text) +
+      " 以上、NHKニュースを要約してお伝えしました。";
   }
 }

@@ -8,16 +8,16 @@ export const gptSummarizer = async (input: string): Promise<string> => {
   const openai = new OpenAIApi(configuration);
 
   const prompt =
-    "Summarize this into 150 words news transcription in Japanese: " + input;
+    `下記ポイントを元に、140文字の日本語の「ですます調」のラジオ原稿に。\n"${input}"`;
 
   const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: prompt,
-    temperature: 0,
+    temperature: 0.4,
     max_tokens: 3500 - (prompt.length * 2),
     top_p: 1,
-    frequency_penalty: 0.2,
-    presence_penalty: 0,
+    frequency_penalty: 0,
+    presence_penalty: 0.5,
   });
 
   const data = response.data;

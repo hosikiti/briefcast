@@ -1,25 +1,35 @@
-import { serve } from "https://deno.land/std@0.140.0/http/server.ts";
+import { Application, helpers, Router } from "https://deno.land/x/oak/mod.ts";
 
-const indexHtml = await Deno.readFile("../public/index.html");
+const DEFAULT_SERVER_PORT = 8088;
 
-async function handleRequest(request: Request): Promise<Response> {
-  const { pathname } = new URL(request.url);
+const app = new Application();
 
-  if (pathname == "/") {
-    return new Response(indexHtml, {
-      headers: {
-        "content-type": "text/html; charset=utf-8",
-      },
-    });
-  } else {
-    const filePath = "../public" + pathname;
-    const content = await Deno.readFile(filePath);
-    return new Response(content, {
-      headers: {
-        "content-type": "text/html; charset=utf-8",
-      },
-    });
-  }
-}
+// Logger
+app.use(async (ctx, next) => {
+  await next();
+  const rt = ctx.response.headers.get("X-Response-Time");
+  console.log(`${ctx.request.method} ${ctx.request.url} - ${rt}`);
+});
 
-serve(handleRequest, { port: 8088 });
+const router = new Router();
+
+router.get("/healthcheck", (ctx) => {
+  ctx.response.body = { status: "OK" };
+});
+
+router.get("/", (ctx) => {
+  ctx.response.body = Deno.readFileSync("html/index.html");
+});
+
+router.get("/media", (ctx) => {
+  const query = helpers.getQuery(ctx);
+  const filePath = query.id;
+  ctx.response.body = Deno.readFileSync("media/" + filePath + ".mp3");
+  console.log(query);
+});
+
+app.use(router.routes());
+app.use(router.allowedMethods());
+
+console.log("http server started on ", DEFAULT_SERVER_PORT);
+await app.listen({ port: DEFAULT_SERVER_PORT });

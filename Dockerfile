@@ -4,7 +4,6 @@ FROM lukechannings/deno:v1.31.0
 EXPOSE 1993
 
 WORKDIR /app
-COPY public/ ./public/
 COPY ./run_dev.sh ./
 
 WORKDIR /app/src
@@ -18,6 +17,7 @@ COPY ./src ./
 
 # Compile the main app so that it doesn't need to be compiled each startup/entry.
 RUN deno cache main.ts
+RUN deno cache update.ts
 
 #RUN ["run", "--allow-net", "main.ts"]
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["sleep", "infinity"]

@@ -1,0 +1,16 @@
+version: '3.6'
+services:
+  briefcast:
+    container_name: briefcast
+    build:
+      context: .
+      dockerfile: Dockerfile
+    tty: true
+    ports:
+      - "8088:8088"
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /key.json
+      OPEN_AI_API_KEY: ${OPEN_AI_API_KEY}
+    volumes:
+      - ${GOOGLE_APPLICATION_CREDENTIALS}:/key.json:ro
+      - ./:/app
