@@ -9,6 +9,7 @@ services:
     ports:
       - "8088:8088"
     environment:
+      VIRTUAL_HOST: briefcast.net
       GOOGLE_APPLICATION_CREDENTIALS: /key.json
       OPEN_AI_API_KEY: ${OPEN_AI_API_KEY}
     volumes:
