@@ -50,6 +50,40 @@ export class CNNGenerator implements BriefCastGenerator {
   }
 
   async summarize(text: string): Promise<string> {
-    return await gptSummarizer(text, this.getLanguageCode());
+    // Create intro part
+    const now = new Date();
+    const month = this.getMonthName(now.getMonth());
+    const day = now.getDate();
+    const year = now.getFullYear();
+    const intro =
+      `Welcome to CNN news summary. Today's date is ${month}/${day}/${year}.`;
+
+    // Create closing part
+    const closing = " That's all for today's CNN news summary by BriefCast.";
+
+    // Summarize the given text
+    const body = await gptSummarizer(text, this.getLanguageCode());
+
+    return intro + body + closing;
+  }
+
+  // monthIndex starts from 0
+  getMonthName(monthIndex: number): string {
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    return months[monthIndex];
   }
 }
