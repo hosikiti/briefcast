@@ -1,3 +1,4 @@
+import { ensureDir } from "https://deno.land/std@0.170.0/fs/ensure_dir.ts";
 import {
   GoogleAuth,
   texttospeech,
@@ -15,12 +16,18 @@ export interface TextToMP3Option {
 }
 
 export const textToMP3 = async (option: TextToMP3Option) => {
+  const mediaPath = "./media";
+  await ensureDir(mediaPath);
+
   const client = new texttospeech(authClient);
   const resp = await client.textSynthesize({
     input: { text: option.text },
     voice: { languageCode: option.languageCode, name: "ja-JP-Neural2-C" },
     audioConfig: { audioEncoding: "MP3", pitch: -2 },
   });
-  Deno.writeFile(`./media/${option.fileNamePrefix}.mp3`, resp.audioContent!);
+  Deno.writeFile(
+    `${mediaPath}/${option.fileNamePrefix}.mp3`,
+    resp.audioContent!,
+  );
   return;
 };
