@@ -16,5 +16,7 @@ COPY ./src ./
 RUN deno cache main.ts
 RUN deno cache update.ts
 
+WORKDIR /app
+
 #RUN ["run", "--allow-net", "main.ts"]
 ENTRYPOINT ["sleep", "infinity"]
