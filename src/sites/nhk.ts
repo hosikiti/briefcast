@@ -19,6 +19,10 @@ interface NHKFeedRSS {
 }
 
 export class NHKGenerator implements BriefCastGenerator {
+  getLanguageCode(): string {
+    return "ja-JP";
+  }
+
   async getTranscript(): Promise<string> {
     const resp = await fetch(feedXml);
     const data = parse(await resp.text());
@@ -37,7 +41,7 @@ export class NHKGenerator implements BriefCastGenerator {
     const greeting = now.getFullYear() + "年" + (now.getMonth() + 1) + "月" +
       now.getDate() + "日のニュースです。";
 
-    return greeting + await gptSummarizer(text) +
+    return greeting + await gptSummarizer(text, this.getLanguageCode()) +
       " 以上、NHKニュースを要約してお伝えしました。";
   }
 }

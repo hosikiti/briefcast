@@ -5,15 +5,56 @@
             body {
                 background-color: black;
                 color: white;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 300%;
+                padding: 1rem 0 0 0;
+            }
+
+            .logo_description {
+                color: #cbc;
+                font-size: 80%;
+            }
+
+            .item {
+                text-align: left;
+                border-bottom: 1px solid #cbc;
+                padding: 1rem;
+            }
+
+            .footer {
+                display: flex;
+                justify-content: center;
+                text-align: left;
+                position: fixed;
+                bottom: 0;
+                padding: 1rem;
+                font-size: 60%;
+                color: #cbc;
             }
         </style>
     </head>
     <body>
         <h1>Briefcast</h1>
-        <h2>NHK</h2>
-        <audio controls>
-            <source src="/media?id=nhk" type="audio/mpeg" />
-            <em>Sorry, your browser doesn't support HTML5 audio.</em>
-        </audio>
+        <p class="logo_description">Stay on top of the news in seconds</p>
+        <div class="item">
+            <h2>NHK</h2>
+            <audio controls>
+                <source src="/media?id=nhk" type="audio/mpeg" />
+                <em>Sorry, your browser doesn't support HTML5 audio.</em>
+            </audio>
+        </div>
+        <div class="item">
+            <h2>CNN</h2>
+            <audio controls>
+                <source src="/media?id=cnn" type="audio/mpeg" />
+                <em>Sorry, your browser doesn't support HTML5 audio.</em>
+            </audio>
+        </div>
+        <div class="footer">
+            (C) 2023 Kei Oikawa
+        </div>
     </body>
 </html>
