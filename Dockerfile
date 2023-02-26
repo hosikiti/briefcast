@@ -8,6 +8,8 @@ COPY ./run_dev.sh ./
 
 WORKDIR /app/src
 
+RUN mkdir media
+
 # Prefer not to run as root.
 USER deno
 
