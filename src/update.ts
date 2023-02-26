@@ -19,13 +19,15 @@ const generateForSite = async (site: string) => {
   });
 };
 
-(() => {
-  const sites = ["nhk", "cnn"];
+(async () => {
+  const sites = Deno.args.length == 0
+    ? ["cnn", "nhk"]
+    : Deno.args[0].split(",");
 
   try {
-    sites.forEach(async (site) => {
+    for (const site of sites) {
       await generateForSite(site);
-    });
+    }
   } catch (e) {
     console.error(e);
   }
