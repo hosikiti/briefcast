@@ -13,6 +13,7 @@ const generateForSite = async (site: string) => {
     console.log("feed is not updated. SKIP.");
     return;
   }
+
   console.log("summarize by gpt3 ... ");
   const briefTranscript = await generator.summarize(item);
   console.log(briefTranscript);
@@ -25,9 +26,7 @@ const generateForSite = async (site: string) => {
 };
 
 (async () => {
-  const sites = Deno.args.length == 0
-    ? ["cnn", "nhk"]
-    : Deno.args[0].split(",");
+  const sites = Deno.args.length == 0 ? ["cnn", "nhk"] : Deno.args[0].split(",");
 
   try {
     for (const site of sites) {

@@ -14,9 +14,7 @@ export const gptSummarizer = async (
     ? `下記トピックを元に、140文字で「ですます調」の日本語のラジオ原稿にし、トピック間の接続詞は取る。\n"${input}"`
     : `Summarize into 200 words pod cast transcription: "${input}"`;
 
-  const maxTokens = languageCode == "ja-JP"
-    ? 3500 - (prompt.length * 2)
-    : 3500 - prompt.length;
+  const maxTokens = languageCode == "ja-JP" ? 3500 - (prompt.length * 2) : 3500 - prompt.length;
 
   const response = await openai.createCompletion({
     model: "text-davinci-003",

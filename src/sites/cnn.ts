@@ -50,8 +50,7 @@ export class CNNGenerator implements BriefCastGenerator {
     const month = this.getMonthName(pubDate.getMonth());
     const day = pubDate.getDate();
     const year = pubDate.getFullYear();
-    const intro =
-      `Welcome to CNN news summary. Today's date is ${month}/${day}/${year}.`;
+    const intro = `Welcome to CNN news summary. Today's date is ${month}/${day}/${year}.`;
 
     // Create closing part
     const closing = " That's all for today's CNN news summary by BriefCast.";

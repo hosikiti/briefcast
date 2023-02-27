@@ -1,8 +1,5 @@
 import { ensureDir } from "https://deno.land/std@0.170.0/fs/ensure_dir.ts";
-import {
-  GoogleAuth,
-  texttospeech,
-} from "https://googleapis.deno.dev/v1/texttospeech:v1.ts";
+import { GoogleAuth, texttospeech } from "https://googleapis.deno.dev/v1/texttospeech:v1.ts";
 
 const credentials = Deno.readTextFileSync(
   Deno.env.get("GOOGLE_APPLICATION_CREDENTIALS") || "",
