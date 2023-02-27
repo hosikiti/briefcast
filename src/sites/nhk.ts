@@ -1,47 +1,42 @@
-import { parse } from "https://deno.land/x/xml/mod.ts";
-import { BriefCastGenerator } from "../generator.ts";
+import { BriefCastGenerator, BriefCastItem } from "../generator.ts";
 import { gptSummarizer } from "../openai/summarizer.ts";
+import { isUpdatedFeed, saveFeedCache } from "./common/feed_cache.ts";
+import { parseFeed } from "./common/feed_parser.ts";
 
-const feedXml = "https://www.nhk.or.jp/rss/news/cat0.xml";
-
-interface NHKFeedItem {
-  title: string;
-  description: string;
-}
-
-interface NHKFeed {
-  title: string;
-  item: NHKFeedItem[];
-}
-
-interface NHKFeedRSS {
-  channel: NHKFeed;
-}
+const feedUrl = "https://www.nhk.or.jp/rss/news/cat0.xml";
 
 export class NHKGenerator implements BriefCastGenerator {
   getLanguageCode(): string {
     return "ja-JP";
   }
 
-  async getTranscript(): Promise<string> {
-    const resp = await fetch(feedXml);
-    const data = parse(await resp.text());
-    const rss = (data.rss as unknown) as NHKFeedRSS;
-    const feed = rss.channel;
+  async getLatest(): Promise<BriefCastItem> {
+    const feed = await parseFeed(feedUrl);
     const result: string[] = [];
 
-    feed.item.forEach((item) => {
+    feed.channel.item.forEach((item) => {
       result.push("・" + item.description);
     });
-    return result.join("\n");
+
+    const isUpdated = isUpdatedFeed(feedUrl, feed);
+    if (isUpdated) {
+      saveFeedCache(feedUrl, feed);
+    }
+
+    return {
+      feed,
+      isUpdated,
+      transcript: result.join("\n"),
+    };
   }
 
-  async summarize(text: string): Promise<string> {
-    const now = new Date();
+  async summarize(item: BriefCastItem): Promise<string> {
+    const now = new Date(item.feed.channel.lastBuildDate);
     const greeting = now.getFullYear() + "年" + (now.getMonth() + 1) + "月" +
       now.getDate() + "日のニュースです。";
 
-    return greeting + await gptSummarizer(text, this.getLanguageCode()) +
+    return greeting +
+      await gptSummarizer(item.transcript, this.getLanguageCode()) +
       " 以上、NHKニュースを要約してお伝えしました。";
   }
 }

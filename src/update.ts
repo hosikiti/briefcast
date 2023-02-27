@@ -6,10 +6,14 @@ export const MAX_TRANSCRIPT_LENGTH = 2000;
 const generateForSite = async (site: string) => {
   const generator = BriefCastGeneratorFactory(site);
   console.log(`get feed for ${site} ... `);
-  const transcript = await generator.getTranscript();
-  console.log(transcript);
+  const item = await generator.getLatest();
+  console.log(item.transcript);
+
+  if (item.isUpdated == false) {
+    console.log("feed is not updated. SKIP.");
+  }
   console.log("summarize by gpt3 ... ");
-  const briefTranscript = await generator.summarize(transcript);
+  const briefTranscript = await generator.summarize(item);
   console.log(briefTranscript);
   console.log(briefTranscript.length);
   await textToMP3({
