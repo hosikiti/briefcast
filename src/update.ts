@@ -11,6 +11,7 @@ const generateForSite = async (site: string) => {
 
   if (item.isUpdated == false) {
     console.log("feed is not updated. SKIP.");
+    return;
   }
   console.log("summarize by gpt3 ... ");
   const briefTranscript = await generator.summarize(item);
