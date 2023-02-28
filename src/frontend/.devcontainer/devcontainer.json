@@ -1,17 +1,17 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
 {
-  "name": "briefcast",
+  "name": "briefcast_web",
   "dockerComposeFile": [
     "../docker-compose.yml",
   ],
-  "service": "briefcast",
+  "service": "briefcast_web",
   "workspaceFolder": "/app",
   "customizations": {
     "vscode": {
       "extensions": [
-        "denoland.vscode-deno"
-      ]
+		    "svelte.svelte-vscode"
+	    ]
     }
   }
   // Features to add to the dev container. More info: https://containers.dev/features.

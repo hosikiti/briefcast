@@ -1,4 +1,5 @@
 import { Application, helpers, Router } from "https://deno.land/x/oak/mod.ts";
+import { handler } from "./frontend/build/handler.js";
 
 const DEFAULT_SERVER_PORT = 8088;
 
@@ -17,10 +18,6 @@ router.get("/healthcheck", (ctx) => {
   ctx.response.body = { status: "OK" };
 });
 
-router.get("/", (ctx) => {
-  ctx.response.body = Deno.readFileSync("html/index.html");
-});
-
 router.get("/media", (ctx) => {
   const query = helpers.getQuery(ctx);
   const filePath = query.id;
@@ -30,6 +27,9 @@ router.get("/media", (ctx) => {
 
 app.use(router.routes());
 app.use(router.allowedMethods());
+
+// let SvelteKit handle everything else, including serving prerendered pages and static assets
+app.use(handler);
 
 console.log("http server started on ", DEFAULT_SERVER_PORT);
 await app.listen({ port: DEFAULT_SERVER_PORT });
