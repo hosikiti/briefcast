@@ -39,6 +39,7 @@
 		justify-content: center;
 		align-items: center;
 		padding: 12px;
+		font-size: 80%;
 	}
 
 	@media (min-width: 480px) {

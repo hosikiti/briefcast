@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
-	import { identity } from 'svelte/internal';
 
 	const mediaHost = dev ? 'http://localhost:8088' : '';
 
@@ -56,5 +55,9 @@
 
 	h2 {
 		font-family: serif;
+	}
+
+	.item {
+		margin-top: 1rem;
 	}
 </style>

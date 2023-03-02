@@ -21,18 +21,18 @@ const Header = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 </header>`;
 });
 const css = {
-  code: ".app.svelte-1wevoko{display:flex;flex-direction:column;min-height:100vh}main.svelte-1wevoko{flex:1;display:flex;flex-direction:column;padding:1rem;width:100%;max-width:64rem;margin:0 auto;box-sizing:border-box}footer.svelte-1wevoko{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:12px}@media(min-width: 480px){footer.svelte-1wevoko{padding:12px 0}}",
+  code: ".app.svelte-1e02vn{display:flex;flex-direction:column;min-height:100vh}main.svelte-1e02vn{flex:1;display:flex;flex-direction:column;padding:1rem;width:100%;max-width:64rem;margin:0 auto;box-sizing:border-box}footer.svelte-1e02vn{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:12px;font-size:80%}@media(min-width: 480px){footer.svelte-1e02vn{padding:12px 0}}",
   map: null
 };
 const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   $$result.css.add(css);
-  return `<div class="${"app svelte-1wevoko"}">${validate_component(Header, "Header").$$render($$result, {}, {}, {})}
+  return `<div class="${"app svelte-1e02vn"}">${validate_component(Header, "Header").$$render($$result, {}, {}, {})}
 
-	<main class="${"svelte-1wevoko"}">${slots.default ? slots.default({}) : ``}</main>
+	<main class="${"svelte-1e02vn"}">${slots.default ? slots.default({}) : ``}</main>
 
-	<footer class="${"svelte-1wevoko"}"><p>(C) 2023 Kei Oikawa.</p></footer>
+	<footer class="${"svelte-1e02vn"}"><p>(C) 2023 Kei Oikawa.</p></footer>
 </div>`;
 });
 
 export { Layout as default };
-//# sourceMappingURL=_layout.svelte-96013998.js.map
+//# sourceMappingURL=_layout.svelte-be8acfaa.js.map
