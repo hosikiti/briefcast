@@ -56,7 +56,9 @@ export class CNNGenerator implements BriefCastGenerator {
     const closing = " That's all for today's CNN news summary by BriefCast.";
 
     // Summarize the given text
-    const body = await gptSummarizer(item.transcript, this.getLanguageCode());
+    const prompt = "Make it into 150 words simple English pod cast transcription for English learners: " +
+      item.transcript;
+    const body = await gptSummarizer(item.transcript, this.getLanguageCode(), prompt);
 
     return intro + body + closing;
   }

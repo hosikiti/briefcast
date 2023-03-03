@@ -7,15 +7,21 @@
 		id: string;
 		title: string;
 		audioSrc: string;
+		sourceUrl: string;
 	}
 
 	const items: BriefCastItem[] = [
-		{ id: 'nhk', title: 'NHK' },
-		{ id: 'cnn', title: 'CNN' }
+		{ id: 'nhk', title: 'NHK', sourceUrl: 'http://www3.nhk.or.jp/news/' },
+		{
+			id: 'cnn',
+			title: 'CNN in simple English',
+			sourceUrl: 'https://edition.cnn.com/'
+		}
 	].map((item) => {
 		return {
 			id: item.id,
 			title: item.title,
+			sourceUrl: item.sourceUrl,
 			audioSrc: mediaHost + '/media?id=' + item.id
 		};
 	});
@@ -33,6 +39,11 @@
 				<source src={item.audioSrc} type="audio/mpeg" />
 				<em>Sorry, your browser doesn't support HTML5 audio.</em>
 			</audio>
+			<div class="additional">
+				<a class="original-source" href={item.sourceUrl} target="_blank" rel="noreferrer"
+					>Visit website</a
+				>
+			</div>
 		</div>
 	{/each}
 </section>
@@ -59,5 +70,16 @@
 
 	.item {
 		margin-top: 1rem;
+		margin-bottom: 2rem;
+	}
+
+	.additional {
+		display: flex;
+		justify-content: right;
+	}
+	.original-source {
+		right: 0;
+		display: block;
+		font-size: 80%;
 	}
 </style>

@@ -18,6 +18,12 @@ const generateForSite = async (site: string) => {
   const briefTranscript = await generator.summarize(item);
   console.log(briefTranscript);
   console.log(briefTranscript.length);
+
+  if (briefTranscript.length == 0) {
+    console.warn("transcript is empty, something went wrong.");
+    return;
+  }
+
   await textToMP3({
     text: briefTranscript,
     languageCode: generator.getLanguageCode(),
