@@ -6,12 +6,12 @@
 <div class="text-column">
 	<h1>About BriefCast</h1>
 	<p class="description">
-		BriefCast is an AI-powered short podcast generator from any online resources.
+		BriefCast is an AI-powered short podcast generator from any online resource.
 	</p>
 	<h2>How it works</h2>
 	<ol>
 		<li>
-			Pick a web site: Briefcast works seamlessly with any websites that offers RSS/ATOM feeds.
+			Pick a web site: Briefcast works seamlessly with any website that offers RSS/ATOM feeds.
 		</li>
 		<li>
 			Write a transcript: Briefcast has prompt templates to automatically generate your podcast
@@ -21,7 +21,7 @@
 			Choose your favorite voice: Briefcast turns the transcript into natural sounding podcast audio
 			with the voice you choose.
 		</li>
-		<li>Briefcast automatically updates your podcast. Enjoy your podcast!</li>
+		<li>Briefcast automatically updates your podcast. Enjoy!</li>
 	</ol>
 </div>
 
