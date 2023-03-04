@@ -69,7 +69,7 @@ export class CNNGenerator implements BriefCastGenerator {
 
     // Summarize the given text
     const prompt =
-      "Make it into 150 words simple English pod cast transcription for English learners. Don't add unappropriate linking words between topics: " +
+      "Make it into 150 words simple English pod cast transcription for English learners. Don't add linking words like 'meanwhile' between topics: " +
       item.transcript;
     const body = await gptSummarizer(item.transcript, this.getLanguageCode(), prompt);
 
