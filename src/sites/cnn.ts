@@ -1,4 +1,5 @@
 import { BriefCastGenerator, BriefCastItem } from "../generator.ts";
+import { GenerateOption } from "../generator_factory.ts";
 import { gptSummarizer } from "../openai/summarizer.ts";
 import { MAX_TRANSCRIPT_LENGTH } from "../update.ts";
 import { isUpdatedFeed, saveFeedCache } from "./common/feed_cache.ts";
@@ -7,6 +8,14 @@ import { parseFeed } from "./common/feed_parser.ts";
 const feedUrl = "http://rss.cnn.com/rss/edition.rss";
 
 export class CNNGenerator implements BriefCastGenerator {
+  private options: GenerateOption;
+
+  constructor(opts?: GenerateOption) {
+    this.options = opts || {
+      useCache: true,
+    };
+  }
+
   getLanguageCode(): string {
     return "en-US";
   }
@@ -32,9 +41,12 @@ export class CNNGenerator implements BriefCastGenerator {
       result.push(description);
     }
 
-    const isUpdated = isUpdatedFeed(feedUrl, feed);
-    if (isUpdated) {
-      saveFeedCache(feedUrl, feed);
+    let isUpdated = true;
+    if (this.options.useCache) {
+      isUpdated = isUpdatedFeed(feedUrl, feed);
+      if (isUpdated) {
+        saveFeedCache(feedUrl, feed);
+      }
     }
 
     return {
@@ -56,7 +68,8 @@ export class CNNGenerator implements BriefCastGenerator {
     const closing = " That's all for today's CNN news summary by BriefCast.";
 
     // Summarize the given text
-    const prompt = "Make it into 150 words simple English pod cast transcription for English learners: " +
+    const prompt =
+      "Make it into 150 words simple English pod cast transcription for English learners. Don't add unappropriate linking words between topics: " +
       item.transcript;
     const body = await gptSummarizer(item.transcript, this.getLanguageCode(), prompt);
 

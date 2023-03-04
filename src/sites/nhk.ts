@@ -1,4 +1,5 @@
 import { BriefCastGenerator, BriefCastItem } from "../generator.ts";
+import { GenerateOption } from "../generator_factory.ts";
 import { gptSummarizer } from "../openai/summarizer.ts";
 import { isUpdatedFeed, saveFeedCache } from "./common/feed_cache.ts";
 import { parseFeed } from "./common/feed_parser.ts";
@@ -6,6 +7,14 @@ import { parseFeed } from "./common/feed_parser.ts";
 const feedUrl = "https://www.nhk.or.jp/rss/news/cat0.xml";
 
 export class NHKGenerator implements BriefCastGenerator {
+  private options: GenerateOption;
+
+  constructor(opts?: GenerateOption) {
+    this.options = opts || {
+      useCache: true,
+    };
+  }
+
   getLanguageCode(): string {
     return "ja-JP";
   }
@@ -18,9 +27,12 @@ export class NHKGenerator implements BriefCastGenerator {
       result.push("・" + item.description);
     });
 
-    const isUpdated = isUpdatedFeed(feedUrl, feed);
-    if (isUpdated) {
-      saveFeedCache(feedUrl, feed);
+    let isUpdated = true;
+    if (this.options.useCache) {
+      isUpdated = isUpdatedFeed(feedUrl, feed);
+      if (isUpdated) {
+        saveFeedCache(feedUrl, feed);
+      }
     }
 
     return {
@@ -37,6 +49,6 @@ export class NHKGenerator implements BriefCastGenerator {
 
     return greeting +
       await gptSummarizer(item.transcript, this.getLanguageCode()) +
-      " 以上、NHKニュースを要約してお伝えしました。";
+      " 以上、NHKニュースをBriefCastが要約してお伝えしました。";
   }
 }

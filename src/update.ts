@@ -4,7 +4,7 @@ import { textToMP3 } from "./tts/text_to_speech.ts";
 export const MAX_TRANSCRIPT_LENGTH = 2000;
 
 const generateForSite = async (site: string) => {
-  const generator = BriefCastGeneratorFactory(site);
+  const generator = BriefCastGeneratorFactory(site, { useCache: true });
   console.log(`get feed for ${site} ... `);
   const item = await generator.getLatest();
   console.log(item.transcript);
