@@ -1,6 +1,8 @@
-import { Application, helpers, Router } from "https://deno.land/x/oak/mod.ts";
+import { RSSGenerator } from "./generator/rss_generator.ts";
+import { Application, helpers, httpErrors, Router } from "https://deno.land/x/oak@v11.1.0/mod.ts";
+import { oakCors } from "https://deno.land/x/cors/mod.ts";
 import { handler } from "./frontend/build/handler.js";
-
+import { textToMP3 } from "./tts/text_to_speech.ts";
 const DEFAULT_SERVER_PORT = 8088;
 
 const app = new Application();
@@ -22,9 +24,52 @@ router.get("/media", (ctx) => {
   const query = helpers.getQuery(ctx);
   const filePath = query.id;
   ctx.response.body = Deno.readFileSync("media/" + filePath + ".mp3");
-  console.log(query);
 });
 
+router.post("/createTrialPodCast", async (ctx) => {
+  const body = ctx.request.body();
+  if (body.type != "json") {
+    ctx.response.status = 400;
+    return;
+  }
+  const param = await body.value;
+
+  const feedUrl = param["feedUrl"];
+  const languageCode = param["languageCode"] || "en-US";
+  const generator = new RSSGenerator({
+    feedUrl: feedUrl,
+    languageCode: languageCode,
+    useCache: false,
+  });
+  try {
+    console.log(`get feed for ${feedUrl} ... `);
+    const item = await generator.getLatest();
+    console.log(item.transcript);
+
+    console.log("summarize by gpt3 ... ");
+    const briefTranscript = await generator.summarize(item);
+    console.log(briefTranscript);
+
+    if (briefTranscript.length == 0) {
+      console.warn("transcript is empty, something went wrong.");
+      return;
+    }
+
+    const udid = (+new Date()) + "";
+
+    await textToMP3({
+      text: briefTranscript,
+      languageCode: languageCode,
+      fileNamePrefix: udid,
+    });
+    ctx.response.body = { "id": udid };
+  } catch (e) {
+    console.error(e);
+    ctx.response.status = 500;
+  }
+});
+
+app.use(oakCors());
 app.use(router.routes());
 app.use(router.allowedMethods());
 

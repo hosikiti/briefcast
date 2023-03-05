@@ -1,4 +1,5 @@
-import { RSSFeed } from "./sites/common/rss_feed.ts";
+import { RSSFeed } from "./common/rss_feed.ts";
+import { GenerateOption } from "./generator_factory.ts";
 
 export interface BriefCastItem {
   feed: RSSFeed;
@@ -9,5 +10,5 @@ export interface BriefCastItem {
 export interface BriefCastGenerator {
   getLatest(): Promise<BriefCastItem>;
   summarize(feed: BriefCastItem): Promise<string>;
-  getLanguageCode(): string;
+  get options(): GenerateOption;
 }

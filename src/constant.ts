@@ -1,0 +1,1 @@
+export const MAX_TRANSCRIPT_LENGTH = 2000;

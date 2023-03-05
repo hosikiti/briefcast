@@ -1,10 +1,8 @@
-import { BriefCastGeneratorFactory } from "./generator_factory.ts";
+import { BriefCastGeneratorFactory } from "./generator/generator_factory.ts";
 import { textToMP3 } from "./tts/text_to_speech.ts";
 
-export const MAX_TRANSCRIPT_LENGTH = 2000;
-
 const generateForSite = async (site: string) => {
-  const generator = BriefCastGeneratorFactory(site, { useCache: true });
+  const generator = BriefCastGeneratorFactory(site, { useCache: true, languageCode: "" });
   console.log(`get feed for ${site} ... `);
   const item = await generator.getLatest();
   console.log(item.transcript);
@@ -26,7 +24,7 @@ const generateForSite = async (site: string) => {
 
   await textToMP3({
     text: briefTranscript,
-    languageCode: generator.getLanguageCode(),
+    languageCode: generator.options.languageCode,
     fileNamePrefix: site,
   });
 };
