@@ -14,7 +14,7 @@ export const deleteOldTrialPodcasts = async () => {
     // delete trial podcasts created more than 60 minutes ago.
     const fileTimestamp = +fileInfo.mtime;
     const timeDiffInMinutes = Math.floor((+Date.now()) - fileTimestamp) / (1000 * 60);
-    if (timeDiffInMinutes > 1) {
+    if (timeDiffInMinutes > 60) {
       Deno.removeSync(filePath);
       console.log("old file removed.", filePath);
     }
