@@ -1,7 +1,7 @@
 import { ensureDirSync } from "https://deno.land/std@0.170.0/fs/ensure_dir.ts";
 import { existsSync } from "../../util/common.ts";
-import { RSSFeed } from "./rss_feed.ts";
 import { encode, Hash } from "https://deno.land/x/checksum@1.2.0/mod.ts";
+import { FeedData } from "../../deps.ts";
 
 export interface FeedCache {
   lastBuildDate: string;
@@ -30,21 +30,21 @@ const getCachedFeed = (url: string): FeedCache | null => {
   return cache;
 };
 
-export const saveFeedCache = (url: string, feed: RSSFeed) => {
+export const saveFeedCache = (url: string, feed: FeedData) => {
   ensureDirSync(getFeedCacheDir());
   const cachePath = getFeedCachePath(url);
   const cache: FeedCache = {
-    lastBuildDate: feed.channel.lastBuildDate,
+    lastBuildDate: new Date(feed.published!).toISOString(),
     cacheCreatedDate: new Date().toISOString(),
   };
 
   Deno.writeTextFileSync(cachePath, JSON.stringify(cache));
 };
 
-export const isUpdatedFeed = (url: string, feed: RSSFeed): boolean => {
+export const isUpdatedFeed = (url: string, feed: FeedData): boolean => {
   const cache = getCachedFeed(url);
   if (!cache) {
     return true;
   }
-  return feed.channel.lastBuildDate != cache.lastBuildDate;
+  return new Date(feed.published!).toISOString() != cache.lastBuildDate;
 };

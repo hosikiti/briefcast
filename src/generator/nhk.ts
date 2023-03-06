@@ -20,12 +20,16 @@ export class NHKGenerator implements BriefCastGenerator {
     };
   }
 
-  async getLatest(): Promise<BriefCastItem> {
+  async getLatest(): Promise<BriefCastItem | null> {
     const feed = await parseFeed(feedUrl);
     const result: string[] = [];
 
-    feed.channel.item.forEach((item) => {
-      result.push("・" + item.description);
+    if (!feed.entries) {
+      return null;
+    }
+
+    feed.entries.forEach((entry) => {
+      result.push("・" + entry.description);
     });
 
     let isUpdated = true;
@@ -44,7 +48,7 @@ export class NHKGenerator implements BriefCastGenerator {
   }
 
   async summarize(item: BriefCastItem): Promise<string> {
-    const now = new Date(item.feed.channel.lastBuildDate);
+    const now = new Date(item.feed.published!);
     const greeting = now.getFullYear() + "年" + (now.getMonth() + 1) + "月" +
       now.getDate() + "日のニュースです。";
 

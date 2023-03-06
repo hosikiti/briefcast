@@ -22,13 +22,17 @@ export class CNNGenerator implements BriefCastGenerator {
     };
   }
 
-  async getLatest(): Promise<BriefCastItem> {
+  async getLatest(): Promise<BriefCastItem | null> {
     const feed = await parseFeed(feedUrl);
 
     const result: string[] = [];
 
-    for (let i = 0; i < feed.channel.item.length; i++) {
-      const description = feed.channel.item[i].description;
+    if (!feed.entries) {
+      return null;
+    }
+
+    for (let i = 0; i < feed.entries.length; i++) {
+      const description = feed.entries[i].description;
       if (description == null) {
         continue;
       }
@@ -58,7 +62,7 @@ export class CNNGenerator implements BriefCastGenerator {
 
   async summarize(item: BriefCastItem): Promise<string> {
     // Create intro part
-    const pubDate = new Date(item.feed.channel.lastBuildDate);
+    const pubDate = new Date(item.feed.published!);
     const month = getEnglishMonthName(pubDate.getMonth());
     const day = pubDate.getDate();
     const year = pubDate.getFullYear();

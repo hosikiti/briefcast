@@ -13,7 +13,7 @@ export const gptSummarizer = async (
 
   if (!prompt) {
     prompt = languageCode == "ja-JP"
-      ? `下記トピックから、150文字の日本語の「ですます調」のラジオ原稿にして。「さらに」「一方」「また」などの接続詞は使わないで\n"${input}"`
+      ? `下記トピックを、200文字に要約し、「ですます調」のラジオ原稿にして。「さらに」「一方」「また」などの接続詞は使わないで\n"${input}"`
       : `Summarize into 200 words pod cast transcription: "${input}"`;
   }
 

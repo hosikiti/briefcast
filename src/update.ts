@@ -5,6 +5,10 @@ const generateForSite = async (site: string) => {
   const generator = BriefCastGeneratorFactory(site, { useCache: true, languageCode: "" });
   console.log(`get feed for ${site} ... `);
   const item = await generator.getLatest();
+  if (!item) {
+    console.log(`failed to get the feed. SKIP.`);
+    return;
+  }
   console.log(item.transcript);
 
   if (item.isUpdated == false) {
