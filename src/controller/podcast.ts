@@ -46,7 +46,7 @@ export class PodcastController {
         languageCode: languageCode,
         fileNamePrefix: udid,
       });
-      ctx.response.body = { "id": udid };
+      ctx.response.body = { "id": udid, "title": item.feed.title };
     } catch (e) {
       console.error(e);
       ctx.response.status = 500;

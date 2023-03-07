@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Header from './Header.svelte';
 	import './styles.css';
-	import '../helpers/firebase';
+	// import '../helpers/firebase';
 </script>
 
 <div class="app">

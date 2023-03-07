@@ -4,7 +4,6 @@
 	import { collection, getDocs, query, where, addDoc } from 'firebase/firestore';
 	import axios from 'axios';
 	import { Jumper } from 'svelte-loading-spinners';
-
 	const languages: LanguageCode[] = [
 		{ code: 'en-US', title: 'English (United States)' },
 		{ code: 'ja-JP', title: '日本語' }

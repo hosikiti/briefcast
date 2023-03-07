@@ -14,8 +14,11 @@ export class NHKGenerator implements BriefCastGenerator {
   }
 
   constructor(opts?: GenerateOption) {
-    this._options = opts || {
-      useCache: true,
+    if (opts != null) {
+      console.warn("this generator does not support external options.");
+    }
+    this._options = {
+      useCache: false,
       languageCode: "ja-JP",
     };
   }
@@ -24,7 +27,7 @@ export class NHKGenerator implements BriefCastGenerator {
     const feed = await parseFeed(feedUrl);
     const result: string[] = [];
 
-    if (!feed.entries) {
+    if (!feed || !feed.entries) {
       return null;
     }
 

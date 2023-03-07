@@ -27,7 +27,7 @@ export class CNNGenerator implements BriefCastGenerator {
 
     const result: string[] = [];
 
-    if (!feed.entries) {
+    if (!feed || !feed.entries) {
       return null;
     }
 

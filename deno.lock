@@ -75,6 +75,10 @@
     "https://deno.land/std@0.175.0/path/win32.ts": "d186344e5583bcbf8b18af416d13d82b35a317116e6460a5a3953508c3de5bba",
     "https://deno.land/std@0.178.0/_util/asserts.ts": "178dfc49a464aee693a7e285567b3d0b555dc805ff490505a8aae34f9cfb1462",
     "https://deno.land/std@0.178.0/bytes/concat.ts": "d26d6f3d7922e6d663dacfcd357563b7bf4a380ce5b9c2bbe0c8586662f25ce2",
+    "https://deno.land/std@0.178.0/fmt/colors.ts": "938c5d44d889fb82eff6c358bea8baa7e85950a16c9f6dae3ec3a7a729164471",
+    "https://deno.land/std@0.178.0/testing/_diff.ts": "1a3c044aedf77647d6cac86b798c6417603361b66b54c53331b312caeb447aea",
+    "https://deno.land/std@0.178.0/testing/_format.ts": "a69126e8a469009adf4cf2a50af889aca364c349797e63174884a52ff75cf4c7",
+    "https://deno.land/std@0.178.0/testing/asserts.ts": "984ab0bfb3faeed92ffaa3a6b06536c66811185328c5dd146257c702c41b01ab",
     "https://deno.land/std@0.178.0/uuid/_common.ts": "cb1441f4df460571fc0919e1c5c217f3e7006189b703caf946604b3f791ae34d",
     "https://deno.land/std@0.178.0/uuid/v5.ts": "10558a9c09a06b86fef9e61205180b9585ec4fe3fed7d696e675b8e118f74e8e",
     "https://deno.land/x/checksum@1.2.0/hash.ts": "00b68d85a69cc93fc3256dc79749e36b17a7e84dcc89277844d854d90ff0110c",
@@ -219,7 +223,8 @@
       "@extractus/feed-extractor": "@extractus/feed-extractor@6.2.1",
       "openai": "openai@3.1.0",
       "openai@3.2.1": "openai@3.2.1",
-      "openai@^3.2.1": "openai@3.2.1"
+      "openai@^3.2.1": "openai@3.2.1",
+      "rss-parser@3.12.0": "rss-parser@3.12.0"
     },
     "packages": {
       "@extractus/feed-extractor@6.2.1": {
@@ -253,6 +258,10 @@
       },
       "delayed-stream@1.0.0": {
         "integrity": "sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==",
+        "dependencies": {}
+      },
+      "entities@2.2.0": {
+        "integrity": "sha512-p92if5Nz619I0w+akJrLZH0MX0Pb5DX39XOwQTtXSdQQOaYH03S1uIQp4mhOZtAXrxq4ViO67YTiLBo2638o9A==",
         "dependencies": {}
       },
       "fast-xml-parser@4.1.3": {
@@ -301,6 +310,17 @@
           "form-data": "form-data@4.0.0"
         }
       },
+      "rss-parser@3.12.0": {
+        "integrity": "sha512-aqD3E8iavcCdkhVxNDIdg1nkBI17jgqF+9OqPS1orwNaOgySdpvq6B+DoONLhzjzwV8mWg37sb60e4bmLK117A==",
+        "dependencies": {
+          "entities": "entities@2.2.0",
+          "xml2js": "xml2js@0.4.23"
+        }
+      },
+      "sax@1.2.4": {
+        "integrity": "sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==",
+        "dependencies": {}
+      },
       "strnum@1.0.5": {
         "integrity": "sha512-J8bbNyKKXl5qYcR36TIO8W3mVGVHrmmxsd5PAItGkmyzwJvybiw2IVq5nqd0i4LSNSkB/sx9VHllbfFdr9k1JA==",
         "dependencies": {}
@@ -319,6 +339,17 @@
           "tr46": "tr46@0.0.3",
           "webidl-conversions": "webidl-conversions@3.0.1"
         }
+      },
+      "xml2js@0.4.23": {
+        "integrity": "sha512-ySPiMjM0+pLDftHgXY4By0uswI3SPKLDw/i3UXbnO8M/p28zqexCUoPmQFrYD+/1BzhGJSs2i1ERWKJAtiLrug==",
+        "dependencies": {
+          "sax": "sax@1.2.4",
+          "xmlbuilder": "xmlbuilder@11.0.1"
+        }
+      },
+      "xmlbuilder@11.0.1": {
+        "integrity": "sha512-fDlsI/kFEx7gLvbecc0/ohLG50fugQp8ryHzMTuW9vSa1GJ0XYWKnhsUx7oie3G98+r56aTQIUB4kht42R3JvA==",
+        "dependencies": {}
       }
     }
   }
