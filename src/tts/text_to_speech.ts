@@ -23,7 +23,7 @@ export const textToMP3 = async (option: TextToMP3Option) => {
 
   const client = new texttospeech(authClient);
   const resp = await client.textSynthesize({
-    input: { text: option.text },
+    input: { ssml: `<speak>${option.text}</speak>` },
     voice: {
       languageCode: option.languageCode,
       name: defaultVoiceNameMap[option.languageCode],
