@@ -1,6 +1,8 @@
 import { BriefCastGeneratorFactory } from "./generator/generator_factory.ts";
 import { textToMP3 } from "./tts/text_to_speech.ts";
 
+// This is a batch command to update specific site feeds
+
 const generateForSite = async (site: string) => {
   const generator = BriefCastGeneratorFactory(site, { useCache: true, languageCode: "" });
   console.log(`get feed for ${site} ... `);
