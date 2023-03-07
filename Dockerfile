@@ -12,6 +12,8 @@ WORKDIR /app/src
 # Ideally cache deps.ts will download and compile _all_ external files used in main.ts.
 COPY ./src ./
 
+RUN echo 'async function handler(ctx) {}; export { handler };' > ./frontend/build/handler.js
+
 # Compile the main app so that it doesn't need to be compiled each startup/entry.
 RUN deno cache main.ts
 RUN deno cache update.ts
