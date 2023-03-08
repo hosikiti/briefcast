@@ -41,24 +41,7 @@ jobs:
             echo "Git pull"
             cd briefcast
             git pull origin main
-            echo "OPEN_AI_API_KEY=${{ secrets.OPEN_AI_API_KEY }}" > .env
-            echo "GOOGLE_APPLICATION_CREDENTIALS=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" >> .env
-            # cd src/frontend
-            # echo "PUBLIC_FIREBASE_API_KEY=${{ secrets.PUBLIC_FIREBASE_API_KEY }}" > .env
-            # echo "PUBLIC_FIREBASE_AUTH_DOMAIN=${{ secrets.PUBLIC_FIREBASE_AUTH_DOMAIN }}" > .env
-            # echo "PUBLIC_FIREBASE_PROJECT_ID=${{ secrets.PUBLIC_FIREBASE_PROJECT_ID }}" > .env
-            # echo "PUBLIC_FIREBASE_STORAGE_BUCKET=${{ secrets.PUBLIC_FIREBASE_STORAGE_BUCKET }}" > .env
-            # echo "PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}" > .env
-            # echo "PUBLIC_FIREBASE_APP_ID=${{ secrets.PUBLIC_FIREBASE_APP_ID }}" > .env
-            # echo "PUBLIC_FIREBASE_MEASUREMENT_ID=${{ secrets.PUBLIC_FIREBASE_MEASUREMENT_ID }}" > .env
-            # docker build -t svelte .  
-            # docker run --rm -it --env-file .env -v ${pwd}:/app svelte npm run build
-            # cd ../../
-            # echo "service restarting ... "
-            # docker-compose up -d
-            # echo "start server ..."
-            # docker-compose exec briefcast ./run_dev.sh &
-
+            
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
