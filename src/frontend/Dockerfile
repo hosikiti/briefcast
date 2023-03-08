@@ -3,7 +3,7 @@ EXPOSE 9696
 
 RUN apk add git
 
-USER node
+# USER node
 
 WORKDIR /app
 
