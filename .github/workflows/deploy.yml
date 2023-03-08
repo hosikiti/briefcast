@@ -53,8 +53,8 @@ jobs:
             echo "PUBLIC_FIREBASE_MEASUREMENT_ID=${{ secrets.PUBLIC_FIREBASE_MEASUREMENT_ID }}" >> .env
             echo "build svelte site ..."
             docker build -t svelte .
-            docker run --rm --env-file .env -u `id -u $USER` -v $(pwd):/app svelte npm install
-            docker run --rm --env-file .env -u `id -u $USER` -v $(pwd):/app svelte npm run build
+            docker run --rm --env-file .env -u `id -u $USER` -v $(pwd):/app -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro svelte npm install
+            docker run --rm --env-file .env -u `id -u $USER` -v $(pwd):/app -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro svelte npm run build
             cd ../../
             echo "service restarting ... "
             docker-compose up -d
