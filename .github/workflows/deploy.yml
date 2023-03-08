@@ -29,11 +29,10 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: |
-          echo Hello!
-          docker -v
           cd $GITHUB_WORKSPACE
           ls -la
           cd src/frontend
+          echo "=== Building a svelte frontend ==="
           docker build -t svelte .
           echo "PUBLIC_FIREBASE_API_KEY=${{ secrets.PUBLIC_FIREBASE_API_KEY }}" > .env
           echo "PUBLIC_FIREBASE_AUTH_DOMAIN=${{ secrets.PUBLIC_FIREBASE_AUTH_DOMAIN }}" >> .env
@@ -44,8 +43,18 @@ jobs:
           echo "PUBLIC_FIREBASE_MEASUREMENT_ID=${{ secrets.PUBLIC_FIREBASE_MEASUREMENT_ID }}" >> .env
           docker run --rm --env-file .env -v $(pwd):/app svelte npm install
           docker run --rm --env-file .env -v $(pwd):/app svelte npm run build
-          cd build
-          ls -la
+          echo "=== Sending the build result to a hosting server ==="
+          tar zcvf build.tar.gz build
+
+      - name: Deploy the build archive to the hosting server
+        uses: appleboy/scp-action@master
+        with:
+          key: ${{ secrets.SK }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "build.tar.gz"
+          target: "briefcast/src/frontend"
 
       - name: Install SSH Key for Deploy
         uses: appleboy/ssh-action@master
