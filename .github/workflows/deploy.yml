@@ -6,9 +6,9 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -29,7 +29,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello!
-        
+
       - name: Install SSH Key for Deploy
         uses: appleboy/ssh-action@master
         with:
@@ -53,8 +53,10 @@ jobs:
             echo "PUBLIC_FIREBASE_MEASUREMENT_ID=${{ secrets.PUBLIC_FIREBASE_MEASUREMENT_ID }}" >> .env
             echo "build svelte site ..."
             docker build -t svelte .
-            docker run --rm --env-file .env -u `id -u $USER` -v $(pwd):/app -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro svelte npm install
-            docker run --rm --env-file .env -u `id -u $USER` -v $(pwd):/app -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro svelte npm run build
+            docker run --rm --env-file .env -v $(pwd):/app svelte npm install
+            docker run --rm --env-file .env -v $(pwd):/app svelte npm run build
+            #docker run --rm --env-file .env -u `id -u $USER` -v $(pwd):/app -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro svelte npm install
+            #docker run --rm --env-file .env -u `id -u $USER` -v $(pwd):/app -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro svelte npm run build
             cd ../../
             echo "service restarting ... "
             docker-compose up -d
