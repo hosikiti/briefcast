@@ -51,13 +51,14 @@ jobs:
             echo "PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}" >> .env
             echo "PUBLIC_FIREBASE_APP_ID=${{ secrets.PUBLIC_FIREBASE_APP_ID }}" >> .env
             echo "PUBLIC_FIREBASE_MEASUREMENT_ID=${{ secrets.PUBLIC_FIREBASE_MEASUREMENT_ID }}" >> .env
-            echo "build svelte site ..."
-            docker build -t svelte .
-            docker run -u $(id -u $USER):$(id -g $USER) --rm --env-file .env -v $(pwd):/app svelte npm install
-            docker run -u $(id -u $USER):$(id -g $USER) --rm --env-file .env -v $(pwd):/app svelte npm run build
+#            echo "build svelte site ..."
+#            docker build -t svelte .
+#            mkdir .npm
+#            docker run -u $(id -u $USER):$(id -g $USER) -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v $(pwd)/.npm:/home/$USER/.npm --rm --env-file .env -v $(pwd):/app svelte npm install
+#            docker run -u $(id -u $USER):$(id -g $USER) -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v $(pwd)/.npm:/home/$USER/.npm --rm --env-file .env -v $(pwd):/app svelte npm run build
             #docker run --rm --env-file .env -u `id -u $USER` -v $(pwd):/app -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro svelte npm install
             #docker run --rm --env-file .env -u `id -u $USER` -v $(pwd):/app -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro svelte npm run build
-            cd ../../
+#            cd ../../
             echo "service restarting ... "
             docker-compose up -d
             echo "start server ..."
