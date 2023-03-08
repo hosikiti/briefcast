@@ -28,7 +28,9 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Hello!
+        run: |
+          echo Hello!
+          docker -v
 
       - name: Install SSH Key for Deploy
         uses: appleboy/ssh-action@master
