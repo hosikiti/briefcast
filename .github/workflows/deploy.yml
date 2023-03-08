@@ -41,8 +41,8 @@ jobs:
             echo "Git pull"
             cd briefcast
             git pull origin main
-            echo "OPEN_AI_API_KEY=${{ env.OPEN_AI_API_KEY }}" >> .env
-            echo "GOOGLE_APPLICATION_CREDENTIALS=${{ env.GOOGLE_APPLICATION_CREDENTIALS }}" >> .env
+            echo "OPEN_AI_API_KEY=${{ vars.OPEN_AI_API_KEY }}" >> .env
+            echo "GOOGLE_APPLICATION_CREDENTIALS=${{ vars.GOOGLE_APPLICATION_CREDENTIALS }}" >> .env
             docker-compose up -d
 
       # Runs a set of commands using the runners shell
