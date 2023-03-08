@@ -57,7 +57,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
-          source: "build.tar.gz"
+          source: "$GITHUB_WORKSPACE/src/frontend/build.tar.gz"
           target: "briefcast/src/frontend"
 
       - name: Install SSH Key for Deploy
