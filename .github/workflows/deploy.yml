@@ -80,7 +80,7 @@ jobs:
             echo "PUBLIC_FIREBASE_MEASUREMENT_ID=${{ secrets.PUBLIC_FIREBASE_MEASUREMENT_ID }}" >> .env
             cd ../../
             echo "service restarting ... "
-            docker-compose up -d
+            docker-compose up -d --build
             echo "start server ..."
             docker-compose exec briefcast ./run_dev.sh &
 
