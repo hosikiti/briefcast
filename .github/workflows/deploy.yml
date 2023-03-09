@@ -56,7 +56,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           source: "build.tar.gz"
-          target: "briefcast/src/frontend/"
+          target: "."
           overwrite: true
 
       - name: Install SSH Key for Deploy
