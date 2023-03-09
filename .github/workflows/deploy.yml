@@ -44,9 +44,8 @@ jobs:
           docker run --rm --env-file .env -v $(pwd):/app svelte npm install
           docker run --rm --env-file .env -v $(pwd):/app svelte npm run build
           echo "=== Sending the build result to a hosting server ==="
-          ls -la
-          pwd
-          tar zcvf build.tar.gz build
+          mkdir $GITHUB_WORKSPACE/../build
+          tar zcvf $GITHUB_WORKSPACE/../build/build.tar.gz build
           ls -la
           sleep 5
 
@@ -57,8 +56,8 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
-          # source: "$GITHUB_WORKSPACE/src/frontend/build.tar.gz"
-          # target: "briefcast/src/frontend"
+          source: "build.tar.gz"
+          target: "briefcast/src/frontend"
 
       - name: Install SSH Key for Deploy
         uses: appleboy/ssh-action@master
