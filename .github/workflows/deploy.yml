@@ -68,6 +68,7 @@ jobs:
             git pull origin main
             echo "OPEN_AI_API_KEY=${{ secrets.OPEN_AI_API_KEY }}" > .env
             echo "GOOGLE_APPLICATION_CREDENTIALS=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" >> .env
+            rm -rf src/frontend/build
             mv ../tmp_svelte/src/frontend/build src/frontend/
             rm -rf ../tmp_svelte
             cd src/frontend
