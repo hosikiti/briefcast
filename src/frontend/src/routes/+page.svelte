@@ -215,10 +215,11 @@
 		background-color: white;
 		width: 100%;
 		margin: 1rem 0;
-		padding: 3rem 0;
+		padding: 1.5rem 0;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		box-shadow: 0px 7px 18px -9px rgba(0, 0, 0, 0.6);
 
 		.url-area {
 			display: flex;

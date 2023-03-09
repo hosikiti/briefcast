@@ -14,7 +14,7 @@ export const gptSummarizer = async (
   if (!prompt) {
     prompt = languageCode == "ja-JP"
       ? `次のトピックのリストをラジオ原稿に変換してください。以下の手順で実施してください。
-      1) トピック毎に、30文字以内の「ですます調」のラジオ原稿に変換する。その後、文末に　<break time="2s"/>　を追加。
+      1) トピック毎に、25文字以内の「ですます調」のラジオ原稿に変換する。その後、文末に　<break time="2s"/>　を追加。
       2) 全てのトピックを結合し180文字を超えたら処理を終える。\n---\n${input}`
       : `Summarize into 200 words pod cast transcription: "${input}"`;
   }
