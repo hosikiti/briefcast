@@ -12,7 +12,7 @@
 	</main>
 
 	<footer>
-		<p>(C) 2023 Kei Oikawa.</p>
+		<p>Copyright 2023 Kei Oikawa.</p>
 	</footer>
 </div>
 

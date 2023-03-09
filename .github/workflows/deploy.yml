@@ -52,7 +52,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           source: "src/frontend/build"
-          target: "./svelte/"
+          target: "./tmp_svelte/"
           overwrite: true
 
       - name: Install SSH Key for Deploy
@@ -68,7 +68,8 @@ jobs:
             git pull origin main
             echo "OPEN_AI_API_KEY=${{ secrets.OPEN_AI_API_KEY }}" > .env
             echo "GOOGLE_APPLICATION_CREDENTIALS=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" >> .env
-            mv ../svelte/src/frontend/build src/frontend/
+            mv ../tmp_svelte/src/frontend/build src/frontend/
+            rm -rf ../tmp_svelte
             cd src/frontend
             echo "PUBLIC_FIREBASE_API_KEY=${{ secrets.PUBLIC_FIREBASE_API_KEY }}" > .env
             echo "PUBLIC_FIREBASE_AUTH_DOMAIN=${{ secrets.PUBLIC_FIREBASE_AUTH_DOMAIN }}" >> .env
