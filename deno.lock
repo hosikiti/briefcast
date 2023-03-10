@@ -216,7 +216,7 @@
     "https://googleapis.deno.dev/_/base@v1/auth/mod.ts": "2564c92422e18c3e714ad829af89ac3c28ae3021c7230fcb6ca3a46edf7efe25",
     "https://googleapis.deno.dev/_/base@v1/mod.ts": "47e055b8ac7e60451fe6909e7bec3a468069f207737d30b811e236573f1b7da2",
     "https://googleapis.deno.dev/_/base@v1/util.ts": "255693bf0ffbcaa62b4a20f87057254ed439f32cc50084e01c6fd760c1ddf2ab",
-    "https://googleapis.deno.dev/v1/texttospeech:v1.ts": "cb0fb7d85d512e04fe850eb4452c606b5b4f36c1134807e3be563bf3d05bfd19"
+    "https://googleapis.deno.dev/v1/texttospeech:v1.ts": "0bea8fd1a6ffa458cb816c7ae46faa5fb501d2811b430bd96f99ae45f8f138d1"
   },
   "npm": {
     "specifiers": {
