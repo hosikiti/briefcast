@@ -45,7 +45,7 @@ export class CNNGenerator implements BriefCastGenerator {
       ) {
         break;
       }
-      result.push(description);
+      result.push("- " + description);
     }
 
     let isUpdated = true;
@@ -69,17 +69,31 @@ export class CNNGenerator implements BriefCastGenerator {
     const month = getEnglishMonthName(pubDate.getMonth());
     const day = pubDate.getDate();
     const year = pubDate.getFullYear();
-    const intro = `Welcome to CNN news summary. Today's date is ${month}/${day}/${year}.`;
+    const intro = `Welcome to CNN news summary. Today's date is ${month}/${day}/${year}.<break time="2s"/>`;
 
     // Create closing part
     const closing = " That's all for today's CNN news summary by BriefCast.";
 
     // Summarize the given text
-    const prompt =
-      "Make it into 150 words simple English pod cast transcription for English learners. Don't add linking words like 'meanwhile' between topics: " +
-      item.transcript;
+    // const prompt =
+    //   "Make it into 150 words simple English pod cast transcription for English learners. Don't add linking words like 'meanwhile' between topics: " +
+    //   item.transcript;
+    const prompt = `
+    Summarize this into a transcript using the following steps:
+    1. Summarize each topic into a 30 words simple English pod cast transcript. 
+    2. Converts into one JSON array of string until it reaches 200 bytes.
+    ---
+    ${item.transcript}
+    `;
     const body = await gptSummarizer(item.transcript, this.options.languageCode, prompt);
 
-    return intro + body + closing;
+    let finalTranscript = body;
+    try {
+      // if the results is correct JSON array, join them.
+      const items = JSON.parse(body) as string[];
+      finalTranscript = items.join(`<break time="2s"/>`);
+    } catch (e) {}
+
+    return intro + finalTranscript + closing;
   }
 }

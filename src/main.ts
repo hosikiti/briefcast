@@ -6,13 +6,6 @@ const DEFAULT_SERVER_PORT = 8088;
 
 const app = new Application();
 
-// Logger
-app.use(async (ctx, next) => {
-  await next();
-  const rt = ctx.response.headers.get("X-Response-Time");
-  console.log(`${ctx.request.method} ${ctx.request.url} - ${rt}`);
-});
-
 const router = new Router();
 
 router.get("/healthcheck", (ctx) => {
@@ -23,6 +16,12 @@ router.get("/media", MediaController.get);
 
 router.post("/podcast/trial/generate", PodcastController.trialGenerate);
 
+// Logger
+app.use(async (ctx, next) => {
+  await next();
+  const rt = ctx.response.headers.get("X-Response-Time");
+  console.log(`${ctx.request.method} ${ctx.request.url} - ${rt}`);
+});
 app.use(oakCors());
 app.use(router.routes());
 app.use(router.allowedMethods());
