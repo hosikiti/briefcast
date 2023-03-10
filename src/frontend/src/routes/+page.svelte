@@ -5,7 +5,7 @@
 	import axios from 'axios';
 	import { Jumper } from 'svelte-loading-spinners';
 	const languages: LanguageCode[] = [
-		{ code: 'en-US', title: 'English (United States)' },
+		{ code: 'en-US', title: 'English (US)' },
 		{ code: 'ja-JP', title: '日本語' }
 	];
 
@@ -73,6 +73,10 @@
 	// };
 
 	const createTrialPodCast = async () => {
+		if (!createPodCastParam.feedUrl) {
+			alert('Provide a feed URL of your favorite website');
+			return;
+		}
 		trialGenerating = true;
 		try {
 			const resp = await axios.post(apiHost + '/podcast/trial/generate', {
@@ -133,7 +137,7 @@
 				<Jumper size="60" color="#FF3E00" unit="px" duration="1s" />
 			</div>
 		{/if}
-		{#if trialPodcastSrc != ''}
+		{#if trialPodcastSrc != '' && !trialGenerating}
 			<div class="audio-area">
 				<h2>Your podcast is ready! Let's listen to it.</h2>
 				<audio controls id="trialPodcast">
