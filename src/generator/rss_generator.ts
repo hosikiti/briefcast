@@ -67,8 +67,11 @@ export class RSSGenerator implements BriefCastGenerator {
     // const year = pubDate.getFullYear();
     // const intro = `Today's date is ${month}/${day}/${year}.`;
 
-    // // Create closing part
-    // const closing = " That's all for today by BriefCast.";
+    // Create closing part
+    let closing = " That's all for today by BriefCast.";
+    if (this.options.languageCode == "ja-JP") {
+      closing = " 以上、BriefCastがお伝えしました。";
+    }
 
     // // Summarize the given text
     // const prompt =
@@ -76,7 +79,7 @@ export class RSSGenerator implements BriefCastGenerator {
     //   item.transcript;
     const body = await gptSummarizer(item.transcript, this.options.languageCode);
 
-    return intro + body;
+    return intro + body + closing;
     // return intro + body + closing;
   }
 }
