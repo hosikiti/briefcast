@@ -6,7 +6,7 @@
 <div class="text-column">
 	<h1>About BriefCast</h1>
 	<p class="description">
-		BriefCast is an AI-empowered original podcast generator from any web site.
+		BriefCast is an AI-powered original podcast generator from any web site.
 	</p>
 	<h2>How it works</h2>
 	<ol>
