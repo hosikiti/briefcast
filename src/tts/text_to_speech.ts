@@ -1,5 +1,6 @@
 import { ensureDir } from "https://deno.land/std@0.170.0/fs/ensure_dir.ts";
 import { GoogleAuth, texttospeech } from "https://googleapis.deno.dev/v1/texttospeech:v1.ts";
+import { LanguageCode } from "../constant.ts";
 
 const credentials = Deno.readTextFileSync(
   Deno.env.get("GOOGLE_APPLICATION_CREDENTIALS") || "",
@@ -13,8 +14,8 @@ export interface TextToMP3Option {
 }
 
 const defaultVoiceNameMap: { [key: string]: string } = {
-  "ja-JP": "ja-JP-Neural2-C",
-  "en-US": "en-US-Neural2-G",
+  [LanguageCode.jaJP]: "ja-JP-Neural2-C",
+  [LanguageCode.enUS]: "en-US-Neural2-G",
 };
 
 export const textToMP3 = async (option: TextToMP3Option) => {

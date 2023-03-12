@@ -4,7 +4,7 @@ import { isUpdatedFeed, saveFeedCache } from "./common/feed_cache.ts";
 import { parseFeed } from "./common/feed_parser.ts";
 import { BriefCastGenerator, BriefCastItem } from "./generator.ts";
 import { GenerateOption } from "./generator_factory.ts";
-import { MAX_TRANSCRIPT_LENGTH } from "../constant.ts";
+import { LanguageCode, MAX_TRANSCRIPT_LENGTH } from "../constant.ts";
 
 const feedUrl = "http://rss.cnn.com/rss/edition.rss";
 
@@ -21,7 +21,7 @@ export class CNNGenerator implements BriefCastGenerator {
     }
     this._options = {
       useCache: false,
-      languageCode: "en-US",
+      languageCode: LanguageCode.enUS,
     };
   }
 

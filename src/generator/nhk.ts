@@ -1,3 +1,4 @@
+import { LanguageCode } from "../constant.ts";
 import { gptSummarizer } from "../openai/summarizer.ts";
 import { isUpdatedFeed, saveFeedCache } from "./common/feed_cache.ts";
 import { parseFeed } from "./common/feed_parser.ts";
@@ -19,7 +20,7 @@ export class NHKGenerator implements BriefCastGenerator {
     }
     this._options = {
       useCache: false,
-      languageCode: "ja-JP",
+      languageCode: LanguageCode.jaJP,
     };
   }
 

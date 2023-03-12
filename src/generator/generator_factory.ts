@@ -1,3 +1,4 @@
+import { LanguageCode } from "../constant.ts";
 import { CNNGenerator } from "./cnn.ts";
 import { BriefCastGenerator } from "./generator.ts";
 import { NHKGenerator } from "./nhk.ts";
@@ -6,7 +7,7 @@ import { RSSGenerator } from "./rss_generator.ts";
 export interface GenerateOption {
   useCache: boolean;
   feedUrl?: string;
-  languageCode: string;
+  languageCode: LanguageCode;
 }
 
 export const BriefCastGeneratorFactory = (
@@ -21,7 +22,7 @@ export const BriefCastGeneratorFactory = (
     default:
       if (siteNameOrUrl.startsWith("http")) {
         opts = opts || {
-          languageCode: "",
+          languageCode: LanguageCode.enUS,
           useCache: true,
         };
         opts.feedUrl = siteNameOrUrl;

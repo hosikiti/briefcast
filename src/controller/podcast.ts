@@ -1,4 +1,5 @@
-import { Context } from "../deps.ts";
+import { LanguageCode } from "../constant.ts";
+import { Context, Status } from "../deps.ts";
 import { RSSGenerator } from "../generator/rss_generator.ts";
 import { textToMP3 } from "../tts/text_to_speech.ts";
 import { deleteOldTrialPodcasts } from "../util/podcast.ts";
@@ -7,13 +8,13 @@ export class PodcastController {
   static trialGenerate = async (ctx: Context) => {
     const body = ctx.request.body();
     if (body.type != "json") {
-      ctx.response.status = 400;
+      ctx.response.status = Status.BadRequest;
       return;
     }
     const param = await body.value;
 
     const feedUrl = param["feedUrl"];
-    const languageCode = param["languageCode"] || "en-US";
+    const languageCode = param["languageCode"] || LanguageCode.enUS;
     const generator = new RSSGenerator({
       feedUrl: feedUrl,
       languageCode: languageCode,
@@ -24,7 +25,7 @@ export class PodcastController {
       deleteOldTrialPodcasts();
       const item = await generator.getLatest();
       if (!item || item.transcript.length < 10) {
-        ctx.response.status = 404;
+        ctx.response.status = Status.NotFound;
         return;
       }
       console.log(item.transcript);
@@ -35,7 +36,7 @@ export class PodcastController {
 
       if (briefTranscript.length == 0) {
         console.warn("transcript is empty, something went wrong.");
-        ctx.response.status = 500;
+        ctx.response.status = Status.OK;
         return;
       }
 
@@ -49,7 +50,7 @@ export class PodcastController {
       ctx.response.body = { "id": udid, "title": item.feed.title };
     } catch (e) {
       console.error(e);
-      ctx.response.status = 500;
+      ctx.response.status = Status.InternalServerError;
     }
   };
 }
