@@ -15,7 +15,7 @@ Briefcast is an AI-powered pod cast generator from any news website.
 ## TODO
 
 - Allow each user to create an account with Google and add their own favorite web feeds.
-- Update each user's feeds at least once a day.
+- Update each user's feeds automatically at least once a day.
 - Limit the total number of generations within a day (300 times a day would be the upper limit for my budget).
 - Add licence.
 - ...

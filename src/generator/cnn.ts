@@ -91,7 +91,7 @@ export class CNNGenerator implements BriefCastGenerator {
     try {
       // if the results is correct JSON array, join them.
       const items = JSON.parse(body) as string[];
-      finalTranscript = items.join(`<break time="2s"/>`);
+      finalTranscript = items.join(`.<break time="2s"/> `);
     } catch (e) {}
 
     return intro + finalTranscript + closing;
