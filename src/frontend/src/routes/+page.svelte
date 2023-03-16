@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
-	import { fireDb } from '../helpers/firebase';
 	import { collection, getDocs, query, where, addDoc } from 'firebase/firestore';
 	import axios from 'axios';
 	import { Jumper } from 'svelte-loading-spinners';
@@ -56,21 +55,6 @@
 			audioSrc: getAudioSrcFromId(item.id)
 		};
 	});
-
-	// const getPlayLists = async () => {
-	// 	const q = query(collection(fireDb, 'playlists'));
-	// 	const querySnapshot = await getDocs(q);
-	// 	querySnapshot.forEach((doc) => {
-	// 		console.log(doc.id, doc.get('name'));
-	// 	});
-	// };
-	// getPlayLists();
-
-	// const createPodCast = async () => {
-	// 	// Add a new document with a generated id.
-	// 	const docRef = await addDoc(collection(fireDb, 'playlists'), createPodCastParam);
-	// 	console.log('added', docRef.id);
-	// };
 
 	const createTrialPodCast = async () => {
 		if (!createPodCastParam.feedUrl) {
