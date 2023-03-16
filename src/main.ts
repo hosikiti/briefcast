@@ -1,8 +1,8 @@
 import { handler } from "./frontend/build/handler.js";
 import { PodcastController } from "./controller/podcast.ts";
 import { MediaController } from "./controller/media.ts";
-import { initFirebase } from "./util/firebase.ts";
-import { Application, oakCors, Router } from "./deps.ts";
+import { getDB, initFirebase } from "./util/firebase.ts";
+import { Application, collection, getDocs, oakCors, Router } from "./deps.ts";
 
 const DEFAULT_SERVER_PORT = 8088;
 
@@ -19,6 +19,15 @@ router.get("/healthcheck", (ctx) => {
 router.get("/media", MediaController.get);
 
 router.post("/podcast/trial/generate", PodcastController.trialGenerate);
+
+router.get("/testvalues", async (ctx) => {
+  const querySnapshot = await getDocs(collection(getDB(), "playlists"));
+  const records: string[] = [];
+  querySnapshot.forEach((doc) => {
+    records.push(`${doc.id}`);
+  });
+  ctx.response.body = records.join("\n");
+});
 
 // Logger
 app.use(async (ctx, next) => {
