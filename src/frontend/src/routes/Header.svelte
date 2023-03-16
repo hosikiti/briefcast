@@ -1,15 +1,16 @@
 <script>
 	import { page } from '$app/stores';
-	import { signInWithPopup } from 'firebase/auth';
+	import { signInWithPopup, signOut } from 'firebase/auth';
 	import '../helpers/firebase';
 	import { auth, provider } from '../helpers/firebase';
+	import { authStore } from '../store';
 
-	async function signIn() {
-		await signInWithPopup(auth, provider)
-			.then((res) => {
-				console.log(res.user.uid);
-			})
-			.catch((e) => console.error(e));
+	async function signInFirebase() {
+		await signInWithPopup(auth, provider).catch((e) => console.error(e));
+	}
+
+	async function signOutFirebase() {
+		await signOut(auth).catch((e) => console.error(e));
 	}
 </script>
 
@@ -34,7 +35,11 @@
 	</nav>
 
 	<div class="corner">
-		<a href="/" class="sign-in" on:click={signIn}>Sign in</a>
+		{#if $authStore.loggedIn}
+			<a href="/" class="sign-in" on:click={signOutFirebase}>Sign out</a>
+		{:else}
+			<a href="/" class="sign-in" on:click={signInFirebase}>Sign in</a>
+		{/if}
 	</div>
 </header>
 
@@ -115,7 +120,6 @@
 
 	a.sign-in {
 		height: 3em;
-		font-weight: 700;
 		display: flex;
 		align-items: center;
 		text-decoration: none;

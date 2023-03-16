@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
-	import { collection, getDocs, query, where, addDoc } from 'firebase/firestore';
 	import axios from 'axios';
 	import { Jumper } from 'svelte-loading-spinners';
+	import { authStore } from '../store';
 	const languages: LanguageCode[] = [
 		{ code: 'en-US', title: 'English (US)' },
 		{ code: 'ja-JP', title: '日本語' }
@@ -132,20 +132,23 @@
 		{/if}
 	</div>
 
-	{#each items as item}
-		<div class="item">
-			<h3>{item.title}</h3>
-			<audio controls>
-				<source src={item.audioSrc} type="audio/mpeg" />
-				<em>Sorry, your browser doesn't support HTML5 audio.</em>
-			</audio>
-			<div class="additional">
-				<a class="original-source" href={item.sourceUrl} target="_blank" rel="noreferrer"
-					>Visit website</a
-				>
+	{#if $authStore.loggedIn}
+		<h2>Your Podcasts</h2>
+		{#each items as item}
+			<div class="item">
+				<h3>{item.title}</h3>
+				<audio controls>
+					<source src={item.audioSrc} type="audio/mpeg" />
+					<em>Sorry, your browser doesn't support HTML5 audio.</em>
+				</audio>
+				<div class="additional">
+					<a class="original-source" href={item.sourceUrl} target="_blank" rel="noreferrer"
+						>Visit website</a
+					>
+				</div>
 			</div>
-		</div>
-	{/each}
+		{/each}
+	{/if}
 </section>
 
 <style lang="scss">
