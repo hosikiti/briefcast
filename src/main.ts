@@ -1,8 +1,12 @@
 import { handler } from "./frontend/build/handler.js";
 import { PodcastController } from "./controller/podcast.ts";
 import { MediaController } from "./controller/media.ts";
+import { initFirebase } from "./util/firebase.ts";
 import { Application, oakCors, Router } from "./deps.ts";
+
 const DEFAULT_SERVER_PORT = 8088;
+
+await initFirebase();
 
 const app = new Application();
 

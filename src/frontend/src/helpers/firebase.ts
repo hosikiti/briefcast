@@ -1,7 +1,6 @@
 import { type FirebaseApp, initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-import { getAnalytics } from "firebase/analytics";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import {
   PUBLIC_FIREBASE_API_KEY,
   PUBLIC_FIREBASE_APP_ID,
@@ -38,4 +37,14 @@ initializeFirebase();
 
 // Initialize Firebase
 export const fireDb = getFirestore(app);
+export const auth = getAuth(app);
+export const provider = new GoogleAuthProvider()
 // const fireAnalytics = getAnalytics(fireApp);
+
+console.log("db init done");
+
+// const querySnapshot = await getDocs(collection(fireDb, "playlists"));
+// querySnapshot.forEach((doc) => {
+//   // doc.data() is never undefined for query doc snapshots
+//   console.log(doc.id, " => ", doc.data());
+// });

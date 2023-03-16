@@ -1,5 +1,16 @@
 <script>
 	import { page } from '$app/stores';
+	import { signInWithPopup } from 'firebase/auth';
+	import '../helpers/firebase';
+	import { auth, provider } from '../helpers/firebase';
+
+	async function signIn() {
+		await signInWithPopup(auth, provider)
+			.then((res) => {
+				console.log(res.user.uid);
+			})
+			.catch((e) => console.error(e));
+	}
 </script>
 
 <header>
@@ -22,7 +33,9 @@
 		</svg>
 	</nav>
 
-	<div class="corner" />
+	<div class="corner">
+		<a href="/" class="sign-in" on:click={signIn}>Sign in</a>
+	</div>
 </header>
 
 <style>
@@ -32,7 +45,7 @@
 	}
 
 	.corner {
-		width: 3em;
+		width: 4em;
 		height: 3em;
 	}
 
@@ -98,5 +111,13 @@
 
 	a:hover {
 		color: var(--color-theme-1);
+	}
+
+	a.sign-in {
+		height: 3em;
+		font-weight: 700;
+		display: flex;
+		align-items: center;
+		text-decoration: none;
 	}
 </style>
