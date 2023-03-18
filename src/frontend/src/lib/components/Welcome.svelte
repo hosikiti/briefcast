@@ -55,7 +55,7 @@
 	};
 </script>
 
-<div class="flex flex-col justify-center fixed mx-auto inset-0 items-center">
+<div class="flex flex-col justify-center h-main items-center">
 	<div class="p-4">
 		<h3 class="p-4">Try generate your Podcast with <b>BriefCast</b></h3>
 		<div class="shadow-md p-8 bg-slate-100 flex flex-col gap-2">

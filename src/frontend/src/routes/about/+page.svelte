@@ -7,7 +7,6 @@
 	<h1>About BriefCast</h1>
 	<p>BriefCast is an AI-powered original podcast generator from any web site.</p>
 	<h2>How it works</h2>
-	<button class="btn variant-filled">hogehoge</button>
 	<ol>
 		<li>
 			Pick a web site: Briefcast works seamlessly with any website that offers RSS/ATOM feeds.

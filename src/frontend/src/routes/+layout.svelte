@@ -3,14 +3,14 @@
 
 	import '@skeletonlabs/skeleton/styles/all.css';
 
-	import '../app.css';
+	import '../app.postcss';
 	import Header from './Header.svelte';
 </script>
 
 <div class="app">
 	<Header />
 
-	<main>
+	<main class="h-[calc(100vh-12rem)]">
 		<slot />
 	</main>
 
