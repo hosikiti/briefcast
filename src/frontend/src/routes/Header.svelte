@@ -32,7 +32,7 @@
 
 	<div class="">
 		{#if $authStore.loggedIn}
-			<button type="button" class="btn variant-filled btn-sm" on:click={signOutFirebase}
+			<button type="button" class="btn variant-soft btn-sm text-slate-50" on:click={signOutFirebase}
 				>Sign out</button
 			>
 		{:else}
