@@ -55,7 +55,8 @@
 	};
 </script>
 
-<div class="flex flex-col justify-center h-main items-center">
+<div class="flex flex-col justify-center items-center overflow-scroll">
+	<div class="font-serif text-6xl py-16 px-8">Less news, more life</div>
 	<div class="p-4">
 		<h3 class="p-4">Try generate your Podcast with <b>BriefCast</b></h3>
 		<div class="shadow-md p-8 bg-slate-100 flex flex-col gap-2">
