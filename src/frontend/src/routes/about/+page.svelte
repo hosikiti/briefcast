@@ -5,10 +5,9 @@
 
 <div class="text-column">
 	<h1>About BriefCast</h1>
-	<p class="description">
-		BriefCast is an AI-powered original podcast generator from any web site.
-	</p>
+	<p>BriefCast is an AI-powered original podcast generator from any web site.</p>
 	<h2>How it works</h2>
+	<button class="btn variant-filled">hogehoge</button>
 	<ol>
 		<li>
 			Pick a web site: Briefcast works seamlessly with any website that offers RSS/ATOM feeds.
@@ -26,24 +25,4 @@
 </div>
 
 <style>
-	.text-column {
-		font-family: serif;
-	}
-
-	.description {
-		text-align: center;
-	}
-
-	li {
-		line-height: 2rem;
-	}
-
-	h1 {
-	}
-
-	h2 {
-		font-weight: bold;
-		text-align: center;
-		margin: 2rem 0;
-	}
 </style>

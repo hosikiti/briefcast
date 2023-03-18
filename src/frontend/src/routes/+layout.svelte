@@ -1,6 +1,10 @@
 <script lang="ts">
+	import '@skeletonlabs/skeleton/themes/theme-hamlindigo.css';
+
+	import '@skeletonlabs/skeleton/styles/all.css';
+
+	import '../app.postcss';
 	import Header from './Header.svelte';
-	import './styles.css';
 </script>
 
 <div class="app">
@@ -11,7 +15,7 @@
 	</main>
 
 	<footer>
-		<p>(C) 2023 Kei Oikawa.</p>
+		<span class="text-slate-600 text-xs">(C) 2023 Kei Oikawa.</span>
 	</footer>
 </div>
 
