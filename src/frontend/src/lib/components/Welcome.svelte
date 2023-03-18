@@ -57,9 +57,9 @@
 
 <div class="flex flex-col justify-center fixed mx-auto inset-0 items-center">
 	<div class="p-4">
-		<h3 class="p-4">Try generate your Podcast with BriefCast.</h3>
+		<h3 class="p-4">Try generate your Podcast with <b>BriefCast</b></h3>
 		<div class="shadow-md p-8 bg-slate-100 flex flex-col gap-2">
-			<span>Choose from famous news websites: </span>
+			<span class="font-bold">Choose from famous news websites: </span>
 			<div class="flex gap-4">
 				<label class="flex items-center space-x-2">
 					<input class="radio" type="radio" checked name="radio-direct" value="1" />
@@ -82,7 +82,7 @@
 				placeholder="RSS or Atom feed URL"
 				disabled={trialGenerating}
 			/>
-			<span class="mt-8">Choose generate options</span>
+			<span class="mt-8">Options</span>
 			<label class="label">
 				<span>Podcast Language: </span>
 				<select class="select" bind:value={selectedLanguage}>
