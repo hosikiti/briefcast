@@ -47,9 +47,9 @@
 
 	<div class="flex flex-col md:flex-row gap-4 py-4">
 		{#each items as item}
-			<div class="p-4 shadow-md  bg-slate-300 flex flex-col items-stretch gap-2">
+			<div class="p-4 shadow-md  bg-white flex flex-col items-stretch gap-2">
 				<h3 class="">{item.title}</h3>
-				<audio controls class="my-4">
+				<audio controls class="my-4 w-full">
 					<source src={item.audioSrc} type="audio/mpeg" />
 					<em>Sorry, your browser doesn't support HTML5 audio.</em>
 				</audio>
