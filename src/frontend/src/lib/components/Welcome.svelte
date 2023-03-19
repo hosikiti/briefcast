@@ -1,20 +1,11 @@
 <script lang="ts">
-	import { apiHost, getAudioSrcFromId } from '$lib/util';
+	import { apiHost, getAudioSrcFromId, supportedLanguages, type LanguageCode } from '$lib/util';
 	import axios from 'axios';
 	import { Jumper } from 'svelte-loading-spinners';
-	const languages: LanguageCode[] = [
-		{ code: 'en-US', title: 'English (US)' },
-		{ code: 'ja-JP', title: '日本語' }
-	];
 
 	let trialPodcastSrc = '';
 	let trialGenerating = false;
-	let selectedLanguage: LanguageCode = languages[0];
-
-	interface LanguageCode {
-		code: string;
-		title: string;
-	}
+	let selectedLanguage: LanguageCode = supportedLanguages[0];
 
 	interface CreatePodCastParam {
 		feedUrl: string;
@@ -87,7 +78,7 @@
 			<label class="label">
 				<span>Podcast Language: </span>
 				<select class="select" bind:value={selectedLanguage}>
-					{#each languages as lang}
+					{#each supportedLanguages as lang}
 						<option value={lang}>
 							{lang.title}
 						</option>

@@ -28,7 +28,10 @@
 <div class="p-2">
 	<div class="flex justify-between items-center py-4">
 		<h2 class="text-left ">Your podcasts</h2>
-		<button type="button" class="btn variant-filled rounded-3xl bg-orange-500 shadow-md text-white">
+		<a
+			href="/podcast/add"
+			class="btn variant-filled rounded-3xl bg-orange-500 shadow-md text-white"
+		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 20 20"
@@ -41,13 +44,13 @@
 			</svg>
 
 			<span>Add site</span>
-		</button>
+		</a>
 	</div>
 	<hr class="" />
 
 	<div class="flex flex-col md:flex-row gap-4 py-4">
 		{#each items as item}
-			<div class="p-4 shadow-md  bg-white flex flex-col items-stretch gap-2">
+			<div class="p-4 shadow-md  bg-white flex flex-col items-stretch gap-2 min-w-[200px]">
 				<h3 class="">{item.title}</h3>
 				<audio controls class="my-4 w-full">
 					<source src={item.audioSrc} type="audio/mpeg" />
