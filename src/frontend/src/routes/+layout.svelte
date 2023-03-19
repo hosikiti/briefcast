@@ -14,7 +14,7 @@
 		<slot />
 	</main>
 
-	<footer class="flex flex-col w-screen bg-slate-300 h-[8rem] p-2 pt-4 pb-8">
+	<footer class="flex flex-col w-screen bg-slate-300 h-[8rem] px-4 pt-4 pb-8">
 		<span class="block font-bold font-serif text-xl">BriefCast</span>
 		<span class="block font-serif text-slate-500">Less news, more life.</span>
 		<span class="flex-1" />
