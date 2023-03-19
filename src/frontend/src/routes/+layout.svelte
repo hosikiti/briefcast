@@ -20,8 +20,4 @@
 		<span class="flex-1" />
 		<span class="text-slate-500 text-xs">© 2023 Kei Oikawa.</span>
 	</footer>
-
-	<!-- <footer class="flex w-screen justify-center p-2">
-		<span class="text-slate-600 text-xs">(C) 2023 Kei Oikawa.</span>
-	</footer> -->
 </div>
