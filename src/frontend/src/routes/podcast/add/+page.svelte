@@ -35,7 +35,7 @@
 		}
 	];
 
-	function handleAdd(tmpl: FeedTemplate) {
+	function handleAdd(tmpl?: FeedTemplate) {
 		isModalOpen = true;
 		selectedTemplate = tmpl;
 		feedUrl = tmpl.feedUrl;
@@ -65,8 +65,9 @@
 	<div class="shadow-md p-4 bg-white md:w-[80vw] w-full">
 		<h2 class="mb-8">Add podcast</h2>
 		<div class="flex gap-2 mb-4">
-			<input class="input p-2" type="url" placeholder="RSS/Atom feed URL" />
-			<button class="btn variant-filled bg-orange-500 text-white">Add</button>
+			<button class="btn variant-filled bg-orange-500 text-white" on:click={() => handleAdd()}
+				>Add by Feed URL</button
+			>
 		</div>
 		<hr />
 		<h3 class="mt-8 mb-4">Explore</h3>
@@ -91,7 +92,7 @@
 			<div
 				class="bg-white border p-4 shadow-lg m-8 lg:w-[60%] w-[80%] h-[50%] relative flex flex-col"
 			>
-				<h2>{selectedTemplate?.name || 'site'}</h2>
+				<h2>{selectedTemplate?.name || 'New podcast'}</h2>
 				<div class="flex flex-col my-4 gap-4">
 					<label class="label">
 						<span>Feed URL: </span>
