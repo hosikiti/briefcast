@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { supportedLanguages, type LanguageCode } from '$lib/util';
+	import { apiHost, supportedLanguages, type LanguageCode } from '$lib/util';
+	import axios from 'axios';
+	import { authStore } from '../../../store';
 
 	let isModalOpen = false;
 	let selectedLanguage = supportedLanguages[0];
@@ -37,6 +39,21 @@
 		isModalOpen = true;
 		selectedTemplate = tmpl;
 		feedUrl = tmpl.feedUrl;
+	}
+
+	async function add() {
+		const resp = await axios.post(
+			apiHost + '/podcast/add',
+			{
+				feedUrl: feedUrl
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${$authStore.token}`
+				}
+			}
+		);
+		handleClose();
 	}
 
 	function handleClose() {
@@ -98,7 +115,7 @@
 				</div>
 				<div class="flex-1" />
 				<div class="flex justify-end gap-2 items-end">
-					<button class="btn variant-filled bg-orange-500 text-white">Add</button>
+					<button class="btn variant-filled bg-orange-500 text-white" on:click={add}>Add</button>
 					<button class="btn variant-soft" on:click={handleClose}>Cancel</button>
 				</div>
 			</div>

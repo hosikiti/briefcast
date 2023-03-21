@@ -1,8 +1,7 @@
 <script>
-	import { page } from '$app/stores';
 	import { signInWithPopup, signOut } from 'firebase/auth';
-	import '../helpers/firebase';
-	import { auth, provider } from '../helpers/firebase';
+	import '../lib/firebase';
+	import { auth, provider } from '../lib/firebase';
 	import { authStore } from '../store';
 
 	async function signInFirebase() {

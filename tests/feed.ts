@@ -12,3 +12,4 @@ Deno.test("parse RSS version 1 feed", async() => {
     assertExists(feed)
     assertExists(feed!.entries)
 })
+

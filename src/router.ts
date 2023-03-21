@@ -13,13 +13,6 @@ router.get("/media", MediaController.get);
 
 router.post("/podcast/trial/generate", PodcastController.trialGenerate);
 
-router.get("/testvalues", async (ctx) => {
-  const querySnapshot = await getDocs(collection(getDB(), "playlists"));
-  const records: string[] = [];
-  querySnapshot.forEach((doc) => {
-    records.push(`${doc.id}`);
-  });
-  ctx.response.body = records.join("\n");
-});
+router.post("/podcast/add", PodcastController.add);
 
 export const appRouter = router;

@@ -1,17 +1,36 @@
 import { LanguageCode } from "../constant.ts";
 import { Context, Status } from "../deps.ts";
 import { RSSGenerator } from "../generator/rss_generator.ts";
+import { PodcastRepository } from "../repository/podcast.ts";
 import { textToMP3 } from "../tts/text_to_speech.ts";
+import { getDB } from "../util/firebase.ts";
 import { deleteOldTrialPodcasts } from "../util/podcast.ts";
+import {
+  CommonParam,
+  getPostBody,
+  setHttpBadRequest,
+  setHttpInternalServerError,
+  setHttpNotFound,
+  setHttpSuccess,
+} from "./base.ts";
+
+interface TrialGenerateParam extends CommonParam {
+  feedUrl: string;
+  languageCode: LanguageCode;
+}
+
+interface AddPodcastParam extends CommonParam {
+  feedUrl: string;
+  languageCode: LanguageCode;
+}
 
 export class PodcastController {
-  static trialGenerate = async (ctx: Context) => {
-    const body = ctx.request.body();
-    if (body.type != "json") {
+  static async trialGenerate(ctx: Context) {
+    const param = await getPostBody<TrialGenerateParam>(ctx);
+    if (param == null) {
       ctx.response.status = Status.BadRequest;
       return;
     }
-    const param = await body.value;
 
     const feedUrl = param["feedUrl"];
     const languageCode = param["languageCode"] || LanguageCode.enUS;
@@ -25,7 +44,7 @@ export class PodcastController {
       deleteOldTrialPodcasts();
       const item = await generator.getLatest();
       if (!item || item.transcript.length < 10) {
-        ctx.response.status = Status.NotFound;
+        setHttpNotFound(ctx);
         return;
       }
       console.log(item.transcript);
@@ -36,7 +55,7 @@ export class PodcastController {
 
       if (briefTranscript.length == 0) {
         console.warn("transcript is empty, something went wrong.");
-        ctx.response.status = Status.OK;
+        setHttpSuccess(ctx);
         return;
       }
 
@@ -47,10 +66,25 @@ export class PodcastController {
         languageCode: languageCode,
         fileNamePrefix: udid,
       });
-      ctx.response.body = { "id": udid, "title": item.feed.title };
+      setHttpSuccess(ctx, { "id": udid, "title": item.feed.title });
     } catch (e) {
       console.error(e);
-      ctx.response.status = Status.InternalServerError;
+      setHttpInternalServerError(ctx);
     }
-  };
+  }
+
+  static async add(ctx: Context) {
+    const param = await getPostBody<AddPodcastParam>(ctx);
+    if (param == null || param.uid == null) {
+      setHttpBadRequest(ctx, "no required parameters");
+      return;
+    }
+
+    await new PodcastRepository(getDB()).addPodcast({
+      feedUrl: param.feedUrl,
+      uid: param.uid,
+      language: LanguageCode.enUS,
+    });
+    setHttpSuccess(ctx);
+  }
 }

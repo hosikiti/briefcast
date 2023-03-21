@@ -1,10 +1,11 @@
 import { onAuthStateChanged, type UserInfo } from "firebase/auth";
 import { writable } from "svelte/store";
-import { auth } from "./helpers/firebase";
+import { auth } from "./lib/firebase";
 
 export interface AuthData {
     loggedIn: boolean
     user?: UserInfo
+    token?: string
 }
 
 export const authStore = writable({
@@ -12,11 +13,14 @@ export const authStore = writable({
 } as AuthData)
 
 // Update authStore on Firebase auth status
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
     if (user) {
+        const idToken = await user.getIdTokenResult()
+
         authStore.set({
             loggedIn: true,
-            user: user
+            user: user,
+            token: idToken.token
         })
     } else {
         authStore.set({
