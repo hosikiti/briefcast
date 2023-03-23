@@ -37,8 +37,10 @@
 
 	function handleAdd(tmpl?: FeedTemplate) {
 		isModalOpen = true;
-		selectedTemplate = tmpl;
-		feedUrl = tmpl.feedUrl;
+		if (tmpl) {
+			selectedTemplate = tmpl;
+			feedUrl = tmpl.feedUrl;
+		}
 	}
 
 	async function add() {

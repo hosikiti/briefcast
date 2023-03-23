@@ -2,6 +2,7 @@ import { LanguageCode } from "../constant.ts";
 import { addDoc, collection, Firestore } from "../deps.ts";
 
 interface PodcastDefinition {
+  title: string;
   feedUrl: string;
   language: LanguageCode;
   uid: string;
