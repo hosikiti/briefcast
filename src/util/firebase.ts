@@ -1,6 +1,11 @@
-import { FirebaseApp, initializeApp } from "https://esm.sh/firebase@9.17.2/app";
-import { getAuth, signInWithEmailAndPassword } from "https://esm.sh/firebase@9.17.2/auth";
-import { Firestore, getFirestore } from "../deps.ts";
+import {
+  FirebaseApp,
+  Firestore,
+  getAuth,
+  getFirestore,
+  initializeApp,
+  signInWithEmailAndPassword,
+} from "../deps.ts";
 
 let app: FirebaseApp;
 let db: Firestore;

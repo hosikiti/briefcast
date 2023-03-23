@@ -13,5 +13,8 @@ export {
   getDocs,
   getFirestore,
   setDoc,
-} from "https://esm.sh/firebase@9.17.2/firestore";
+} from "https://esm.sh/@firebase/firestore@v3.9.0";
 export * as jose from "https://deno.land/x/jose@v4.13.1/index.ts";
+export type { FirebaseApp } from "https://esm.sh/@firebase/app@v0.9.5";
+export { initializeApp } from "https://esm.sh/@firebase/app@v0.9.5";
+export { getAuth, signInWithEmailAndPassword } from "https://esm.sh/@firebase/auth@0.17.2";
