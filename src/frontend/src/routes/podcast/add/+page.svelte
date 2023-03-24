@@ -1,7 +1,8 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+
 	import { apiHost, supportedLanguages, type LanguageCode } from '$lib/util';
 	import axios from 'axios';
-	import { authStore } from '../../../store';
 
 	let isModalOpen = false;
 	let selectedLanguage = supportedLanguages[0];
@@ -51,7 +52,7 @@
 			},
 			{
 				headers: {
-					Authorization: `Bearer ${$authStore.token}`
+					Authorization: `Bearer ${$page.data.token}`
 				}
 			}
 		);

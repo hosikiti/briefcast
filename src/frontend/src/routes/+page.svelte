@@ -1,10 +1,11 @@
 <script lang="ts">
 	import UserHome from '$lib/components/UserHome.svelte';
 	import Welcome from '$lib/components/Welcome.svelte';
-	import { authStore } from '../store';
+	import type { PageData } from './$types';
+	export let data: PageData;
 </script>
 
-{#if $authStore.loggedIn}
+{#if data.isLoggedIn}
 	<UserHome />
 {:else}
 	<Welcome />

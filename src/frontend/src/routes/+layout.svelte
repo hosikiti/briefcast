@@ -5,6 +5,16 @@
 
 	import '../app.postcss';
 	import Header from './Header.svelte';
+	import { browser } from '$app/environment';
+	import { initializeFirebase } from '$lib/firebase';
+
+	if (browser) {
+		try {
+			initializeFirebase();
+		} catch (e) {
+			console.error(e);
+		}
+	}
 </script>
 
 <div class="app">
