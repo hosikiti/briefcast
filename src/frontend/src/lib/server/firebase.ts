@@ -1,4 +1,4 @@
-import jose from 'jose'
+import { decodeProtectedHeader, importX509, jwtVerify } from 'jose'
 import {
     PUBLIC_FIREBASE_PROJECT_ID,
 } from "$env/static/public";
@@ -7,7 +7,7 @@ import {
 export async function verifyToken(jwt: string): Promise<string | null> {
 
     // get a valid public key
-    const header = await jose.decodeProtectedHeader(jwt);
+    const header = await decodeProtectedHeader(jwt);
     if (header.kid == null) {
         return null;
     }
@@ -23,8 +23,8 @@ export async function verifyToken(jwt: string): Promise<string | null> {
 
     // verify jwt
     try {
-        const key = await jose.importX509(publicKey, "RS256");
-        const result = await jose.jwtVerify(jwt, key, {
+        const key = await importX509(publicKey, "RS256");
+        const result = await jwtVerify(jwt, key, {
             algorithms: ["RS256"],
             audience: PUBLIC_FIREBASE_PROJECT_ID,
             issuer: `https://securetoken.google.com/${PUBLIC_FIREBASE_PROJECT_ID}`,
