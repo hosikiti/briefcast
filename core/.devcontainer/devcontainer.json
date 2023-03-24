@@ -1,0 +1,15 @@
+{
+    "name": "briefcast_core",
+    "dockerComposeFile": [
+        "../../docker-compose.yml",
+    ],
+    "service": "briefcast_core",
+    "workspaceFolder": "/app",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "denoland.vscode-deno"
+            ]
+        }
+    }
+}
