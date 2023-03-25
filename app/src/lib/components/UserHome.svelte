@@ -50,7 +50,7 @@
 
 	<div class="flex flex-col md:flex-row gap-4 py-4">
 		{#each items as item}
-			<div class="p-4 shadow-md  bg-white flex flex-col items-stretch gap-2 min-w-[200px]">
+			<div class="p-4 shadow-md bg-white flex flex-col items-stretch gap-2 min-w-[30vw]">
 				<h3 class="">{item.title}</h3>
 				<audio controls class="my-4 w-full">
 					<source src={item.audioSrc} type="audio/mpeg" />

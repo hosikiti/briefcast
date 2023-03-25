@@ -6,10 +6,12 @@ declare global {
     interface Locals {
       isLoggedIn: boolean
       token: string
+      userId: string
     }
     interface PageData {
       isLoggedIn: boolean
-      token: string
+      token?: string
+      userId?: string
     }
     // interface Platform {}
   }

@@ -7,9 +7,9 @@ export const prerender = false;
 
 export const load: PageLoad = async function load({ parent }) {
     const parentData = await parent()
-    const { isLoggedIn, token } = parentData
+    const { isLoggedIn, token, userId } = parentData
     return {
         isLoggedIn,
-        token
+        token,
     }
 }

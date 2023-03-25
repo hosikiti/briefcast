@@ -56,6 +56,7 @@ export function initializeFirebase() {
   })
 
   initialized = true;
+  console.log("firebase initialized")
 };
 
 export async function signInFirebase(method: "google") {

@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-
+	import { db } from '$lib/firebase';
 	import { supportedLanguages, type LanguageCode } from '$lib/util';
-	import axios from 'axios';
+	import { addDoc, collection } from 'firebase/firestore';
+	import type { PageData } from './$types';
 
+	export let data: PageData;
 	let isModalOpen = false;
 	let selectedLanguage = supportedLanguages[0];
 	let selectedTemplate: FeedTemplate | null = null;
@@ -45,18 +46,18 @@
 	}
 
 	async function add() {
-		const resp = await axios.post(
-			'/podcast/add',
-			{
-				feedUrl: feedUrl
-			},
-			{
-				headers: {
-					Authorization: `Bearer ${$page.data.token}`
-				}
-			}
-		);
-		handleClose();
+		const ref = collection(db, `playlists/${data.userId}/default`);
+		try {
+			await addDoc(ref, {
+				feedUrl: feedUrl,
+				language: selectedLanguage.code
+			});
+		} catch (e) {
+			alert('save failed');
+			console.error(e);
+		} finally {
+			handleClose();
+		}
 	}
 
 	function handleClose() {
