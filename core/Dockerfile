@@ -1,7 +1,7 @@
 FROM lukechannings/deno:v1.29.4
 
 # The port that your application listens to.
-EXPOSE 8088
+EXPOSE 18088
 
 WORKDIR /app
 COPY ./ ./
