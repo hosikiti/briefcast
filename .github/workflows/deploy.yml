@@ -30,7 +30,7 @@ jobs:
       - name: Build a svelte frontend
         run: |
           cd $GITHUB_WORKSPACE
-          cd src/frontend
+          cd app
           echo "=== Building a svelte frontend ==="
           docker build -t svelte .
           echo "PUBLIC_FIREBASE_API_KEY=${{ secrets.PUBLIC_FIREBASE_API_KEY }}" > .env
@@ -50,7 +50,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
-          source: "src/frontend/build"
+          source: "app/build"
           target: "./tmp_svelte/"
           overwrite: true
 
@@ -76,8 +76,8 @@ jobs:
             echo "PUBLIC_FIREBASE_MEASUREMENT_ID=${{ secrets.PUBLIC_FIREBASE_MEASUREMENT_ID }}" >> .env
             echo "FIREBASE_ADMIN_EMAIL=${{ secrets.FIREBASE_ADMIN_EMAIL }}" >> .env
             echo "FIREBASE_ADMIN_PASSWD=${{ secrets.FIREBASE_ADMIN_PASSWD }}" >> .env
-            rm -rf src/frontend/build
-            mv ../tmp_svelte/src/frontend/build src/frontend/
+            # rm -rf src/frontend/build
+            mv ../tmp_svelte/app/build app/
             rm -rf ../tmp_svelte
             echo "service restarting ... "
             docker-compose up -d --build
