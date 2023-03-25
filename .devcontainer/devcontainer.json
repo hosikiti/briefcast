@@ -4,6 +4,7 @@
   "name": "briefcast",
   "dockerComposeFile": [
     "../docker-compose.yml",
+    "../docker-compose.dev.yml"
   ],
   "service": "briefcast",
   "workspaceFolder": "/app",
