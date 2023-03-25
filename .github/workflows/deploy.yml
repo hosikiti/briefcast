@@ -76,7 +76,7 @@ jobs:
             echo "PUBLIC_FIREBASE_MEASUREMENT_ID=${{ secrets.PUBLIC_FIREBASE_MEASUREMENT_ID }}" >> .env
             echo "FIREBASE_ADMIN_EMAIL=${{ secrets.FIREBASE_ADMIN_EMAIL }}" >> .env
             echo "FIREBASE_ADMIN_PASSWD=${{ secrets.FIREBASE_ADMIN_PASSWD }}" >> .env
-            # rm -rf src/frontend/build
+            rm -rf app/build
             mv ../tmp_svelte/app/build app/
             rm -rf ../tmp_svelte
             echo "service restarting ... "
