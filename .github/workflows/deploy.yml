@@ -82,4 +82,5 @@ jobs:
             echo "service restarting ... "
             docker-compose up -d --build
             echo "start server ..."
+            docker-compose exec briefcast_core ./run_dev.sh &
             docker-compose exec briefcast node build/index.js &
