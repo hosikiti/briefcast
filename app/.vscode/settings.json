@@ -5,6 +5,7 @@
     },
     "search.exclude": {
         "**/node_modules": true,
+        ".svelte-kit": true,
         "build": true,
     }
 }

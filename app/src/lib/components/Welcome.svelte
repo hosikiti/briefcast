@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { apiHost, getAudioSrcFromId, supportedLanguages, type LanguageCode } from '$lib/util';
+	import { getAudioSrcFromId, supportedLanguages, type LanguageCode } from '$lib/util';
 	import axios from 'axios';
 	import { Jumper } from 'svelte-loading-spinners';
 
@@ -24,7 +24,7 @@
 		}
 		trialGenerating = true;
 		try {
-			const resp = await axios.post(apiHost + '/podcast/trial/generate', {
+			const resp = await axios.post('/podcast/trial/generate', {
 				feedUrl: createPodCastParam.feedUrl,
 				languageCode: selectedLanguage.code
 			});

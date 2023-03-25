@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	import { apiHost, supportedLanguages, type LanguageCode } from '$lib/util';
+	import { supportedLanguages, type LanguageCode } from '$lib/util';
 	import axios from 'axios';
 
 	let isModalOpen = false;
@@ -46,7 +46,7 @@
 
 	async function add() {
 		const resp = await axios.post(
-			apiHost + '/podcast/add',
+			'/podcast/add',
 			{
 				feedUrl: feedUrl
 			},
