@@ -7,7 +7,6 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
     if (token) {
         cookies.set('token', token, {
             path: '/',
-            domain: 'localhost',
             httpOnly: true
         })
     } else {
