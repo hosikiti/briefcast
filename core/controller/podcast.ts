@@ -38,7 +38,7 @@ export class PodcastController {
     });
     try {
       console.log(`get feed for ${feedUrl}, ${languageCode} ... `);
-      deleteOldTrialPodcasts();
+      await deleteOldTrialPodcasts();
       const item = await generator.getLatest();
       if (!item || item.transcript.length < 10) {
         setHttpNotFound(ctx);
