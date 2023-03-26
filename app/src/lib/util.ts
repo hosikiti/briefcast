@@ -1,8 +1,7 @@
-import { dev } from '$app/environment';
-export const mediaHost = dev ? '' : '';
+export const coreApiEndpoint = 'http://briefcast_core:18088';
 
 export const getAudioSrcFromId = (id: string): string => {
-    return mediaHost + '/api/media?id=' + id;
+    return '/api/media?id=' + id;
 };
 
 export interface LanguageCode {

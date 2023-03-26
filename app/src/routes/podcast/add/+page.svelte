@@ -3,6 +3,7 @@
 	import { supportedLanguages, type LanguageCode } from '$lib/util';
 	import { addDoc, collection } from 'firebase/firestore';
 	import type { PageData } from './$types';
+	import type { FeedTemplate } from '$lib/types';
 
 	export let data: PageData;
 	let isModalOpen = false;
@@ -11,30 +12,14 @@
 
 	let feedUrl = '';
 
-	interface FeedTemplate {
-		name: string;
-		description: string;
-		feedUrl: string;
-	}
-
 	const templates: FeedTemplate[] = [
-		{ name: 'CNN', description: 'CNN World News', feedUrl: '' },
-		{ name: 'NHK', description: 'NHKニュース', feedUrl: 'https://www.nhk.or.jp/rss/news/cat0.xml' },
-		{
-			name: 'Decrypt',
-			description: "What's new in crypto and the advent of the decentralized web.",
-			feedUrl: ''
-		},
-		{
-			name: 'Decrypt',
-			description: "What's new in crypto and the advent of the decentralized web.",
-			feedUrl: ''
-		},
-		{
-			name: 'Decrypt',
-			description: "What's new in crypto and the advent of the decentralized web.",
-			feedUrl: ''
-		}
+		// { name: 'CNN', description: 'CNN World News', feedUrl: '', languageCode:  },
+		// { name: 'NHK', description: 'NHKニュース', feedUrl: 'https://www.nhk.or.jp/rss/news/cat0.xml' },
+		// {
+		// 	name: 'Decrypt',
+		// 	description: "What's new in crypto and the advent of the decentralized web.",
+		// 	feedUrl: ''
+		// }
 	];
 
 	function handleAdd(tmpl?: FeedTemplate) {

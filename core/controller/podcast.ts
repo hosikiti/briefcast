@@ -40,7 +40,7 @@ export class PodcastController {
       useCache: false,
     });
     try {
-      console.log(`get feed for ${feedUrl} ... `);
+      console.log(`get feed for ${feedUrl}, ${languageCode} ... `);
       deleteOldTrialPodcasts();
       const item = await generator.getLatest();
       if (!item || item.transcript.length < 10) {
@@ -71,20 +71,5 @@ export class PodcastController {
       console.error(e);
       setHttpInternalServerError(ctx);
     }
-  }
-
-  static async add(ctx: Context) {
-    const param = await getPostBody<AddPodcastParam>(ctx);
-    if (param == null || param.uid == null) {
-      setHttpBadRequest(ctx, "no required parameters");
-      return;
-    }
-
-    await new PodcastRepository(getDB()).addPodcast({
-      feedUrl: param.feedUrl,
-      uid: param.uid,
-      language: LanguageCode.enUS,
-    });
-    setHttpSuccess(ctx);
   }
 }

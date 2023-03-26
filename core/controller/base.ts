@@ -33,12 +33,11 @@ export const getPostBody = async <T extends CommonParam>(ctx: Context): Promise<
   }
   const param = await body.value as T;
 
-  // extract user ID infor and bind it
-  const uid = await getFirebaseUIDFromContext(ctx);
-  if (uid == null) {
-    return null;
-  }
-  param.uid = uid;
+  // const uid = await getFirebaseUIDFromContext(ctx);
+  // if (uid == null) {
+  //   return null;
+  // }
+  // param.uid = uid;
 
   return param;
 };
