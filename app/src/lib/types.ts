@@ -3,4 +3,5 @@ export interface FeedTemplate {
     description: string;
     feedUrl: string
     languageCode: string;
+    prompt?: string
 }

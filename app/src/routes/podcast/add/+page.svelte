@@ -12,15 +12,7 @@
 
 	let feedUrl = '';
 
-	const templates: FeedTemplate[] = [
-		// { name: 'CNN', description: 'CNN World News', feedUrl: '', languageCode:  },
-		// { name: 'NHK', description: 'NHKニュース', feedUrl: 'https://www.nhk.or.jp/rss/news/cat0.xml' },
-		// {
-		// 	name: 'Decrypt',
-		// 	description: "What's new in crypto and the advent of the decentralized web.",
-		// 	feedUrl: ''
-		// }
-	];
+	const templates: FeedTemplate[] = [];
 
 	function handleAdd(tmpl?: FeedTemplate) {
 		isModalOpen = true;
