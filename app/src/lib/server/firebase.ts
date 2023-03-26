@@ -1,7 +1,15 @@
-import { decodeProtectedHeader, importX509, jwtVerify } from 'jose'
+import { decodeProtectedHeader, importX509, jwtVerify, errors as joseErrors } from 'jose'
 import {
+    PUBLIC_FIREBASE_API_KEY,
     PUBLIC_FIREBASE_PROJECT_ID,
 } from "$env/static/public";
+
+export class VerifyTokenErrExpired extends Error {
+    constructor(e: Error) {
+        super();
+        this.message = e.message
+    }
+}
 
 // validate jwt sent from the client and returns uid(user id)
 export async function verifyToken(jwt: string): Promise<string | null> {
@@ -35,7 +43,32 @@ export async function verifyToken(jwt: string): Promise<string | null> {
         // payload.sub is a uid
         return result.payload.sub;
     } catch (e) {
-        console.warn("jwt verify error: ", e);
+        if (e instanceof joseErrors.JWTExpired) {
+            throw new VerifyTokenErrExpired(e)
+        }
+        console.warn("verify token error", e)
+        return null
     }
-    return null;
-};
+}
+
+// Get new Firebase token from refresh token
+export async function getNewToken(refreshToken: string): Promise<string | null> {
+    const data = {
+        grant_type: "refresh_token",
+        refresh_token: refreshToken
+    }
+    try {
+        const resp = await fetch(`https://securetoken.googleapis.com/v1/token?key=${PUBLIC_FIREBASE_API_KEY}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+        })
+        const result = await resp.json()
+        return result.id_token || null
+    } catch (e) {
+        console.warn("get new token failed: ", e);
+        return null;
+    }
+}

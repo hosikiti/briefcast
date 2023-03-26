@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { sveltekit } from "@sveltejs/kit/vite";
 import { defineConfig } from "vite";
 
@@ -6,5 +7,8 @@ export default defineConfig({
   server: {
     port: 8088,
     host: true,
+  },
+  test: {
+    include: ['**/*.vitest.ts'],
   }
 });

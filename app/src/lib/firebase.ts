@@ -18,13 +18,13 @@ export let db: Firestore
 export let auth: Auth
 let initialized = false;
 
-async function setToken(token: string) {
+async function setToken(token: string, refreshToken: string) {
   await fetch('/api/token', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
-    body: JSON.stringify({ token })
+    body: JSON.stringify({ token, refreshToken })
   })
 }
 
@@ -48,9 +48,9 @@ export function initializeFirebase() {
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       const idToken = await user.getIdTokenResult()
-      setToken(idToken.token)
+      setToken(idToken.token, user.refreshToken)
     } else {
-      setToken("")
+      setToken("", "")
     }
     await invalidateAll();
   })
