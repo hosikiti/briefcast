@@ -9,11 +9,6 @@
 	let trialGenerating = false;
 	let selectedLanguage: LanguageCode = supportedLanguages[0];
 
-	interface CreatePodCastParam {
-		feedUrl: string;
-		title: string;
-	}
-
 	interface TrialPodcastResult {
 		id: string;
 		title: string;

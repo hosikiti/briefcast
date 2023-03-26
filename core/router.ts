@@ -13,6 +13,4 @@ router.get("/media", MediaController.get);
 
 router.post("/podcast/trial/generate", PodcastController.trialGenerate);
 
-router.post("/podcast/add", PodcastController.add);
-
 export const appRouter = router;

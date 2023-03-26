@@ -1,14 +1,11 @@
 import { LanguageCode } from "../constant.ts";
 import { Context, Status } from "../deps.ts";
 import { RSSGenerator } from "../generator/rss_generator.ts";
-import { PodcastRepository } from "../repository/podcast.ts";
 import { textToMP3 } from "../tts/text_to_speech.ts";
-import { getDB } from "../util/firebase.ts";
 import { deleteOldTrialPodcasts } from "../util/podcast.ts";
 import {
   CommonParam,
   getPostBody,
-  setHttpBadRequest,
   setHttpInternalServerError,
   setHttpNotFound,
   setHttpSuccess,
