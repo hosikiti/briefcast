@@ -20,7 +20,6 @@ export const handle: Handle = async ({ event, resolve }) => {
                 if (newToken) {
                     fbUserId = await verifyToken(newToken);
                     setSecureCookie(event.cookies, 'token', newToken);
-                    console.log("refresh token success")
                 }
             }
         }
