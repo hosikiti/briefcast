@@ -15,6 +15,7 @@ module.exports = {
 		extend: {},
 	},
 	plugins: [
+		require('@tailwindcss/line-clamp'),
 		// 3. Append the Skeleton plugin to the end of this list
 		...require('@skeletonlabs/skeleton/tailwind/skeleton.cjs')()
 	]

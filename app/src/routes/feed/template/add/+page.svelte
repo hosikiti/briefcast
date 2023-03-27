@@ -17,7 +17,8 @@
 				feedUrl: feedUrl,
 				description: description,
 				name: name,
-				languageCode: selectedLangage.code
+				languageCode: selectedLangage.code,
+				language: selectedLangage.code.split('-')[1]
 			} as FeedTemplate);
 		} catch (e) {
 			alert('save failed');

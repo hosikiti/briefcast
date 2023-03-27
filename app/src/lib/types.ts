@@ -3,5 +3,6 @@ export interface FeedTemplate {
     description: string;
     feedUrl: string
     languageCode: string;
+    language: string
     prompt?: string
 }

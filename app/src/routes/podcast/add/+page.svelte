@@ -55,13 +55,8 @@
 		const ref = collection(db, `feedTemplates`);
 		const querySnapshot = await getDocs(ref);
 		querySnapshot.forEach((doc) => {
-			const data = doc.data();
-			templates.push({
-				name: data.name,
-				feedUrl: data.feedUrl,
-				description: data.description,
-				languageCode: data.languageCode
-			});
+			const data = doc.data() as FeedTemplate;
+			templates.push(data);
 		});
 		templates = templates;
 	}
@@ -83,9 +78,11 @@
 		<h3 class="mt-8 mb-4">Explore</h3>
 		<div class="flex flex-wrap gap-2 items-center flex-col md:flex-row">
 			{#each templates as tmpl}
-				<div class="border p-4 w-full md:w-[30%] h-[10rem] flex flex-col rounded-lg">
-					<span class="font-bold text-slate-700 text-lg">{tmpl.name}</span>
-					<span class="block text-slate-500 text-sm flex-1">{tmpl.description}</span>
+				<div class="border p-4 w-full lg:w-[30%] h-[12rem] flex flex-col rounded-lg">
+					<span class="font-bold text-slate-700 text-lg mb-2">{tmpl.name}</span>
+					<div class="flex-1">
+						<span class="text-slate-500 text-sm line-clamp-2">{tmpl.description}</span>
+					</div>
 					<div class="flex justify-end">
 						<button class="btn variant-filled rounded-full" on:click={() => handleAdd(tmpl)}
 							>Add</button
