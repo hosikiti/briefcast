@@ -1,12 +1,10 @@
 {
   "fmt": {
     "files": {
-      "include": [
-        "src/"
-      ],
+      "include": [],
       "exclude": [
-        "src/media/",
-        "src/cache/"
+        "media/",
+        "cache/"
       ]
     },
     "options": {
