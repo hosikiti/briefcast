@@ -1,7 +1,7 @@
 export const coreApiEndpoint = 'http://briefcast_core:18088';
 
 export const getAudioSrcFromId = (id: string): string => {
-    return '/api/media?id=' + id;
+    return '/api/media?id=' + encodeURIComponent(id);
 };
 
 export interface LanguageCode {

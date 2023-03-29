@@ -30,11 +30,24 @@ const getCachedFeed = (url: string): FeedCache | null => {
   return cache;
 };
 
+const getLastPublished = (feed: FeedData): string => {
+  let lastPublished = feed.lastPublished || feed.published;
+  if (!lastPublished) {
+    lastPublished = feed.entries[0].published;
+  }
+  if (lastPublished == "") {
+    console.log(feed);
+  }
+  return lastPublished;
+};
+
 export const saveFeedCache = (url: string, feed: FeedData) => {
   ensureDirSync(getFeedCacheDir());
   const cachePath = getFeedCachePath(url);
+  const lastPublished = getLastPublished(feed);
+
   const cache: FeedCache = {
-    lastBuildDate: new Date(feed.published!).toISOString(),
+    lastBuildDate: new Date(lastPublished).toISOString(),
     cacheCreatedDate: new Date().toISOString(),
   };
 
@@ -46,5 +59,7 @@ export const isUpdatedFeed = (url: string, feed: FeedData): boolean => {
   if (!cache) {
     return true;
   }
-  return new Date(feed.published!).toISOString() != cache.lastBuildDate;
+  const lastPublished = getLastPublished(feed);
+
+  return new Date(lastPublished).toISOString() != cache.lastBuildDate;
 };

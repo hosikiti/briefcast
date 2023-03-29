@@ -8,15 +8,17 @@
 	let name = '';
 	let description = '';
 	let feedUrl = '';
+	let websiteUrl = '';
 	let selectedLangage = supportedLanguages[0];
 
 	async function add() {
 		const ref = collection(db, `feedTemplates`);
 		try {
 			await addDoc(ref, {
-				feedUrl: feedUrl,
-				description: description,
-				name: name,
+				feedUrl,
+				websiteUrl,
+				description,
+				name,
 				languageCode: selectedLangage.code,
 				language: selectedLangage.code.split('-')[1]
 			} as FeedTemplate);
@@ -35,6 +37,7 @@
 		<input type="text" placeholder="name" bind:value={name} />
 		<input type="text" placeholder="description" bind:value={description} />
 		<input type="text" placeholder="feed URL" bind:value={feedUrl} />
+		<input type="text" placeholder="website URL" bind:value={websiteUrl} />
 		<LangSelect bind:selectedLanguage={selectedLangage} />
 		<button class="variant-filled p-2 text-white" on:click={add}>Add</button>
 	</div>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { db } from '$lib/firebase';
 	import { supportedLanguages, type LanguageCode } from '$lib/util';
-	import { addDoc, collection, getDocs } from 'firebase/firestore';
+	import { addDoc, collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 	import type { PageData } from './$types';
 	import type { FeedTemplate } from '$lib/types';
 	import { onMount } from 'svelte';
@@ -31,6 +31,13 @@
 		if (!feedUrl || !name) {
 			alert('set feed url and title');
 			return;
+		}
+		const userRef = doc(db, `playlists/${data.userId}`);
+		const userDoc = await getDoc(userRef);
+		if (!userDoc.exists()) {
+			setDoc(userRef, {
+				default: []
+			});
 		}
 		const ref = collection(db, `playlists/${data.userId}/default`);
 		try {

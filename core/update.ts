@@ -1,22 +1,24 @@
-import { LanguageCode } from "./constant.ts";
 import { BriefCastGeneratorFactory } from "./generator/generator_factory.ts";
 import { textToMP3 } from "./tts/text_to_speech.ts";
+import { getDB, initFirebase } from "./util/firebase.ts";
+import { PodcastRepository } from "./repository/podcast.ts";
+import { PodcastDefinition } from "./types.ts";
 
 // This is a batch command to update specific site feeds
 
-const generateForSite = async (site: string) => {
-  const generator = BriefCastGeneratorFactory(site, { useCache: true, languageCode: LanguageCode.enUS });
-  console.log(`get feed for ${site} ... `);
+async function generate(pod: PodcastDefinition): Promise<boolean> {
+  const generator = BriefCastGeneratorFactory(pod.feedUrl, { useCache: true, languageCode: pod.language });
+  console.log(`get feed for ${pod.feedUrl} ... `);
   const item = await generator.getLatest();
   if (!item) {
     console.log(`failed to get the feed. SKIP.`);
-    return;
+    return false;
   }
   console.log(item.transcript);
 
   if (item.isUpdated == false) {
     console.log("feed is not updated. SKIP.");
-    return;
+    return false;
   }
 
   console.log("summarize by gpt3 ... ");
@@ -26,24 +28,40 @@ const generateForSite = async (site: string) => {
 
   if (briefTranscript.length == 0) {
     console.warn("transcript is empty, something went wrong.");
-    return;
+    return false;
   }
 
+  console.log(`export to ${pod.docId}.mp3 ...`);
   await textToMP3({
     text: briefTranscript,
     languageCode: generator.options.languageCode,
-    fileNamePrefix: site,
+    outDir: pod.authorId,
+    fileNamePrefix: pod.docId,
   });
-};
+  return true;
+}
 
-(async () => {
-  const sites = Deno.args.length == 0 ? ["cnn", "nhk"] : Deno.args[0].split(",");
+async function main() {
+  await initFirebase();
+  const podcastRepo = new PodcastRepository(getDB());
 
-  try {
-    for (const site of sites) {
-      await generateForSite(site);
+  const limit = 1000;
+  let offsetCursor = "";
+
+  while (true) {
+    const podcasts = await podcastRepo.getPodcastsForAllUsers(limit, offsetCursor);
+    for (const pod of podcasts) {
+      const isGenerated = await generate(pod);
+      if (isGenerated) {
+        await podcastRepo.updateLastGeneratedDate(pod.authorId, pod.docId);
+      }
     }
-  } catch (e) {
-    console.error(e);
+    if (podcasts.length < limit) {
+      break;
+    }
+    offsetCursor = podcasts[podcasts.length - 1].authorId!;
   }
-})();
+  Deno.exit();
+}
+
+main();

@@ -7,6 +7,7 @@ import { RSSGenerator } from "./rss_generator.ts";
 export interface GenerateOption {
   useCache: boolean;
   feedUrl?: string;
+  prompt?: string;
   languageCode: LanguageCode;
 }
 

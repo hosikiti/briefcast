@@ -11,6 +11,7 @@ export interface TextToMP3Option {
   text: string;
   languageCode: string;
   fileNamePrefix: string;
+  outDir?: string;
 }
 
 const defaultVoiceNameMap: { [key: string]: string } = {
@@ -19,7 +20,10 @@ const defaultVoiceNameMap: { [key: string]: string } = {
 };
 
 export const textToMP3 = async (option: TextToMP3Option) => {
-  const mediaPath = "./media";
+  let mediaPath = "./media";
+  if (option.outDir) {
+    mediaPath = mediaPath + "/" + option.outDir;
+  }
   await ensureDir(mediaPath);
 
   const client = new texttospeech(authClient);
@@ -31,7 +35,7 @@ export const textToMP3 = async (option: TextToMP3Option) => {
     },
     audioConfig: { audioEncoding: "MP3", pitch: -2 },
   });
-  Deno.writeFile(
+  await Deno.writeFile(
     `${mediaPath}/${option.fileNamePrefix}.mp3`,
     resp.audioContent!,
   );

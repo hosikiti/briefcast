@@ -73,13 +73,11 @@ export class RSSGenerator implements BriefCastGenerator {
       closing = " 以上、BriefCastがお伝えしました。";
     }
 
-    // // Summarize the given text
-    // const prompt =
-    //   "Make it into 150 words simple English pod cast transcription for English learners. Don't add linking words like 'meanwhile' between topics: " +
-    //   item.transcript;
-    const body = await gptSummarizer(item.transcript, this.options.languageCode);
+    // Summarize the given text
+    const { languageCode, prompt } = this.options;
+
+    const body = await gptSummarizer(item.transcript, languageCode, prompt);
 
     return intro + body + closing;
-    // return intro + body + closing;
   }
 }

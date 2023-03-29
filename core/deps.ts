@@ -8,11 +8,22 @@ export {
   addDoc,
   arrayUnion,
   collection,
+  collectionGroup,
   doc,
+  documentId,
   Firestore,
+  getDoc,
   getDocs,
   getFirestore,
+  limit,
+  orderBy,
+  query,
+  serverTimestamp,
   setDoc,
+  startAfter,
+  startAt,
+  Timestamp,
+  updateDoc,
 } from "https://esm.sh/@firebase/firestore@v3.9.0";
 export * as jose from "https://deno.land/x/jose@v4.13.1/index.ts";
 export type { FirebaseApp } from "https://esm.sh/@firebase/app@v0.9.5";
