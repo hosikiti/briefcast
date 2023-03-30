@@ -3,6 +3,7 @@ import type { Timestamp } from "firebase/firestore";
 export interface FeedTemplate {
     name: string;
     description: string;
+    websiteUrl: string
     feedUrl: string
     languageCode: string;
     language: string
@@ -10,6 +11,7 @@ export interface FeedTemplate {
 }
 
 export interface Podcast {
+    [key: string]: string | Timestamp | undefined;
     name: string
     feedUrl: string
     websiteUrl: string

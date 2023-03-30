@@ -3,7 +3,7 @@
 	import { supportedLanguages, type LanguageCode } from '$lib/util';
 	import { addDoc, collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 	import type { PageData } from './$types';
-	import type { FeedTemplate } from '$lib/types';
+	import type { FeedTemplate, Podcast } from '$lib/types';
 	import { onMount } from 'svelte';
 
 	export let data: PageData;
@@ -24,6 +24,8 @@
 			selectedTemplate = tmpl;
 			feedUrl = tmpl.feedUrl;
 			name = tmpl.name;
+			const tmplLanguage = supportedLanguages.find((el) => el.code == tmpl.languageCode);
+			selectedLanguage = tmplLanguage || supportedLanguages[0];
 		}
 	}
 
@@ -44,8 +46,9 @@
 			await addDoc(ref, {
 				name: name,
 				feedUrl: feedUrl,
+				websiteUrl: selectedTemplate?.websiteUrl,
 				language: selectedLanguage.code
-			});
+			} as Podcast);
 		} catch (e) {
 			alert('save failed');
 			console.error(e);
