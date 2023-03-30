@@ -19,19 +19,25 @@
 			name: 'CNN',
 			description: 'CNN World News',
 			feedUrl: 'http://rss.cnn.com/rss/edition.rss',
-			languageCode: 'en-US'
+			languageCode: 'en-US',
+			websiteUrl: '',
+			language: ''
 		},
 		{
 			name: 'NHK',
 			description: 'NHKニュース',
 			feedUrl: 'https://www.nhk.or.jp/rss/news/cat0.xml',
-			languageCode: 'ja-JP'
+			languageCode: 'ja-JP',
+			websiteUrl: '',
+			language: ''
 		},
 		{
 			name: 'Custom',
 			description: '',
 			feedUrl: '',
-			languageCode: ''
+			languageCode: '',
+			language: '',
+			websiteUrl: ''
 		}
 	];
 	let feedGroup = feedTemplates[0];
