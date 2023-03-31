@@ -66,7 +66,7 @@ jobs:
           target: "./tmp_ci/"
           overwrite: true      
 
-      - name: Install SSH Key for Deploy
+      - name: Restart server
         uses: appleboy/ssh-action@master
         with:
           key: ${{ secrets.SK }}
@@ -91,8 +91,16 @@ jobs:
             echo "MEDIA_PATH=${{ secrets.MEDIA_PATH }}" >> .env
             echo "NPM_CACHE=${{ secrets.NPM_CACHE }}" >> .env
             rm -rf app/build
+            rm -rf app/node_modules
             mv ../tmp_svelte/app/build app/
             mv ../tmp_ci/app/node_modules app/
             rm -rf ../tmp_svelte
             rm -rf ../tmp_ci
-            sh ./run_server.sh
+            echo "service restarting ..."
+            docker-compose up -d --build
+            echo "shutdown core server ..."
+            docker-compose exec -T briefcast_core pkill deno
+            echo "start server ..."
+            nohup docker-compose exec -T briefcast_core ./run_dev.sh > /tmp/briefcast_core.log 2>&1 &
+            nohup docker-compose exec -T briefcast npm run serve > /tmp/briefcast.log 2>&1 &
+            
