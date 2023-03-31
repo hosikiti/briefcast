@@ -18,10 +18,8 @@
 				>Sign out</button
 			>
 		{:else}
-			<button
-				type="button"
-				class="btn variant-filled btn-sm"
-				on:click={() => signInFirebase('google')}>Sign in</button
+			<button type="button" class="btn variant-filled btn-sm" on:click={() => goto('/signin')}
+				>Sign in</button
 			>
 		{/if}
 	</div>
