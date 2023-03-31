@@ -30,3 +30,4 @@ export type { FirebaseApp } from "https://esm.sh/@firebase/app@v0.9.5";
 export { initializeApp } from "https://esm.sh/@firebase/app@v0.9.5";
 export { getAuth, signInWithEmailAndPassword } from "https://esm.sh/@firebase/auth@0.17.2";
 export * as openai from "https://esm.sh/openai@3.2.1";
+export * as asserts from "https://deno.land/std@0.178.0/testing/asserts.ts";

@@ -1,7 +1,6 @@
 import { MediaController } from "./controller/media.ts";
 import { PodcastController } from "./controller/podcast.ts";
-import { collection, getDocs, Router } from "./deps.ts";
-import { getDB } from "./util/firebase.ts";
+import { Router } from "./deps.ts";
 
 const router = new Router();
 

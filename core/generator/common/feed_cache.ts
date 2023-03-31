@@ -1,7 +1,7 @@
 import { ensureDirSync } from "https://deno.land/std@0.170.0/fs/ensure_dir.ts";
 import { existsSync } from "../../util/common.ts";
-import { encode, Hash } from "https://deno.land/x/checksum@1.2.0/mod.ts";
 import { FeedData } from "../../deps.ts";
+import { getSHA256String } from "../../util/hash.ts";
 
 export interface FeedCache {
   lastBuildDate: string;
@@ -9,7 +9,7 @@ export interface FeedCache {
 }
 
 const getFeedCachePath = (url: string): string => {
-  const id = new Hash("sha1").digest(encode(url)).hex();
+  const id = getSHA256String(url);
   const cachePath = getFeedCacheDir() + "/" + id + ".json";
   return cachePath;
 };

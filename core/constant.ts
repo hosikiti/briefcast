@@ -1,3 +1,5 @@
+export const MEDIA_PATH = "/media";
+
 export const MAX_TRANSCRIPT_LENGTH = 2000;
 
 export enum LanguageCode {

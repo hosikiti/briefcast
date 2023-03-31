@@ -77,6 +77,7 @@ jobs:
             echo "PUBLIC_FIREBASE_MEASUREMENT_ID=${{ secrets.PUBLIC_FIREBASE_MEASUREMENT_ID }}" >> .env
             echo "FIREBASE_ADMIN_EMAIL=${{ secrets.FIREBASE_ADMIN_EMAIL }}" >> .env
             echo "FIREBASE_ADMIN_PASSWD=${{ secrets.FIREBASE_ADMIN_PASSWD }}" >> .env
+            echo "FIREBASE_ADMIN_PASSWD=${{ secrets.MEDIA_PATH }}" >> .env
             rm -rf app/build
             mv ../tmp_svelte/app/build app/
             rm -rf ../tmp_svelte

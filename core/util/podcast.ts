@@ -1,8 +1,9 @@
 import { ensureDirSync } from "https://deno.land/std@0.170.0/fs/ensure_dir.ts";
+import { MEDIA_PATH } from "../constant.ts";
 
 // Delete old trial podcasts for saving storage space
 export const deleteOldTrialPodcasts = async () => {
-  const baseDir = "./media";
+  const baseDir = MEDIA_PATH;
   ensureDirSync(baseDir);
   for await (const f of Deno.readDir(baseDir)) {
     if (!f.isFile || !f.name.startsWith("trial")) {

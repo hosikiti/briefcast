@@ -1,6 +1,6 @@
 import { ensureDir } from "https://deno.land/std@0.170.0/fs/ensure_dir.ts";
 import { GoogleAuth, texttospeech } from "https://googleapis.deno.dev/v1/texttospeech:v1.ts";
-import { LanguageCode } from "../constant.ts";
+import { LanguageCode, MEDIA_PATH } from "../constant.ts";
 
 const credentials = Deno.readTextFileSync(
   Deno.env.get("GOOGLE_APPLICATION_CREDENTIALS") || "",
@@ -20,7 +20,7 @@ const defaultVoiceNameMap: { [key: string]: string } = {
 };
 
 export const textToMP3 = async (option: TextToMP3Option) => {
-  let mediaPath = "./media";
+  let mediaPath = MEDIA_PATH;
   if (option.outDir) {
     mediaPath = mediaPath + "/" + option.outDir;
   }

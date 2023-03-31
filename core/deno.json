@@ -1,4 +1,15 @@
 {
+  "tasks": {
+    "test": "deno test --allow-net"
+  },
+  "test": {
+    "files": {
+      "exclude": [
+        "media/",
+        "cache/"
+      ]
+    }
+  },
   "fmt": {
     "files": {
       "include": [],
