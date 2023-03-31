@@ -99,4 +99,4 @@ jobs:
             docker-compose up -d --build
             echo "start server ..."
             docker-compose exec -T briefcast_core ./run_dev.sh &
-            docker-compose exec -T briefcast npm run serve > server.log 2> server.log &
+            docker-compose exec -T briefcast npm run serve &
