@@ -8,9 +8,9 @@ const defaultEnglishPrompt = `Summarize this into a transcript using the followi
 --- `;
 
 const defaultJapanesePrompt =
-  `次のトピックのリストをラジオ原稿に変換してください。以下の手順で実施してください。
-1) トピック毎に、25文字以内の「ですます調」のラジオ原稿に変換する。その後、文末に　<break time="2s"/>　を追加。
-2) 全てのトピックを結合し180文字を超えたら処理を終える。`;
+  `次のトピックのリストを200文字以内のラジオ原稿に変換してください。以下の手順で実施してください。
+1) トピック毎に、25文字以内の「ですます調」のラジオ原稿に変換する。その後、文末に<break time="2s"/>　を追加。
+2) 全てのトピックを結合し、200文字を超えたら処理を終える。`;
 
 export class SummarizerRepository {
   constructor(private db: Firestore) {}
@@ -22,14 +22,6 @@ export class SummarizerRepository {
     prompt?: string,
     useCache = true,
   ): Promise<string> {
-    const cacheKey = getSHA256String(input + "$" + prompt);
-    if (useCache) {
-      const cachedResult = await this.getCache(cacheKey);
-      if (cachedResult) {
-        return cachedResult;
-      }
-    }
-
     const configuration = new openai.Configuration({
       apiKey: Deno.env.get("OPEN_AI_API_KEY"),
     });
@@ -41,6 +33,14 @@ export class SummarizerRepository {
         : `${defaultEnglishPrompt} "${input}"`;
     }
 
+    const cacheKey = getSHA256String(input + "$" + prompt);
+    if (useCache) {
+      const cachedResult = await this.getCache(cacheKey);
+      if (cachedResult) {
+        return cachedResult;
+      }
+    }
+
     const resp = await api.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
@@ -48,7 +48,8 @@ export class SummarizerRepository {
       ],
     });
 
-    const result = resp.data.choices[0].message?.content || "";
+    let result = resp.data.choices[0].message?.content || "";
+    result = result.replaceAll('<break time="2s"/>', '<break time="2s"/> ');
     if (result) {
       this.setCache(cacheKey, result);
     }

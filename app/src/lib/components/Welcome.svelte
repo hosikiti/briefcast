@@ -3,6 +3,7 @@
 	import { getAudioSrcFromId, supportedLanguages, type LanguageCode } from '$lib/util';
 	import axios from 'axios';
 	import { Jumper } from 'svelte-loading-spinners';
+	import LangSelect from './LangSelect.svelte';
 
 	let trialPodcastTitle = '';
 	let trialPodcastSrc = '';
@@ -44,7 +45,7 @@
 
 	const createTrialPodCast = async () => {
 		const feedUrl = feedGroup.feedUrl;
-		const langCode = feedGroup.languageCode;
+		const langCode = selectedLanguage.code;
 
 		if (!feedUrl) {
 			alert('Provide a feed URL of your favorite website');
@@ -70,8 +71,9 @@
 		} catch (e) {
 			alert('import failed from: ' + feedUrl);
 			console.error(e);
+		} finally {
+			trialGenerating = false;
 		}
-		trialGenerating = false;
 	};
 </script>
 
@@ -99,22 +101,15 @@
 				<input
 					class="input p-2"
 					type="text"
-					readonly={feedGroup.feedUrl != ''}
+					readonly={feedGroup.name != 'Custom'}
 					bind:value={feedGroup.feedUrl}
 					placeholder="RSS or Atom feed URL"
 					disabled={trialGenerating}
 				/>
-				{#if feedGroup.feedUrl == '-'}
-					<span class="mt-8">Options</span>
-					<label class="label">
+				{#if feedGroup.name == 'Custom'}
+					<label class="label my-2" for="">
 						<span>Podcast Language: </span>
-						<select class="select" bind:value={selectedLanguage}>
-							{#each supportedLanguages as lang}
-								<option value={lang}>
-									{lang.title}
-								</option>
-							{/each}
-						</select>
+						<LangSelect bind:selectedLanguage />
 					</label>
 				{/if}
 				<button
