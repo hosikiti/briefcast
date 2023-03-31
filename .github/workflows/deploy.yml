@@ -44,7 +44,7 @@ jobs:
           docker run --rm --env-file .env -v $(pwd):/app svelte npm install
           docker run --rm --env-file .env -v $(pwd):/app svelte npm run build
 
-      - name: SCP Command to Transfer Files
+      - name: Copy build files to VPS
         uses: appleboy/scp-action@master
         with:
           key: ${{ secrets.SK }}
@@ -54,6 +54,17 @@ jobs:
           source: "app/build"
           target: "./tmp_svelte/"
           overwrite: true
+
+      - name: Copy npm modules to VPS
+        uses: appleboy/scp-action@master
+        with:
+          key: ${{ secrets.SK }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "app/node_modules"
+          target: "./tmp_ci/"
+          overwrite: true      
 
       - name: Install SSH Key for Deploy
         uses: appleboy/ssh-action@master
@@ -81,10 +92,11 @@ jobs:
             echo "NPM_CACHE=${{ secrets.NPM_CACHE }}" >> .env
             rm -rf app/build
             mv ../tmp_svelte/app/build app/
+            mv ../tmp_ci/app/node_modules app/
             rm -rf ../tmp_svelte
+            rm -rf ../tmp_ci
             echo "service restarting ... "
             docker-compose up -d --build
             echo "start server ..."
             docker-compose exec -T briefcast_core ./run_dev.sh &
-            docker-compose exec -T briefcast npm ci --omit dev --cache .npm
             docker-compose exec -T briefcast npm run serve > server.log 2> server.log &
