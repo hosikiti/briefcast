@@ -22,6 +22,7 @@ services:
       PUBLIC_FIREBASE_MEASUREMENT_ID: ${PUBLIC_FIREBASE_MEASUREMENT_ID}
     volumes:
       - ./app:/app
+      - ${NPM_CACHE}:/app/.npm
   briefcast_core:
     container_name: briefcast_core
     build:

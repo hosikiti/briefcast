@@ -41,6 +41,7 @@ jobs:
           echo "PUBLIC_FIREBASE_APP_ID=${{ secrets.PUBLIC_FIREBASE_APP_ID }}" >> .env
           echo "PUBLIC_FIREBASE_MEASUREMENT_ID=${{ secrets.PUBLIC_FIREBASE_MEASUREMENT_ID }}" >> .env
           echo "ENCRYPT_KEY=${{ secrets.ENCRYPT_KEY }}" >> .env
+          echo "NPM_CACHE=${{ secrets.NPM_CACHE }}" >> .env
           docker run --rm --env-file .env -v $(pwd):/app svelte npm install
           docker run --rm --env-file .env -v $(pwd):/app svelte npm run build
 
@@ -85,5 +86,5 @@ jobs:
             docker-compose up -d --build
             echo "start server ..."
             docker-compose exec -T briefcast_core ./run_dev.sh &
-            docker-compose exec -T briefcast npm ci --omit dev
+            docker-compose exec -T briefcast npm ci --omit dev --cache .npm
             docker-compose exec -T briefcast npm run serve > server.log 2> server.log &
