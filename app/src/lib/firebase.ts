@@ -1,6 +1,6 @@
 import { type FirebaseApp, initializeApp } from "firebase/app";
 import { Firestore, getFirestore } from "firebase/firestore";
-import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signInWithRedirect, signOut, type Auth, type AuthProvider } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signInWithRedirect, signOut, type Auth, type AuthProvider, signInWithEmailAndPassword } from "firebase/auth";
 import {
   PUBLIC_FIREBASE_API_KEY,
   PUBLIC_FIREBASE_APP_ID,
@@ -48,9 +48,9 @@ export function initializeFirebase() {
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       const idToken = await user.getIdTokenResult()
-      setToken(idToken.token, user.refreshToken)
+      await setToken(idToken.token, user.refreshToken)
     } else {
-      setToken("", "")
+      await setToken("", "")
     }
     await invalidateAll();
   })
@@ -73,7 +73,14 @@ export async function signInFirebase(method: "google") {
   location.reload();
 }
 
+export async function signInWithEmail(email: string, password: string) {
+  await signInWithEmailAndPassword(auth, email, password);
+  location.href = '/';
+}
+
 export async function signOutFirebase() {
   await signOut(getAuth(app))
-  location.reload();
+  goto("/", {
+    invalidateAll: true,
+  });
 }

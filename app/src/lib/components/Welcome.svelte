@@ -79,7 +79,7 @@
 	<div class="font-serif text-6xl py-8 px-8">Less news, more life</div>
 	<div class="p-4">
 		{#if trialPodcastSrc == ''}
-			<h3 class="p-4"><b>BriefCast</b> generates a short podcast from any website.</h3>
+			<h3 class="p-4">Generate a short podcast from any website.</h3>
 			<div class="shadow-md p-8 bg-slate-100 flex flex-col gap-2">
 				<span class="font-bold">Choose from news websites: </span>
 				<div class="flex gap-4">
