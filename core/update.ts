@@ -24,11 +24,6 @@ async function generate(pod: PodcastDefinition, summarizer: SummarizerRepository
   }
   console.log(item.transcript);
 
-  if (item.isUpdated == false) {
-    console.log("feed is not updated. SKIP.");
-    return false;
-  }
-
   console.log("summarize by gpt3 ... ");
   const briefTranscript = await generator.summarize(item);
   console.log(briefTranscript);

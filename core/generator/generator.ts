@@ -4,7 +4,6 @@ import { GenerateOption } from "./generator_factory.ts";
 export interface BriefCastItem {
   feed: FeedData;
   transcript: string;
-  isUpdated: boolean;
 }
 
 export interface BriefCastGenerator {

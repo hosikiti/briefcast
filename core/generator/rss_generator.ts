@@ -1,4 +1,3 @@
-import { isUpdatedFeed, saveFeedCache } from "./common/feed_cache.ts";
 import { parseFeed } from "./common/feed_parser.ts";
 import { BriefCastGenerator, BriefCastItem } from "./generator.ts";
 import { GenerateOption } from "./generator_factory.ts";
@@ -37,18 +36,11 @@ export class RSSGenerator implements BriefCastGenerator {
       result.push("- " + content);
     }
 
-    let isUpdated = true;
-    if (this.options.useCache) {
-      isUpdated = isUpdatedFeed(feedUrl, feed);
-      if (isUpdated) {
-        saveFeedCache(feedUrl, feed);
-      }
-    }
+    const transcript = result.join("\n");
 
     return {
       feed,
-      isUpdated,
-      transcript: result.join("\n"),
+      transcript,
     };
   }
 

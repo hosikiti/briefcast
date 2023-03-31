@@ -1,5 +1,6 @@
 import { LanguageCode } from "../constant.ts";
-import { doc, Firestore, getDoc, openai, setDoc } from "../deps.ts";
+import { doc, Firestore, getDoc, openai, serverTimestamp, setDoc } from "../deps.ts";
+import { getSHA256String } from "../util/hash.ts";
 
 const defaultEnglishPrompt = `Summarize this into a transcript using the following steps:
 1. Summarize each topic into a 30 words simple English pod cast transcript. 
@@ -21,6 +22,14 @@ export class SummarizerRepository {
     prompt?: string,
     useCache = true,
   ): Promise<string> {
+    const cacheKey = getSHA256String(input + "$" + prompt);
+    if (useCache) {
+      const cachedResult = await this.getCache(cacheKey);
+      if (cachedResult) {
+        return cachedResult;
+      }
+    }
+
     const configuration = new openai.Configuration({
       apiKey: Deno.env.get("OPEN_AI_API_KEY"),
     });
@@ -39,7 +48,11 @@ export class SummarizerRepository {
       ],
     });
 
-    return resp.data.choices[0].message?.content || "";
+    const result = resp.data.choices[0].message?.content || "";
+    if (result) {
+      this.setCache(cacheKey, result);
+    }
+    return result;
   }
 
   private async getCache(key: string): Promise<string | null> {
@@ -50,6 +63,6 @@ export class SummarizerRepository {
 
   private async setCache(key: string, val: string): Promise<void> {
     const ref = doc(this.db, "summarizerCaches", key);
-    await setDoc(ref, { data: val });
+    await setDoc(ref, { data: val, createdAt: serverTimestamp() });
   }
 }
