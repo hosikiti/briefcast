@@ -41,7 +41,6 @@ jobs:
           echo "PUBLIC_FIREBASE_APP_ID=${{ secrets.PUBLIC_FIREBASE_APP_ID }}" >> .env
           echo "PUBLIC_FIREBASE_MEASUREMENT_ID=${{ secrets.PUBLIC_FIREBASE_MEASUREMENT_ID }}" >> .env
           echo "ENCRYPT_KEY=${{ secrets.ENCRYPT_KEY }}" >> .env
-          echo "NPM_CACHE=${{ secrets.NPM_CACHE }}" >> .env
           docker run --rm --env-file .env -v $(pwd):/app svelte npm install
           docker run --rm --env-file .env -v $(pwd):/app svelte npm run build
 
@@ -79,6 +78,7 @@ jobs:
             echo "FIREBASE_ADMIN_EMAIL=${{ secrets.FIREBASE_ADMIN_EMAIL }}" >> .env
             echo "FIREBASE_ADMIN_PASSWD=${{ secrets.FIREBASE_ADMIN_PASSWD }}" >> .env
             echo "MEDIA_PATH=${{ secrets.MEDIA_PATH }}" >> .env
+            echo "NPM_CACHE=${{ secrets.NPM_CACHE }}" >> .env
             rm -rf app/build
             mv ../tmp_svelte/app/build app/
             rm -rf ../tmp_svelte
