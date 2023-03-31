@@ -31,12 +31,13 @@ const getCachedFeed = (url: string): FeedCache | null => {
 };
 
 const getLastPublished = (feed: FeedData): string => {
-  let lastPublished = feed.lastPublished || feed.published;
+  let lastPublished = feed.published?.toString();
   if (!lastPublished) {
-    lastPublished = feed.entries[0].published;
+    const firstEntryPublished = feed.entries && feed.entries[0].published;
+    lastPublished = firstEntryPublished?.toString() || "";
   }
   if (lastPublished == "") {
-    console.log(feed);
+    throw "no published info is found";
   }
   return lastPublished;
 };

@@ -1,13 +1,21 @@
-import { BriefCastGeneratorFactory } from "./generator/generator_factory.ts";
+import { BriefCastGeneratorFactory, GenerateOption } from "./generator/generator_factory.ts";
 import { textToMP3 } from "./tts/text_to_speech.ts";
 import { getDB, initFirebase } from "./util/firebase.ts";
 import { PodcastRepository } from "./repository/podcast.ts";
 import { PodcastDefinition } from "./types.ts";
+import { SummarizerRepository } from "./repository/summarizer.ts";
 
 // This is a batch command to update specific site feeds
 
-async function generate(pod: PodcastDefinition): Promise<boolean> {
-  const generator = BriefCastGeneratorFactory(pod.feedUrl, { useCache: true, languageCode: pod.language });
+async function generate(pod: PodcastDefinition, summarizer: SummarizerRepository): Promise<boolean> {
+  const opts: GenerateOption = {
+    useCache: true,
+    languageCode: pod.language,
+    feedUrl: pod.feedUrl,
+    prompt: pod.prompt,
+    summarizer: summarizer,
+  };
+  const generator = BriefCastGeneratorFactory(opts);
   console.log(`get feed for ${pod.feedUrl} ... `);
   const item = await generator.getLatest();
   if (!item) {
@@ -44,6 +52,7 @@ async function generate(pod: PodcastDefinition): Promise<boolean> {
 async function main() {
   await initFirebase();
   const podcastRepo = new PodcastRepository(getDB());
+  const summarizerRepo = new SummarizerRepository(getDB());
 
   const limit = 1000;
   let offsetCursor = "";
@@ -51,7 +60,7 @@ async function main() {
   while (true) {
     const podcasts = await podcastRepo.getPodcastsForAllUsers(limit, offsetCursor);
     for (const pod of podcasts) {
-      const isGenerated = await generate(pod);
+      const isGenerated = await generate(pod, summarizerRepo);
       if (isGenerated) {
         await podcastRepo.updateLastGeneratedDate(pod.authorId, pod.docId);
       }

@@ -1,5 +1,3 @@
-import { gptSummarizer } from "../openai/summarizer.ts";
-import { getEnglishMonthName } from "../util/date.ts";
 import { isUpdatedFeed, saveFeedCache } from "./common/feed_cache.ts";
 import { parseFeed } from "./common/feed_parser.ts";
 import { BriefCastGenerator, BriefCastItem } from "./generator.ts";
@@ -21,8 +19,7 @@ export class RSSGenerator implements BriefCastGenerator {
       return null;
     }
 
-    for (let i = 0; i < feed.entries.length; i++) {
-      const entry = feed.entries[i];
+    for (const entry of feed.entries) {
       let content = entry.description || "";
       if (content.length == 0) {
         content = entry.title || "";
@@ -74,9 +71,9 @@ export class RSSGenerator implements BriefCastGenerator {
     }
 
     // Summarize the given text
-    const { languageCode, prompt } = this.options;
+    const { languageCode, prompt, summarizer } = this.options;
 
-    const body = await gptSummarizer(item.transcript, languageCode, prompt);
+    const body = await summarizer.execute(item.transcript, languageCode, prompt);
 
     return intro + body + closing;
   }

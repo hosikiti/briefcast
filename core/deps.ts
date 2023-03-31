@@ -1,5 +1,5 @@
-export type { FeedData, FeedEntry } from "npm:@extractus/feed-extractor";
-export { extract } from "npm:@extractus/feed-extractor";
+export type { FeedData, FeedEntry } from "https://esm.sh/@extractus/feed-extractor@6.2.1";
+export { extract } from "https://esm.sh/@extractus/feed-extractor";
 export { Context } from "https://deno.land/x/oak@v11.1.0/mod.ts";
 export { Application, helpers, Router } from "https://deno.land/x/oak@v11.1.0/mod.ts";
 export { oakCors } from "https://deno.land/x/cors/mod.ts";
@@ -29,3 +29,4 @@ export * as jose from "https://deno.land/x/jose@v4.13.1/index.ts";
 export type { FirebaseApp } from "https://esm.sh/@firebase/app@v0.9.5";
 export { initializeApp } from "https://esm.sh/@firebase/app@v0.9.5";
 export { getAuth, signInWithEmailAndPassword } from "https://esm.sh/@firebase/auth@0.17.2";
+export * as openai from "https://esm.sh/openai@3.2.1";

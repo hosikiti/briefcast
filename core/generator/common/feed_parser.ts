@@ -1,5 +1,5 @@
+import Parser from "https://esm.sh/rss-parser@3.12.0";
 import { extract, FeedData, FeedEntry } from "../../deps.ts";
-import Parser from "npm:rss-parser@3.12.0";
 
 const maxDescriptionToImport = 1000;
 
