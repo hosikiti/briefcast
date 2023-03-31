@@ -95,8 +95,10 @@ jobs:
             mv ../tmp_ci/app/node_modules app/
             rm -rf ../tmp_svelte
             rm -rf ../tmp_ci
-            echo "service restarting ... "
+            echo "service restarting ..."
             docker-compose up -d --build
+            echo "shutdown core server ..."
+            docker-compose exec -T briefcast_core pkill deno
             echo "start server ..."
             docker-compose exec -T briefcast_core ./run_dev.sh &
             docker-compose exec -T briefcast npm run serve &
