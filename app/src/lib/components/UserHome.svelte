@@ -42,7 +42,7 @@
 	}
 </script>
 
-<div class="p-2">
+<div class="p-4">
 	<div class="flex justify-between items-center py-4">
 		<h2 class="text-left ">Your podcasts</h2>
 		<a
@@ -65,7 +65,7 @@
 	</div>
 	<hr class="" />
 
-	<div class="flex flex-col md:flex-row gap-4 py-4">
+	<div class="flex flex-col flex-wrap md:flex-row gap-4 py-4">
 		{#each items as item}
 			<div class="p-4 shadow-md bg-white flex flex-col items-stretch gap-2 min-w-[30vw]">
 				<h3 class="">{item.name}</h3>

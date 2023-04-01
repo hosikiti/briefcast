@@ -9,9 +9,7 @@
 	import { modalStore } from '@skeletonlabs/skeleton';
 	import AddPostModal from '$lib/components/AddPostModal.svelte';
 
-	export let data: PageData;
-	let selectedLanguage = supportedLanguages[0];
-	let selectedTemplate: FeedTemplate | null = null;
+	export let pageData: PageData;
 
 	let templates: FeedTemplate[] = [];
 
@@ -49,14 +47,14 @@
 	}
 
 	async function add(podcast: Podcast) {
-		const userRef = doc(db, `playlists/${data.userId}`);
+		const userRef = doc(db, `playlists/${pageData.userId}`);
 		const userDoc = await getDoc(userRef);
 		if (!userDoc.exists()) {
 			setDoc(userRef, {
 				default: []
 			});
 		}
-		const ref = collection(db, `playlists/${data.userId}/default`);
+		const ref = collection(db, `playlists/${pageData.userId}/default`);
 		try {
 			// set null values for undefined key
 			for (const key in podcast) {
