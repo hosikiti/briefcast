@@ -5,35 +5,50 @@
 	import type { PageData } from './$types';
 	import type { FeedTemplate, Podcast } from '$lib/types';
 	import { onMount } from 'svelte';
+	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
+	import { modalStore } from '@skeletonlabs/skeleton';
+	import AddPostModal from '$lib/components/AddPostModal.svelte';
 
 	export let data: PageData;
-	let isModalOpen = false;
 	let selectedLanguage = supportedLanguages[0];
 	let selectedTemplate: FeedTemplate | null = null;
-
-	let feedUrl = '';
-	let name = '';
 
 	let templates: FeedTemplate[] = [];
 
 	function handleAdd(tmpl?: FeedTemplate) {
-		isModalOpen = true;
-		feedUrl = '';
-		name = '';
+		const data = {} as Podcast;
+
 		if (tmpl) {
-			selectedTemplate = tmpl;
-			feedUrl = tmpl.feedUrl;
-			name = tmpl.name;
+			data.feedUrl = tmpl.feedUrl;
+			data.name = tmpl.name;
+			data.websiteUrl = tmpl.websiteUrl;
+			data.prompt = tmpl.prompt;
 			const tmplLanguage = supportedLanguages.find((el) => el.code == tmpl.languageCode);
-			selectedLanguage = tmplLanguage || supportedLanguages[0];
+			data.language = tmplLanguage?.code || supportedLanguages[0].code;
 		}
+
+		const d: ModalSettings = {
+			type: 'component',
+			// Pass the component directly:
+			component: {
+				// Pass a reference to your custom component
+				ref: AddPostModal,
+				// Add the component properties as key/value pairs
+				props: {
+					formData: data
+				}
+			} as ModalComponent,
+			response: async (podcast: Podcast | boolean) => {
+				if (podcast instanceof Object) {
+					await add(podcast);
+				}
+			}
+		};
+
+		modalStore.trigger(d);
 	}
 
-	async function add() {
-		if (!feedUrl || !name) {
-			alert('set feed url and title');
-			return;
-		}
+	async function add(podcast: Podcast) {
 		const userRef = doc(db, `playlists/${data.userId}`);
 		const userDoc = await getDoc(userRef);
 		if (!userDoc.exists()) {
@@ -43,22 +58,18 @@
 		}
 		const ref = collection(db, `playlists/${data.userId}/default`);
 		try {
-			await addDoc(ref, {
-				name: name,
-				feedUrl: feedUrl,
-				websiteUrl: selectedTemplate?.websiteUrl,
-				language: selectedLanguage.code
-			} as Podcast);
+			// set null values for undefined key
+			for (const key in podcast) {
+				if (podcast[key] === undefined) {
+					podcast[key] = null;
+				}
+			}
+
+			await addDoc(ref, podcast);
 		} catch (e) {
 			alert('save failed');
 			console.error(e);
-		} finally {
-			handleClose();
 		}
-	}
-
-	function handleClose() {
-		isModalOpen = false;
 	}
 
 	async function loadFeedTemplates() {
@@ -102,45 +113,4 @@
 			{/each}
 		</div>
 	</div>
-	{#if isModalOpen}
-		<div
-			class="absolute z-[999] top-0 left-0 w-screen h-main bg-black bg-opacity-40 flex justify-center"
-		>
-			<div
-				class="bg-white border p-4 shadow-lg m-8 lg:w-[60%] w-[80%] h-[60%] relative flex flex-col"
-			>
-				<h2>{name || 'New podcast'}</h2>
-				<div class="flex flex-col my-4 gap-4">
-					<label class="label">
-						<span>Name: </span>
-						<input type="url" class="input p-2" placeholder="Feed title" bind:value={name} />
-					</label>
-					<label class="label">
-						<span>Feed URL: </span>
-						<input
-							type="url"
-							class="input p-2"
-							placeholder="RSS/Atom feed URL"
-							bind:value={feedUrl}
-						/>
-					</label>
-					<label class="label">
-						<span>Podcast Language: </span>
-						<select class="select" bind:value={selectedLanguage}>
-							{#each supportedLanguages as lang}
-								<option value={lang}>
-									{lang.title}
-								</option>
-							{/each}
-						</select>
-					</label>
-				</div>
-				<div class="flex-1" />
-				<div class="flex justify-end gap-2 items-end">
-					<button class="btn variant-filled bg-orange-500 text-white" on:click={add}>Add</button>
-					<button class="btn variant-soft" on:click={handleClose}>Cancel</button>
-				</div>
-			</div>
-		</div>
-	{/if}
 </div>

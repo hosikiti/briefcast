@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Modal } from '@skeletonlabs/skeleton';
 	import '@skeletonlabs/skeleton/themes/theme-hamlindigo.css';
 
 	import '@skeletonlabs/skeleton/styles/all.css';
@@ -30,4 +31,5 @@
 		<span class="flex-1" />
 		<span class="text-slate-500 text-xs">© 2023 Kei Oikawa.</span>
 	</footer>
+	<Modal />
 </div>

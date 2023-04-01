@@ -11,9 +11,11 @@ export interface FeedTemplate {
 }
 
 export interface Podcast {
-    [key: string]: string | Timestamp | undefined;
+    [key: string]: string | Timestamp | undefined | null;
     name: string
     feedUrl: string
     websiteUrl: string
     lastGenerate?: Timestamp
+    language: string
+    prompt?: string
 }

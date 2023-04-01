@@ -43,6 +43,7 @@ export function initializeFirebase() {
     measurementId: PUBLIC_FIREBASE_MEASUREMENT_ID,
   };
   app = initializeApp(firebaseConfig);
+
   db = getFirestore(app);
   auth = getAuth(app);
 
