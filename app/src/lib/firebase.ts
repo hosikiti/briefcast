@@ -12,6 +12,7 @@ import {
 } from "$env/static/public";
 import { browser } from "$app/environment";
 import { goto, invalidateAll } from "$app/navigation";
+import { redirect } from "@sveltejs/kit";
 
 export let app: FirebaseApp
 export let db: Firestore
@@ -69,13 +70,11 @@ export async function signInFirebase(method: "google") {
       throw `unknown provider: ${method}`
   }
 
-  await signInWithPopup(auth, provider)
-  location.reload();
+  return await signInWithRedirect(auth, provider)
 }
 
 export async function signInWithEmail(email: string, password: string) {
-  await signInWithEmailAndPassword(auth, email, password);
-  location.href = '/';
+  return await signInWithEmailAndPassword(auth, email, password);
 }
 
 export async function signOutFirebase() {

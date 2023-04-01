@@ -3,9 +3,34 @@
 
 	let email = 'test@gmail.com';
 	let password = '';
+	let errorWithEmail = '';
+	let isProcessing = false;
 
 	async function signIn() {
-		await signInWithEmail(email, password);
+		try {
+			isProcessing = true;
+			errorWithEmail = '';
+			if (email == '' || password == '') {
+				errorWithEmail = 'Email and password are both required.';
+				return;
+			}
+
+			const result = await signInWithEmail(email, password);
+		} catch (e) {
+			let message = 'Invalid Email or Password';
+			if (e instanceof Error) {
+				if (e.message.includes('auth/wrong-password')) {
+					message = 'Invalid password';
+				} else if (e.message.includes('auth/user-not-found')) {
+					message = 'No user is found';
+				} else {
+					message = 'Invalid input';
+				}
+			}
+			errorWithEmail = message;
+		} finally {
+			isProcessing = false;
+		}
 	}
 </script>
 
@@ -47,7 +72,15 @@
 			Password
 			<input type="password" placeholder="Password" class="input p-2" bind:value={password} />
 		</label>
-		<button class="btn variant-ringed bg-white shadow-md flex items-center gap-2" on:click={signIn}>
+		{#if errorWithEmail}
+			<span class="p-2 text-red-700 variant-ringed-error">{errorWithEmail}</span>
+		{/if}
+
+		<button
+			class="btn variant-ringed bg-white shadow-md flex items-center gap-2"
+			on:click={signIn}
+			disabled={isProcessing}
+		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
