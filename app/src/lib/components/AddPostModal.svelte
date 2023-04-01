@@ -22,8 +22,11 @@
 	let selectedLanguage: LanguageCode =
 		supportedLanguages.find((sl) => sl.code == formData.language) || supportedLanguages[0];
 
-	function setPromptBasedOnLanguage() {
-		if (!formData.prompt || isEnglish(selectedLanguage.code)) {
+	function setPromptBasedOnLanguage(force = false) {
+		if (formData.prompt && !force) {
+			return;
+		}
+		if (isEnglish(selectedLanguage.code)) {
 			formData.prompt = DEFAULT_PROMPT_EN;
 		} else {
 			formData.prompt = DEFAULT_PROMPT_JA;
@@ -51,7 +54,7 @@
 	function setDefaultTemplate() {
 		const ok = confirm('Current template will be overwritten. Okay?');
 		if (ok) {
-			setPromptBasedOnLanguage();
+			setPromptBasedOnLanguage(true);
 		}
 	}
 </script>
