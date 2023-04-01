@@ -6,6 +6,46 @@
 	import { page } from '$app/stores';
 	import type { Podcast } from '$lib/types';
 	import { formatDistance } from 'date-fns';
+	import { ListBox, ListBoxItem, popup, type PopupSettings } from '@skeletonlabs/skeleton';
+	import { computePosition, flip, shift, offset, hide } from '@floating-ui/dom';
+
+	let menuValue: string = '';
+	let selectedItem: PodcastItem;
+
+	function editSelectedItem() {}
+
+	function deleteSelectedItem() {
+		console.log('delete', selectedItem.name);
+	}
+
+	function openMenu(ev: Event, podcast: PodcastItem) {
+		const popup = document.querySelector('#popup') as HTMLButtonElement;
+		const el = ev.target as HTMLElement;
+		menuValue = '';
+
+		computePosition(el, popup, {
+			placement: 'bottom-start',
+			middleware: [flip(), shift({ padding: 5 })]
+		}).then(({ x, y, middlewareData }) => {
+			popup.style.left = `${x}px`;
+			popup.style.top = `${y}px`;
+			popup.style.visibility = 'visible';
+
+			selectedItem = podcast;
+
+			setTimeout(() => {
+				document.body.addEventListener(
+					'click',
+					(docEvent) => {
+						if (docEvent.target != ev.target) {
+							popup.style.visibility = 'hidden';
+						}
+					},
+					{ once: true }
+				);
+			});
+		});
+	}
 
 	interface PodcastItem extends Podcast {
 		audioSrc: string;
@@ -68,7 +108,25 @@
 	<div class="flex flex-col flex-wrap md:flex-row gap-4 py-4">
 		{#each items as item}
 			<div class="p-4 shadow-md bg-white flex flex-col items-stretch gap-2 min-w-[30vw]">
-				<h3 class="">{item.name}</h3>
+				<div class="flex items-center justify-between">
+					<h3 class="">{item.name}</h3>
+					<button class="btn btn-sm p-0 text-slate-500" on:click={(ev) => openMenu(ev, item)}
+						><svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="currentColor"
+							class="w-6 h-6"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+							/>
+						</svg>
+					</button>
+				</div>
 				<div class="flex text-xs text-slate-500">
 					<span class="text-slate-400">Generated: </span>
 					<span>{item.lastGenerateDate}</span>
@@ -102,4 +160,25 @@
 			</div>
 		{/each}
 	</div>
+	<div id="popup" class="popup card shadow-md py-2 bg-white">
+		<!-- Listbox -->
+		<ListBox rounded="rounded-none">
+			<ListBoxItem bind:group={menuValue} name="" value="edit" on:click={editSelectedItem}
+				>Edit</ListBoxItem
+			>
+			<ListBoxItem bind:group={menuValue} name="" value="delete" on:click={deleteSelectedItem}
+				>Delete</ListBoxItem
+			>
+		</ListBox>
+	</div>
 </div>
+
+<style lang="scss">
+	.popup {
+		position: absolute;
+		width: max-content;
+		top: 0;
+		left: 0;
+		visibility: hidden;
+	}
+</style>
