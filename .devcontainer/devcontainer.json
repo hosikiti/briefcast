@@ -11,9 +11,10 @@
   "customizations": {
     "vscode": {
       "extensions": [
-    		"svelte.svelte-vscode",
-        "bradlc.vscode-tailwindcss"
-    	]
+		"svelte.svelte-vscode",
+		"bradlc.vscode-tailwindcss",
+		"vunguyentuan.vscode-postcss"
+	]
     }
   }
 }
