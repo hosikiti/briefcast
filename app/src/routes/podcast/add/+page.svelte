@@ -9,20 +9,20 @@
 	import { modalStore } from '@skeletonlabs/skeleton';
 	import AddPostModal from '$lib/components/AddPostModal.svelte';
 
-	export let pageData: PageData;
+	export let data: PageData;
 
 	let templates: FeedTemplate[] = [];
 
 	function handleAdd(tmpl?: FeedTemplate) {
-		const data = {} as Podcast;
+		const podcast = {} as Podcast;
 
 		if (tmpl) {
-			data.feedUrl = tmpl.feedUrl;
-			data.name = tmpl.name;
-			data.websiteUrl = tmpl.websiteUrl;
-			data.prompt = tmpl.prompt;
+			podcast.feedUrl = tmpl.feedUrl;
+			podcast.name = tmpl.name;
+			podcast.websiteUrl = tmpl.websiteUrl;
+			podcast.prompt = tmpl.prompt;
 			const tmplLanguage = supportedLanguages.find((el) => el.code == tmpl.languageCode);
-			data.language = tmplLanguage?.code || supportedLanguages[0].code;
+			podcast.language = tmplLanguage?.code || supportedLanguages[0].code;
 		}
 
 		const d: ModalSettings = {
@@ -33,7 +33,7 @@
 				ref: AddPostModal,
 				// Add the component properties as key/value pairs
 				props: {
-					formData: data
+					formData: podcast
 				}
 			} as ModalComponent,
 			response: async (podcast: Podcast | boolean) => {
@@ -47,14 +47,14 @@
 	}
 
 	async function add(podcast: Podcast) {
-		const userRef = doc(db, `playlists/${pageData.userId}`);
+		const userRef = doc(db, `playlists/${data.userId}`);
 		const userDoc = await getDoc(userRef);
 		if (!userDoc.exists()) {
 			setDoc(userRef, {
 				default: []
 			});
 		}
-		const ref = collection(db, `playlists/${pageData.userId}/default`);
+		const ref = collection(db, `playlists/${data.userId}/default`);
 		try {
 			// set null values for undefined key
 			for (const key in podcast) {

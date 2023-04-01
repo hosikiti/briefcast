@@ -13,3 +13,7 @@ export const supportedLanguages: LanguageCode[] = [
     { code: 'en-US', title: 'English (US)' },
     { code: 'ja-JP', title: '日本語' }
 ];
+
+export const isEnglish = (code: string) => {
+    return code.startsWith("en-");
+}

@@ -5,12 +5,16 @@ import { getSHA256String } from "../util/hash.ts";
 const defaultEnglishPrompt = `Summarize this into a transcript using the following steps:
 1. Summarize each topic into a 30 words simple English pod cast transcript. 
 2. Combine them into one string until it reaches 200 bytes.
---- `;
+--- 
+{feedItems}`;
 
 const defaultJapanesePrompt =
-  `次のトピックのリストを200文字以内のラジオ原稿に変換してください。以下の手順で実施してください。
-1) トピック毎に、25文字以内の「ですます調」のラジオ原稿に変換する。その後、文末に<break time="2s"/>　を追加。
-2) 全てのトピックを結合し、200文字を超えたら処理を終える。`;
+  `次のトピックのリストを160文字以内のラジオ原稿に変換してください。以下の手順で実施してください。
+  1) トピック毎に、25文字以内の「ですます調」のラジオ原稿に変換。
+  2) 全てのトピックを結合し、150文字を超えたら処理を終える。
+  ---
+  {feedItems}
+  `;
 
 export class SummarizerRepository {
   constructor(private db: Firestore) {}
@@ -28,12 +32,11 @@ export class SummarizerRepository {
     const api = new openai.OpenAIApi(configuration);
 
     if (!prompt) {
-      prompt = languageCode == LanguageCode.jaJP
-        ? `${defaultJapanesePrompt}\n---\n${input}`
-        : `${defaultEnglishPrompt} "${input}"`;
+      prompt = languageCode == LanguageCode.jaJP ? defaultJapanesePrompt : defaultEnglishPrompt;
     }
+    prompt = prompt.replace(/{feedItems}/, input);
 
-    const cacheKey = getSHA256String(input + "$" + prompt);
+    const cacheKey = getSHA256String(prompt);
     if (useCache) {
       const cachedResult = await this.getCache(cacheKey);
       if (cachedResult) {
@@ -48,8 +51,7 @@ export class SummarizerRepository {
       ],
     });
 
-    let result = resp.data.choices[0].message?.content || "";
-    result = result.replaceAll('<break time="2s"/>', '<break time="2s"/> ');
+    const result = resp.data.choices[0].message?.content || "";
     if (result) {
       this.setCache(cacheKey, result);
     }

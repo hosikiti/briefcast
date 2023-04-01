@@ -26,9 +26,17 @@ export const textToMP3 = async (option: TextToMP3Option) => {
   }
   await ensureDir(mediaPath);
 
+  let input = option.text;
+  // To avoid following error in Japanese, shorten the input text.
+  // Uncaught GoogleApiError: 400: This request contains sentences that are too long.
+  if (option.languageCode == "ja-JP") {
+    input = input.substring(0, 400);
+    input = input.replace(/。/g, '。<break time="2s"/> ');
+  }
+
   const client = new texttospeech(authClient);
   const resp = await client.textSynthesize({
-    input: { ssml: `<speak>${option.text}</speak>` },
+    input: { ssml: `<speak>${input}</speak>` },
     voice: {
       languageCode: option.languageCode,
       name: defaultVoiceNameMap[option.languageCode],
