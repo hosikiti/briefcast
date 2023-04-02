@@ -21,6 +21,8 @@ Briefcast is an AI-powered pod cast generator from any news website.
 
 ## TODOs
 
+- Add 'Add Website' button, allowing users to easily add a podcast by specifying a website URL.
+- Add 'Play All' button.
 - Add loading spinners.
 - Prepare production environment.
 - Add logger.
