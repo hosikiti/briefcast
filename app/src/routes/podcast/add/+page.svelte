@@ -7,7 +7,7 @@
 	import { onMount } from 'svelte';
 	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
 	import { modalStore } from '@skeletonlabs/skeleton';
-	import AddPostModal from '$lib/components/AddPostModal.svelte';
+	import AddEditPodcastModal from '$lib/components/AddEditPodcastModal.svelte';
 
 	export let data: PageData;
 
@@ -30,7 +30,7 @@
 			// Pass the component directly:
 			component: {
 				// Pass a reference to your custom component
-				ref: AddPostModal,
+				ref: AddEditPodcastModal,
 				// Add the component properties as key/value pairs
 				props: {
 					formData: podcast
