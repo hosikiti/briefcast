@@ -1,21 +1,56 @@
 <script lang="ts">
 	import { db } from '$lib/firebase';
 	import { getAudioSrcFromId } from '$lib/util';
-	import { collection, getDocs, Timestamp } from 'firebase/firestore';
+	import { collection, deleteDoc, doc, getDocs, Timestamp } from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import type { Podcast } from '$lib/types';
 	import { formatDistance } from 'date-fns';
-	import { ListBox, ListBoxItem, popup, type PopupSettings } from '@skeletonlabs/skeleton';
+	import {
+		ListBox,
+		ListBoxItem,
+		modalStore,
+		popup,
+		type ModalSettings,
+		type PopupSettings
+	} from '@skeletonlabs/skeleton';
 	import { computePosition, flip, shift, offset, hide } from '@floating-ui/dom';
 
-	let menuValue: string = '';
-	let selectedItem: PodcastItem;
+	interface PodcastItem extends Podcast {
+		audioSrc: string;
+		lastGenerateDate: string;
+		docId: string;
+	}
+
+	let items: PodcastItem[] = [];
+
+	onMount(() => {
+		loadDefaultPlaylist();
+	});
+
+	let menuValue: string = ''; // needed for ListItem component
+	let selectedItem: PodcastItem | null;
 
 	function editSelectedItem() {}
 
-	function deleteSelectedItem() {
-		console.log('delete', selectedItem.name);
+	function removeSelectedItem() {
+		if (!selectedItem) return;
+		const confirm: ModalSettings = {
+			type: 'confirm',
+			title: `Remove '${selectedItem.name}' from your playlist?`,
+			buttonTextConfirm: 'Yes, Remove',
+			response: async (yes: boolean) => {
+				if (!yes) {
+					return;
+				}
+				const docId = selectedItem!.docId;
+				const uid = $page.data.userId;
+				await deleteDoc(doc(db, `playlists/${uid}/default/${docId}`));
+				// remove from the list
+				items = items.filter((item) => item.docId != docId);
+			}
+		};
+		modalStore.trigger(confirm);
 	}
 
 	function openMenu(ev: Event, podcast: PodcastItem) {
@@ -47,24 +82,12 @@
 		});
 	}
 
-	interface PodcastItem extends Podcast {
-		audioSrc: string;
-		lastGenerateDate: string;
-	}
-
-	let items: PodcastItem[] = [];
-
-	onMount(() => {
-		loadDefaultPlaylist();
-	});
-
 	async function loadDefaultPlaylist() {
 		const uid = $page.data.userId;
 		const playlistRef = collection(db, `playlists/${uid}/default`);
 		(await getDocs(playlistRef)).docs.forEach((doc) => {
 			const data = doc.data() as PodcastItem;
-			console.log(data);
-			const podcastId = doc.id;
+			const docId = doc.id;
 
 			// format last generate date
 			const lastGenerate = data.lastGenerate?.toDate();
@@ -73,9 +96,10 @@
 				lastGenerateDate = formatDistance(lastGenerate, new Date(), { addSuffix: true });
 			}
 
-			const id = `${uid}/${podcastId}`;
+			const id = `${uid}/${docId}`;
 			data.audioSrc = getAudioSrcFromId(id);
 			data.lastGenerateDate = lastGenerateDate;
+			data.docId = docId;
 			items.push(data);
 		});
 		items = items;
@@ -166,8 +190,8 @@
 			<ListBoxItem bind:group={menuValue} name="" value="edit" on:click={editSelectedItem}
 				>Edit</ListBoxItem
 			>
-			<ListBoxItem bind:group={menuValue} name="" value="delete" on:click={deleteSelectedItem}
-				>Delete</ListBoxItem
+			<ListBoxItem bind:group={menuValue} name="" value="delete" on:click={removeSelectedItem}
+				>Remove</ListBoxItem
 			>
 		</ListBox>
 	</div>
