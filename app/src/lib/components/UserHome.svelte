@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { db } from '$lib/firebase';
 	import { getAudioSrcFromId } from '$lib/util';
-	import { collection, deleteDoc, doc, getDocs, Timestamp } from 'firebase/firestore';
+	import { collection, deleteDoc, doc, getDocs, setDoc, Timestamp } from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import type { Podcast } from '$lib/types';
@@ -11,10 +11,12 @@
 		ListBoxItem,
 		modalStore,
 		popup,
+		type ModalComponent,
 		type ModalSettings,
 		type PopupSettings
 	} from '@skeletonlabs/skeleton';
 	import { computePosition, flip, shift, offset, hide } from '@floating-ui/dom';
+	import AddEditPodcastModal from './AddEditPodcastModal.svelte';
 
 	interface PodcastItem extends Podcast {
 		audioSrc: string;
@@ -31,7 +33,46 @@
 	let menuValue: string = ''; // needed for ListItem component
 	let selectedItem: PodcastItem | null;
 
-	function editSelectedItem() {}
+	function editSelectedItem() {
+		if (!selectedItem) return;
+
+		const d: ModalSettings = {
+			type: 'component',
+			// Pass the component directly:
+			component: {
+				// Pass a reference to your custom component
+				ref: AddEditPodcastModal,
+				// Add the component properties as key/value pairs
+				props: {
+					formData: selectedItem
+				}
+			} as ModalComponent,
+			response: async (podcast: Podcast | boolean) => {
+				if (podcast instanceof Object) {
+					try {
+						const docId = selectedItem!.docId;
+						const docRef = doc(db, `playlists/${$page.data.userId}/default/${docId}`);
+						// set null values for undefined key
+						for (const key in podcast) {
+							if (podcast[key] === undefined) {
+								podcast[key] = null;
+							}
+						}
+						await setDoc(docRef, podcast);
+
+						// update the item
+						items = [];
+						await loadDefaultPlaylist();
+					} catch (e) {
+						alert('save failed');
+						console.error(e);
+					}
+				}
+			}
+		};
+
+		modalStore.trigger(d);
+	}
 
 	function removeSelectedItem() {
 		if (!selectedItem) return;
