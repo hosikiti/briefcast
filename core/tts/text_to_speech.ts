@@ -39,7 +39,7 @@ export const textToMP3 = async (option: TextToMP3Option) => {
   const ssmlInput = `<speak>${input}</speak>`;
   const ssmlSplit = new SSMLSplit({
     synthesizer: "google",
-    softLimit: 300,
+    softLimit: 230,
     hardLimit: 5000,
     breakParagraphsAboveHardLimit: false,
     extraSplitChars: ",;.。",
