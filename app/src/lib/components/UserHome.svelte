@@ -17,6 +17,8 @@
 	} from '@skeletonlabs/skeleton';
 	import { computePosition, flip, shift, offset, hide } from '@floating-ui/dom';
 	import AddEditPodcastModal from './AddEditPodcastModal.svelte';
+	import PlusIcon from '$lib/icons/PlusIcon.svelte';
+	import EllipsisHCircle from '$lib/icons/EllipsisHCircle.svelte';
 
 	interface PodcastItem extends Podcast {
 		audioSrc: string;
@@ -154,17 +156,7 @@
 			href="/podcast/add"
 			class="btn variant-filled rounded-3xl bg-orange-500 shadow-md text-white"
 		>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				viewBox="0 0 20 20"
-				fill="currentColor"
-				class="w-5 h-5"
-			>
-				<path
-					d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"
-				/>
-			</svg>
-
+			<PlusIcon />
 			<span>Add site</span>
 		</a>
 	</div>
@@ -175,21 +167,8 @@
 			<div class="p-4 shadow-md bg-white flex flex-col items-stretch gap-2 min-w-[30vw]">
 				<div class="flex items-center justify-between">
 					<h3 class="">{item.name}</h3>
-					<button class="btn btn-sm p-0 text-slate-500" on:click={(ev) => openMenu(ev, item)}
-						><svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke-width="1.5"
-							stroke="currentColor"
-							class="w-6 h-6"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-							/>
-						</svg>
+					<button class="btn btn-sm p-0 text-slate-500" on:click={(ev) => openMenu(ev, item)}>
+						<EllipsisHCircle />
 					</button>
 				</div>
 				<div class="flex text-xs text-slate-500">
