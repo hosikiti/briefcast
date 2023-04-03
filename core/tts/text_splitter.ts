@@ -1,5 +1,8 @@
-// Split Japanese into chunks with the size of limit.
-// This use 。 and 、 as split characters.
+/**
+ Split Japanese into chunks with the size of limit.
+ This uses 。 and 、 as split characters.
+ Time complexity: O(n^2), where n is the length of s.
+*/
 export const splitJapanese = (s: string, limit: number): string[] => {
   const parts = s.split("。");
   const result = [];
@@ -7,9 +10,14 @@ export const splitJapanese = (s: string, limit: number): string[] => {
 
   for (const part of parts) {
     const subParts = part.split("、");
+
     for (const subPart of subParts) {
       if (buf.length + subPart.length < limit) {
-        buf += subPart;
+        if (buf != "") {
+          buf += `、${subPart}`;
+        } else {
+          buf += `${subPart}`;
+        }
       } else {
         if (buf == "") {
           result.push(subPart);
@@ -39,5 +47,5 @@ export const splitJapanese = (s: string, limit: number): string[] => {
       prev.push(current);
       return prev;
     }
-  }, [] as string[]);
+  }, [] as string[]).filter((s) => s.length > 0);
 };

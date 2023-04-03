@@ -7,7 +7,10 @@ import { SummarizerRepository } from "./repository/summarizer.ts";
 
 // This is a batch command to update specific site feeds
 
-async function generate(pod: PodcastDefinition, summarizer: SummarizerRepository): Promise<boolean> {
+async function generate(
+  pod: PodcastDefinition,
+  summarizer: SummarizerRepository,
+): Promise<boolean> {
   const opts: GenerateOption = {
     useCache: true,
     languageCode: pod.language,
@@ -55,9 +58,13 @@ async function main() {
   while (true) {
     const podcasts = await podcastRepo.getPodcastsForAllUsers(limit, offsetCursor);
     for (const pod of podcasts) {
-      const isGenerated = await generate(pod, summarizerRepo);
-      if (isGenerated) {
-        await podcastRepo.updateLastGeneratedDate(pod.authorId, pod.docId);
+      try {
+        const isGenerated = await generate(pod, summarizerRepo);
+        if (isGenerated) {
+          await podcastRepo.updateLastGeneratedDate(pod.authorId, pod.docId);
+        }
+      } catch (e) {
+        console.error(`failed to generate, ${e}`);
       }
     }
     if (podcasts.length < limit) {

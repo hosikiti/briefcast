@@ -30,7 +30,7 @@ export const textToMP3 = async (option: TextToMP3Option) => {
   await ensureDir(mediaPath);
 
   let input = option.text;
-  // Add pauses at the end of each sentence
+  // Add pause at the end of each sentence
   if (option.languageCode == "ja-JP") {
     input = input.replace(/。/g, '。<break time="1500ms"/> ');
   }
@@ -39,7 +39,7 @@ export const textToMP3 = async (option: TextToMP3Option) => {
   // Uncaught GoogleApiError: 400: This request contains sentences that are too long.
   const ssmlSplit = new SSMLSplit({
     synthesizer: "google",
-    softLimit: 200,
+    softLimit: 400,
     hardLimit: 5000,
     breakParagraphsAboveHardLimit: false,
     extraSplitChars: ",;.",
@@ -53,6 +53,8 @@ export const textToMP3 = async (option: TextToMP3Option) => {
     ssmlParts = ssmlSplit.split(ssmlInput).filter((part) => part != "<speak></speak>");
     return;
   } else {
+    // As Google TTS API cannot process long Japanese sentence more than around 100 words,
+    // split text into small chunks using original algorithm.
     ssmlParts = splitJapanese(ssmlInput, 100).map((s) => `<speak>${s}</speak>`);
   }
 
