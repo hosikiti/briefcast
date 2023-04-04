@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { db } from '$lib/firebase';
-	import { getAudioSrcFromId } from '$lib/util';
+	import { getAudioSrcFromId, sleep } from '$lib/util';
 	import { collection, deleteDoc, doc, getDocs, setDoc, Timestamp } from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
@@ -21,6 +21,7 @@
 	import EllipsisHCircle from '$lib/icons/EllipsisHCircleIcon.svelte';
 	import PlayIcon from '$lib/icons/PlayIcon.svelte';
 	import LoadingSpinner from './LoadingSpinner.svelte';
+	import StopPlayIcon from '$lib/icons/StopPlayIcon.svelte';
 
 	interface PodcastItem extends Podcast {
 		audioSrc: string;
@@ -29,6 +30,7 @@
 	}
 
 	let isLoading = true;
+	let isPlayingAll = false;
 	let items: PodcastItem[] = [];
 
 	onMount(() => {
@@ -155,16 +157,64 @@
 			isLoading = false;
 		}
 	}
+
+	async function playAll() {
+		for (const item of items) {
+			await playPodcast(item.docId);
+			await sleep(2000);
+		}
+	}
+
+	async function stopPlayAll() {
+		const audioElems = document.querySelectorAll('audio');
+		for (const audio of audioElems) {
+			audio.pause();
+			audio.currentTime = 0;
+		}
+		isPlayingAll = false;
+	}
+
+	async function playPodcast(id: string) {
+		return new Promise<void>(async (resolve) => {
+			const audio = document.querySelector(`audio[data-id=${id}]`) as HTMLAudioElement | null;
+			if (!audio) {
+				resolve();
+				return;
+			}
+			audio.addEventListener(
+				'ended',
+				() => {
+					resolve();
+				},
+				{ once: true }
+			);
+			await audio.play();
+			isPlayingAll = true;
+		});
+	}
 </script>
 
 <div class="p-4">
 	<div class="flex justify-between items-center py-4">
 		<h2 class="text-left ">Podcasts</h2>
 		<div class="flex justify-center gap-2">
-			<button class="btn variant-filled rounded-3xl bg-orange-500 shadow-md text-white flex gap-2">
-				<PlayIcon />
-				Play All</button
-			>
+			{#if !isPlayingAll}
+				<button
+					on:click={playAll}
+					class="btn variant-filled rounded-3xl bg-orange-500 shadow-md text-white flex gap-2"
+				>
+					<PlayIcon />
+					Play All</button
+				>
+			{:else}
+				<button
+					on:click={stopPlayAll}
+					class="btn variant-filled rounded-3xl bg-orange-500 shadow-md text-white flex gap-2"
+				>
+					<StopPlayIcon />
+					Stop</button
+				>
+			{/if}
 			<a
 				href="/podcast/add"
 				class="btn variant-ringed bg-white rounded-3xl shadow-md text-slate-700"
@@ -188,7 +238,7 @@
 					<span class="text-slate-400">Generated: </span>
 					<span>{item.lastGenerateDate}</span>
 				</div>
-				<audio controls class="my-4 w-full">
+				<audio controls class="my-4 w-full" data-id={item.docId}>
 					<source src={item.audioSrc} type="audio/mpeg" />
 					<em>Sorry, your browser doesn't support HTML5 audio.</em>
 				</audio>

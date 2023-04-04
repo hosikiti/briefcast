@@ -1,3 +1,5 @@
+import { milliseconds } from "date-fns";
+
 export const coreApiEndpoint = 'http://briefcast_core:18088';
 
 export const getAudioSrcFromId = (id: string): string => {
@@ -16,4 +18,8 @@ export const supportedLanguages: LanguageCode[] = [
 
 export const isEnglish = (code: string) => {
     return code.startsWith("en-");
+}
+
+export const sleep = async (milliseconds: number) => {
+    return new Promise<void>(resolve => setTimeout(resolve, milliseconds))
 }
