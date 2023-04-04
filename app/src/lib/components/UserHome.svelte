@@ -32,6 +32,7 @@
 	let isLoading = true;
 	let isPlayingAll = false;
 	let items: PodcastItem[] = [];
+	let autoplayAudioElems: HTMLAudioElement[] = [];
 
 	onMount(() => {
 		loadDefaultPlaylist();
@@ -159,28 +160,27 @@
 	}
 
 	async function playAll() {
+		autoplayAudioElems = [];
 		for (const item of items) {
-			await playPodcast(item.docId);
+			const audio = new Audio(item.audioSrc);
+			autoplayAudioElems.push(audio);
+		}
+		for (const audio of autoplayAudioElems) {
+			await playPodcast(audio);
 			await sleep(2000);
 		}
 	}
 
 	async function stopPlayAll() {
-		const audioElems = document.querySelectorAll('audio');
-		for (const audio of audioElems) {
+		for (const audio of autoplayAudioElems) {
 			audio.pause();
-			audio.currentTime = 0;
 		}
+		autoplayAudioElems = [];
 		isPlayingAll = false;
 	}
 
-	async function playPodcast(id: string) {
+	async function playPodcast(audio: HTMLAudioElement) {
 		return new Promise<void>(async (resolve) => {
-			const audio = document.querySelector(`audio[data-id=${id}]`) as HTMLAudioElement | null;
-			if (!audio) {
-				resolve();
-				return;
-			}
 			audio.addEventListener(
 				'ended',
 				() => {
