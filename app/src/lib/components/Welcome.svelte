@@ -4,6 +4,7 @@
 	import axios from 'axios';
 	import { Jumper } from 'svelte-loading-spinners';
 	import LangSelect from './LangSelect.svelte';
+	import LoadingSpinner from './LoadingSpinner.svelte';
 
 	let trialPodcastTitle = '';
 	let trialPodcastSrc = '';
@@ -121,7 +122,7 @@
 			{#if trialGenerating}
 				<div class="flex justify-center flex-col items-center p-4 text-slate-800">
 					<h3>Generating your podcast ...</h3>
-					<Jumper size="60" color="#FF3E00" unit="px" duration="2s" />
+					<LoadingSpinner />
 				</div>
 			{/if}
 		{/if}

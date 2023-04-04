@@ -18,7 +18,9 @@
 	import { computePosition, flip, shift, offset, hide } from '@floating-ui/dom';
 	import AddEditPodcastModal from './AddEditPodcastModal.svelte';
 	import PlusIcon from '$lib/icons/PlusIcon.svelte';
-	import EllipsisHCircle from '$lib/icons/EllipsisHCircle.svelte';
+	import EllipsisHCircle from '$lib/icons/EllipsisHCircleIcon.svelte';
+	import PlayIcon from '$lib/icons/PlayIcon.svelte';
+	import LoadingSpinner from './LoadingSpinner.svelte';
 
 	interface PodcastItem extends Podcast {
 		audioSrc: string;
@@ -26,6 +28,7 @@
 		docId: string;
 	}
 
+	let isLoading = true;
 	let items: PodcastItem[] = [];
 
 	onMount(() => {
@@ -126,39 +129,49 @@
 	}
 
 	async function loadDefaultPlaylist() {
-		const uid = $page.data.userId;
-		const playlistRef = collection(db, `playlists/${uid}/default`);
-		(await getDocs(playlistRef)).docs.forEach((doc) => {
-			const data = doc.data() as PodcastItem;
-			const docId = doc.id;
+		try {
+			isLoading = true;
+			const uid = $page.data.userId;
+			const playlistRef = collection(db, `playlists/${uid}/default`);
+			(await getDocs(playlistRef)).docs.forEach((doc) => {
+				const data = doc.data() as PodcastItem;
+				const docId = doc.id;
 
-			// format last generate date
-			const lastGenerate = data.lastGenerate?.toDate();
-			let lastGenerateDate = '';
-			if (lastGenerate) {
-				lastGenerateDate = formatDistance(lastGenerate, new Date(), { addSuffix: true });
-			}
+				// format last generate date
+				const lastGenerate = data.lastGenerate?.toDate();
+				let lastGenerateDate = '';
+				if (lastGenerate) {
+					lastGenerateDate = formatDistance(lastGenerate, new Date(), { addSuffix: true });
+				}
 
-			const id = `${uid}/${docId}`;
-			data.audioSrc = getAudioSrcFromId(id);
-			data.lastGenerateDate = lastGenerateDate;
-			data.docId = docId;
-			items.push(data);
-		});
-		items = items;
+				const id = `${uid}/${docId}`;
+				data.audioSrc = getAudioSrcFromId(id);
+				data.lastGenerateDate = lastGenerateDate;
+				data.docId = docId;
+				items.push(data);
+			});
+			items = items;
+		} finally {
+			isLoading = false;
+		}
 	}
 </script>
 
 <div class="p-4">
 	<div class="flex justify-between items-center py-4">
-		<h2 class="text-left ">Your podcasts</h2>
-		<a
-			href="/podcast/add"
-			class="btn variant-filled rounded-3xl bg-orange-500 shadow-md text-white"
-		>
-			<PlusIcon />
-			<span>Add site</span>
-		</a>
+		<h2 class="text-left ">Podcasts</h2>
+		<div class="flex justify-center gap-2">
+			<button class="btn variant-filled rounded-3xl bg-orange-500 shadow-md text-white flex gap-2">
+				<PlayIcon />
+				Play All</button
+			>
+			<a
+				href="/podcast/add"
+				class="btn variant-ringed bg-white rounded-3xl shadow-md text-slate-700"
+			>
+				<PlusIcon />
+			</a>
+		</div>
 	</div>
 	<hr class="" />
 
@@ -204,6 +217,11 @@
 			</div>
 		{/each}
 	</div>
+	{#if isLoading}
+		<div class="flex justify-center items-center h-[10rem]">
+			<LoadingSpinner />
+		</div>
+	{/if}
 	<div id="popup" class="popup card shadow-md py-2 bg-white">
 		<!-- Listbox -->
 		<ListBox rounded="rounded-none">
