@@ -71,7 +71,7 @@ export async function signInFirebase(method: "google") {
       throw `unknown provider: ${method}`
   }
 
-  return await signInWithRedirect(auth, provider)
+  return await signInWithPopup(auth, provider)
 }
 
 export async function signInWithEmail(email: string, password: string) {
