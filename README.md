@@ -1,6 +1,6 @@
 # Briefcast
 
-Briefcast is an AI-powered pod cast generator from any news website.
+Briefcast is an AI-powered pod cast generator from any website.
 
 ## What's Changed
 
