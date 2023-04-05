@@ -12,8 +12,8 @@
 		<p>When you use our service, we may collect the following information:</p>
 
 		<ul>
-			<li>Your IP address and cookies, which may be used to limit certain user activities.</li>
-			<li>Your email and Google account information, which are used for sign-in purposes.</li>
+			<li>Your IP address and cookies</li>
+			<li>Your email and Google account information</li>
 		</ul>
 
 		<h3>How We Use Your Information</h3>
@@ -27,6 +27,7 @@
 			</li>
 			<li>To personalize your experience on our service.</li>
 			<li>To analyze and improve our service.</li>
+			<li>To avoid server inefficiencies and inappropriate use of our service, among others.</li>
 		</ul>
 
 		<h3>How We Protect Your Information</h3>
@@ -44,13 +45,6 @@
 			your information to third-party service providers who perform services on our behalf, such as
 			payment processing and email communication. These service providers are not authorized to use
 			your information for any other purpose.
-		</p>
-
-		<h3>Children's Privacy</h3>
-
-		<p>
-			Our service is not intended for children under the age of 13. We do not knowingly collect
-			personal information from children under the age of 13.
 		</p>
 
 		<h3>Changes to Our Privacy Policy</h3>

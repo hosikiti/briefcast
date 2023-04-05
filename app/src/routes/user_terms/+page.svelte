@@ -4,8 +4,8 @@
 
 		<h3>1. Acceptance of Terms of Use</h3>
 		<p>
-			By using BriefCast, you agree to be bound by these terms of use. If you do not agree to these
-			terms of use, you may not use our service.
+			By using BriefCast, you agree to be bound by these terms of use. Failure to agree to these
+			terms results in not being able to use the service.
 		</p>
 
 		<h3>2. Description of Service</h3>
@@ -28,11 +28,11 @@
 
 		<h3>4. Ownership of Content</h3>
 		<p>
-			You retain ownership of all content that you upload, publish, or display on our service. By
-			submitting content to BriefCast, you grant us a non-exclusive, transferable, sub-licensable,
-			royalty-free, worldwide license to use, reproduce, modify, adapt, publish, translate, create
-			derivative works from, distribute, perform, and display such content in connection with our
-			service.
+			You retain ownership of all original content that you upload, publish, or display on our
+			service. By submitting content to BriefCast, you grant us a non-exclusive, transferable,
+			sub-licensable, royalty-free, worldwide license to use, reproduce, modify, adapt, publish,
+			translate, create derivative works from, distribute, perform, and display such content in
+			connection with our service.
 		</p>
 
 		<h3>5. Intellectual Property Rights</h3>
