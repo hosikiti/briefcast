@@ -29,5 +29,8 @@ Briefcast is an AI-powered pod cast generator from any news website.
 - Limit the total number of generations within a day (300 times a day would be the upper limit for my budget).
 - Add 'Add Website' button, allowing users to easily add a podcast by specifying a website URL.
 - Add Google Analytics.
-- Add licence.
 - ...
+
+## License
+
+Source code in this repository is licensed under the PolyForm Noncommercial License 1.0.0.
