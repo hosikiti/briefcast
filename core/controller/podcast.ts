@@ -16,6 +16,8 @@ import {
 interface TrialGenerateParam extends CommonParam {
   feedUrl: string;
   languageCode: LanguageCode;
+  prompt: string;
+  isPreview: boolean;
 }
 
 interface AddPodcastParam extends CommonParam {
@@ -33,11 +35,15 @@ export class PodcastController {
 
     const feedUrl = param["feedUrl"];
     const languageCode = param["languageCode"] || LanguageCode.enUS;
+    const isPreview = param["isPreview"] || false;
+    const prompt = param["prompt"] || "";
     const generator = new RSSGenerator({
       feedUrl: feedUrl,
       languageCode: languageCode,
       useCache: false,
+      prompt: prompt,
       summarizer: new SummarizerRepository(getDB()),
+      isPreview: isPreview,
     });
     try {
       console.log(`get feed for ${feedUrl}, ${languageCode} ... `);

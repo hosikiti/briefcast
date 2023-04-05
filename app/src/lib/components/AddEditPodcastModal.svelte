@@ -1,9 +1,12 @@
 <script lang="ts">
-	import { isEnglish, supportedLanguages, type LanguageCode } from '$lib/util';
+	import { getAudioSrcFromId, isEnglish, supportedLanguages, type LanguageCode } from '$lib/util';
 	import LangSelect from './LangSelect.svelte';
 	import { modalStore, type ModalSettings } from '@skeletonlabs/skeleton';
-	import type { Podcast } from '$lib/types';
+	import type { Podcast, TrialPodcastResult } from '$lib/types';
 	import PlayIcon from '$lib/icons/PlayIcon.svelte';
+	import axios from 'axios';
+	import LoadingSpinner from './LoadingSpinner.svelte';
+	import StopPlayIcon from '$lib/icons/StopPlayIcon.svelte';
 
 	const DEFAULT_PROMPT_EN = `Summarize this into a transcript using the following steps:
 1. Summarize each topic into a 30 words English pod cast transcript. 
@@ -19,6 +22,8 @@
 
 	export let parent: any;
 	export let formData: Podcast;
+	let isPreviewing = false;
+	let isPreviewGenerating = false;
 	let selectedLanguage: LanguageCode =
 		supportedLanguages.find((sl) => sl.code == formData.language) || supportedLanguages[0];
 
@@ -58,7 +63,40 @@
 		}
 	}
 
-	function onPreview() {}
+	async function onPreview() {
+		if (!formData.feedUrl) {
+			alert('Provide a feed URL of your favorite website');
+			return;
+		}
+		isPreviewGenerating = true;
+		try {
+			const resp = await axios.post('/api/podcast/trial', {
+				feedUrl: formData.feedUrl,
+				prompt: formData.prompt,
+				languageCode: selectedLanguage.code,
+				isPreview: true
+			});
+			if (resp.status != 200) {
+				alert('import failed from: ' + formData.feedUrl);
+				return;
+			}
+			const result = resp.data.result as TrialPodcastResult;
+			const audioSrc = getAudioSrcFromId(result.id);
+
+			const audio = new Audio(audioSrc);
+			audio.addEventListener('ended', (ev) => {
+				isPreviewing = false;
+			});
+
+			await audio.play();
+			isPreviewing = true;
+		} catch (e) {
+			alert('import failed from: ' + formData.feedUrl);
+			console.error(e);
+		} finally {
+			isPreviewGenerating = false;
+		}
+	}
 </script>
 
 <div class="bg-white border p-4 shadow-lg w-full lg:w-[60%] relative flex flex-col">
@@ -98,10 +136,18 @@
 					<button
 						class="btn variant-filled-surface rounded-full text-white flex items-center gap-1"
 						on:click={onPreview}
+						disabled={isPreviewGenerating}
 					>
-						<PlayIcon />
-						Preview</button
-					>
+						{#if isPreviewGenerating}
+							<LoadingSpinner size={20} duration="1s" color="#FFFFFF" />
+						{:else if isPreviewing}
+							<StopPlayIcon />
+							Stop
+						{:else}
+							<PlayIcon />
+							Preview
+						{/if}
+					</button>
 				</div>
 			</div>
 		</label>
@@ -110,7 +156,7 @@
 	<div class="flex justify-between items-center" />
 
 	<div class="mt-4 flex justify-end gap-2 items-end">
-		<button class="btn variant-filled bg-orange-500 text-white" on:click={onSubmit}>Add</button>
 		<button class="btn variant-soft" on:click={onCancel}>Cancel</button>
+		<button class="btn variant-filled bg-orange-500 text-white" on:click={onSubmit}>Add</button>
 	</div>
 </div>

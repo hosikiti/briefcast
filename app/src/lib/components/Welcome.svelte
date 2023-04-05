@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { FeedTemplate } from '$lib/types';
+	import type { FeedTemplate, TrialPodcastResult } from '$lib/types';
 	import { getAudioSrcFromId, supportedLanguages, type LanguageCode } from '$lib/util';
 	import axios from 'axios';
 	import { Jumper } from 'svelte-loading-spinners';
@@ -10,11 +10,6 @@
 	let trialPodcastSrc = '';
 	let trialGenerating = false;
 	let selectedLanguage: LanguageCode = supportedLanguages[0];
-
-	interface TrialPodcastResult {
-		id: string;
-		title: string;
-	}
 
 	const feedTemplates: FeedTemplate[] = [
 		{

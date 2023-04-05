@@ -34,6 +34,11 @@ export class RSSGenerator implements BriefCastGenerator {
         break;
       }
       result.push("- " + content);
+
+      // Use only first two topics for preview purpose
+      if (this.options.isPreview == true && result.length >= 2) {
+        break;
+      }
     }
 
     const transcript = result.join("\n");
@@ -45,26 +50,30 @@ export class RSSGenerator implements BriefCastGenerator {
   }
 
   async summarize(item: BriefCastItem): Promise<string> {
-    // Create intro part
-    let intro = `This is from ${item.feed.title}. `;
-    if (this.options.languageCode == "ja-JP") {
-      intro = item.feed.title + "からお伝えします。";
+    let intro = "";
+    let closing = "";
+    const { languageCode, prompt, summarizer, isPreview } = this.options;
+
+    if (!isPreview) {
+      // Create intro part
+      intro = `This is from ${item.feed.title}. `;
+      if (this.options.languageCode == "ja-JP") {
+        intro = item.feed.title + "からお伝えします。";
+      }
+      // const pubDate = new Date(item.feed.channel.lastBuildDate);
+      // const month = getEnglishMonthName(pubDate.getMonth());
+      // const day = pubDate.getDate();
+      // const year = pubDate.getFullYear();
+      // const intro = `Today's date is ${month}/${day}/${year}.`;
+
+      // Create closing part
+      closing = " That's all for today by BriefCast.";
+      if (this.options.languageCode == "ja-JP") {
+        closing = " 以上、BriefCastがお伝えしました。";
+      }
     }
-    // const pubDate = new Date(item.feed.channel.lastBuildDate);
-    // const month = getEnglishMonthName(pubDate.getMonth());
-    // const day = pubDate.getDate();
-    // const year = pubDate.getFullYear();
-    // const intro = `Today's date is ${month}/${day}/${year}.`;
 
-    // Create closing part
-    let closing = " That's all for today by BriefCast.";
-    if (this.options.languageCode == "ja-JP") {
-      closing = " 以上、BriefCastがお伝えしました。";
-    }
-
-    // Summarize the given text
-    const { languageCode, prompt, summarizer } = this.options;
-
+    // Summarize the transcript
     const body = await summarizer.execute(item.transcript, languageCode, prompt);
 
     return intro + body + closing;

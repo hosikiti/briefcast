@@ -19,3 +19,8 @@ export interface Podcast {
     language: string
     prompt?: string
 }
+
+export interface TrialPodcastResult {
+    id: string;
+    title: string;
+}

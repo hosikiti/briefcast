@@ -7,6 +7,7 @@ export interface GenerateOption {
   useCache: boolean;
   feedUrl: string;
   prompt?: string;
+  isPreview?: boolean; // Summarize first two topics from the feed for preview purpose
   languageCode: LanguageCode;
   summarizer: SummarizerRepository;
 }
