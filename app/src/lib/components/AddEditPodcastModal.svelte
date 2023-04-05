@@ -3,10 +3,10 @@
 	import LangSelect from './LangSelect.svelte';
 	import { modalStore, type ModalSettings } from '@skeletonlabs/skeleton';
 	import type { Podcast } from '$lib/types';
-	import { onMount } from 'svelte';
+	import PlayIcon from '$lib/icons/PlayIcon.svelte';
 
 	const DEFAULT_PROMPT_EN = `Summarize this into a transcript using the following steps:
-1. Summarize each topic into a 30 words simple English pod cast transcript. 
+1. Summarize each topic into a 30 words English pod cast transcript. 
 2. Combine them into one string until it reaches 200 bytes.
 ---
 {feedItems}`;
@@ -52,29 +52,32 @@
 	}
 
 	function setDefaultTemplate() {
-		const ok = confirm('Current template will be overwritten. Okay?');
+		const ok = confirm('Current prompt will be overwritten. Okay?');
 		if (ok) {
 			setPromptBasedOnLanguage(true);
 		}
 	}
+
+	function onPreview() {}
 </script>
 
 <div class="bg-white border p-4 shadow-lg w-full lg:w-[60%] relative flex flex-col">
-	<h2>{formData.name || 'New podcast'}</h2>
 	<div class="flex flex-col my-4 gap-4">
-		<label class="label">
-			<span>Name: </span>
-			<input type="text" class="input p-2" placeholder="Feed title" bind:value={formData.name} />
-		</label>
-		<label class="label">
-			<span>Feed URL: </span>
-			<input
-				type="url"
-				class="input p-2"
-				placeholder="RSS/Atom feed URL"
-				bind:value={formData.feedUrl}
-			/>
-		</label>
+		<div class="flex flex-col md:flex-row gap-2">
+			<label class="label">
+				<span>Name: </span>
+				<input type="text" class="input p-2" placeholder="Feed title" bind:value={formData.name} />
+			</label>
+			<label class="label">
+				<span>Feed URL: </span>
+				<input
+					type="url"
+					class="input p-2"
+					placeholder="RSS/Atom feed URL"
+					bind:value={formData.feedUrl}
+				/>
+			</label>
+		</div>
 		<label class="label" for="">
 			<span>Podcast Language: </span>
 			<LangSelect bind:selectedLanguage />
@@ -82,18 +85,31 @@
 		<label class="label">
 			<span>Prompt for your podcast transcript: </span>
 			<textarea class="textarea text-sm" rows="5" bind:value={formData.prompt} />
-			<div class="flex items-center gap-2">
-				<button class="btn btn-sm variant-filled-primary" on:click={setDefaultTemplate}
-					>Set default template</button
+			<div class="flex gap-2 flex-col md:flex-row md:items-center md:justify-between">
+				<span class="text-sm text-slate-600 hidden md:block"
+					>Note: Prompt must contain {'{'}feedItems{'}'} to embed feed content.</span
 				>
-				<span class="text-sm text-slate-600"
-					>Note: a prompt must contain {'{'}feedItems{'}'} to embed feed content.</span
-				>
+				<div class="flex gap-2 flex-col md:flex-row">
+					<button
+						class="btn btn-sm variant-ringed-primary text-primary-700"
+						on:click={setDefaultTemplate}>Set default prompt</button
+					>
+
+					<button
+						class="btn variant-filled-surface rounded-full text-white flex items-center gap-1"
+						on:click={onPreview}
+					>
+						<PlayIcon />
+						Preview</button
+					>
+				</div>
 			</div>
 		</label>
 	</div>
 	<div class="flex-1" />
-	<div class="flex justify-end gap-2 items-end">
+	<div class="flex justify-between items-center" />
+
+	<div class="mt-4 flex justify-end gap-2 items-end">
 		<button class="btn variant-filled bg-orange-500 text-white" on:click={onSubmit}>Add</button>
 		<button class="btn variant-soft" on:click={onCancel}>Cancel</button>
 	</div>
