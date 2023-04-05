@@ -7,6 +7,9 @@ Briefcast is an AI-powered pod cast generator from any news website.
 ### April 2023
 
 - Added Terms of Use and Privacy Policy.
+- Add 'Play All' button.
+- Add loading spinners.
+- Fix Google Text-to-Speech API fails on a long text.
 
 ### March 2023
 
@@ -21,13 +24,10 @@ Briefcast is an AI-powered pod cast generator from any news website.
 
 ## TODOs
 
-- Fix Google Text-to-Speech API fails on a long text.
-- Add 'Add Website' button, allowing users to easily add a podcast by specifying a website URL.
-- Add 'Play All' button.
-- Add loading spinners.
 - Prepare production environment.
 - Add logger.
-- Add Google Analytics.
 - Limit the total number of generations within a day (300 times a day would be the upper limit for my budget).
+- Add 'Add Website' button, allowing users to easily add a podcast by specifying a website URL.
+- Add Google Analytics.
 - Add licence.
 - ...
