@@ -68,6 +68,7 @@
 		if (previewAudio) {
 			previewAudio.pause();
 			isPreviewing = false;
+			previewAudio = null;
 			return;
 		}
 		if (!formData.feedUrl) {
