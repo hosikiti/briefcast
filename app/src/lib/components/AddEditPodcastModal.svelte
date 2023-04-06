@@ -77,6 +77,11 @@
 		}
 		isPreviewGenerating = true;
 		try {
+			previewAudio = new Audio();
+			previewAudio.addEventListener('ended', (ev) => {
+				isPreviewing = false;
+			});
+
 			const resp = await axios.post('/api/podcast/trial', {
 				feedUrl: formData.feedUrl,
 				prompt: formData.prompt,
@@ -85,15 +90,12 @@
 			});
 			if (resp.status != 200) {
 				alert('import failed from: ' + formData.feedUrl);
+				previewAudio = null;
 				return;
 			}
 			const result = resp.data.result as TrialPodcastResult;
 			const audioSrc = getAudioSrcFromId(result.id);
-
-			previewAudio = new Audio(audioSrc);
-			previewAudio.addEventListener('ended', (ev) => {
-				isPreviewing = false;
-			});
+			previewAudio.src = audioSrc;
 
 			await previewAudio.play();
 			isPreviewing = true;

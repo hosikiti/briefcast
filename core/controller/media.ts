@@ -8,6 +8,7 @@ export class MediaController {
     try {
       const query = ctx.request.url.searchParams;
       const filePath = MEDIA_PATH + "/" + query.get("id") + ".mp3";
+      ctx.response.headers.set("Content-Type", "audio/mp3");
       ctx.response.body = Deno.readFileSync(filePath);
     } catch (e) {
       logger.error(e);
