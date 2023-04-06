@@ -78,6 +78,7 @@ jobs:
             echo "FIREBASE_ADMIN_EMAIL=${{ secrets.FIREBASE_ADMIN_EMAIL }}" >> .env
             echo "FIREBASE_ADMIN_PASSWD=${{ secrets.FIREBASE_ADMIN_PASSWD }}" >> .env
             echo "MEDIA_PATH=${{ secrets.MEDIA_PATH }}" >> .env
+            echo "LOG_PATH=${{ secrets.LOG_PATH }}" >> .env
             echo "NPM_CACHE=${{ secrets.NPM_CACHE }}" >> .env
             rm -rf app/build
             mv ../tmp_svelte/app/build app/

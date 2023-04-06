@@ -2,3 +2,4 @@ src/media
 src/cache
 .DS_Store
 .env
+logs
