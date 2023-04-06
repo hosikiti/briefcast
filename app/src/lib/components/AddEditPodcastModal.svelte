@@ -24,6 +24,7 @@
 	export let formData: Podcast;
 	let isPreviewing = false;
 	let isPreviewGenerating = false;
+	let previewAudio: HTMLAudioElement | null = null;
 	let selectedLanguage: LanguageCode =
 		supportedLanguages.find((sl) => sl.code == formData.language) || supportedLanguages[0];
 
@@ -64,6 +65,11 @@
 	}
 
 	async function onPreview() {
+		if (previewAudio) {
+			previewAudio.pause();
+			isPreviewing = false;
+			return;
+		}
 		if (!formData.feedUrl) {
 			alert('Provide a feed URL of your favorite website');
 			return;
@@ -83,12 +89,12 @@
 			const result = resp.data.result as TrialPodcastResult;
 			const audioSrc = getAudioSrcFromId(result.id);
 
-			const audio = new Audio(audioSrc);
-			audio.addEventListener('ended', (ev) => {
+			previewAudio = new Audio(audioSrc);
+			previewAudio.addEventListener('ended', (ev) => {
 				isPreviewing = false;
 			});
 
-			await audio.play();
+			await previewAudio.play();
 			isPreviewing = true;
 		} catch (e) {
 			alert('import failed from: ' + formData.feedUrl);

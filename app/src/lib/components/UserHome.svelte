@@ -163,6 +163,7 @@
 			await playPodcast(item.docId);
 			await sleep(2000);
 		}
+		isPlayingAll = false;
 	}
 
 	async function stopPlayAll() {
