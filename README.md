@@ -24,6 +24,7 @@ BriefCast is an AI-powered pod cast generator from any website.
 
 ## TODOs
 
+- Skip podcast generation if feed is not changed and MP3 has been created already.
 - Prepare production environment.
 - Add logger.
 - Limit the total number of generations within a day (300 times a day would be the upper limit for my budget).
