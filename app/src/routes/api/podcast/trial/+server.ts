@@ -7,7 +7,7 @@ export const POST: RequestHandler = async ({ request, fetch, getClientAddress })
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "X-Forwarded-For": getClientAddress(),
+            "X-Forwarded-For": request.headers.get("X-Forwarded-For") || getClientAddress(),
             "User-Agent": request.headers.get("User-Agent") || 'unknown'
         },
         body: await request.text(),

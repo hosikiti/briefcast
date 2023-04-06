@@ -5,7 +5,7 @@ export const GET: RequestHandler = async ({ request, url, fetch, getClientAddres
     const id = url.searchParams.get("id")
     return fetch(`${coreApiEndpoint}/media?id=${id}`, {
         headers: {
-            "X-Forwarded-For": getClientAddress(),
+            "X-Forwarded-For": request.headers.get("X-Forwarded-For") || getClientAddress(),
             "User-Agent": request.headers.get("User-Agent") || 'unknown'
         }
     })
