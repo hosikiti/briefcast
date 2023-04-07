@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { db } from '$lib/firebase';
-	import { getAudioSrcFromId, sleep } from '$lib/util';
+	import { getAudioSrcFromId, getCombinedAudioSrc, sleep } from '$lib/util';
 	import { collection, deleteDoc, doc, getDocs, setDoc, Timestamp } from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
@@ -31,6 +31,7 @@
 
 	let isLoading = true;
 	let isPlayingAll = false;
+	let playAllAudio: HTMLAudioElement | null;
 	let items: PodcastItem[] = [];
 
 	onMount(() => {
@@ -159,29 +160,24 @@
 	}
 
 	async function playAll() {
-		for (const item of items) {
-			await playPodcast(item.docId);
-			await sleep(2000);
-		}
+		const uid = $page.data.userId!;
+		const ids = items.map((item) => item.docId);
+		isPlayingAll = true;
+		playAllAudio = new Audio(getCombinedAudioSrc(uid, ids));
+		await playAudio(playAllAudio);
 		isPlayingAll = false;
 	}
 
 	async function stopPlayAll() {
-		const audioElems = document.querySelectorAll('audio');
-		for (const audio of audioElems) {
-			audio.pause();
-			audio.currentTime = 0;
+		if (playAllAudio) {
+			playAllAudio.pause();
+			playAllAudio = null;
 		}
 		isPlayingAll = false;
 	}
 
-	async function playPodcast(id: string) {
+	async function playAudio(audio: HTMLAudioElement) {
 		return new Promise<void>(async (resolve) => {
-			const audio = document.querySelector(`audio[data-id=${id}]`) as HTMLAudioElement | null;
-			if (!audio) {
-				resolve();
-				return;
-			}
 			audio.addEventListener(
 				'ended',
 				() => {
@@ -190,7 +186,6 @@
 				{ once: true }
 			);
 			await audio.play();
-			isPlayingAll = true;
 		});
 	}
 </script>

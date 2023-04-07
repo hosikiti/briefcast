@@ -9,6 +9,7 @@ router.get("/healthcheck", (ctx) => {
 });
 
 router.get("/media", MediaController.get);
+router.get("/media/combined", MediaController.getCombined);
 
 router.post("/podcast/trial/generate", PodcastController.trialGenerate);
 
