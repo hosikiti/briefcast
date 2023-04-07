@@ -5,7 +5,6 @@ import { PodcastRepository } from "./repository/podcast.ts";
 import { PodcastDefinition } from "./types.ts";
 import { SummarizerRepository } from "./repository/summarizer.ts";
 import { getSHA256String } from "./util/hash.ts";
-import { logger } from "./util/logger.ts";
 
 // This is a batch command to update specific site feeds
 

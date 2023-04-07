@@ -2,7 +2,6 @@ import { parseFeed } from "./common/feed_parser.ts";
 import { BriefCastGenerator, BriefCastItem } from "./generator.ts";
 import { GenerateOption } from "./generator_factory.ts";
 import { MAX_TRANSCRIPT_LENGTH } from "../constant.ts";
-import { getSHA256String } from "../util/hash.ts";
 
 export class RSSGenerator implements BriefCastGenerator {
   options: GenerateOption;
