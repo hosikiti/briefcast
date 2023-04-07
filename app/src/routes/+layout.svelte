@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { Toast, toastStore } from '@skeletonlabs/skeleton';
+	import type { ToastSettings } from '@skeletonlabs/skeleton';
 	import { Modal } from '@skeletonlabs/skeleton';
 	import '@skeletonlabs/skeleton/themes/theme-hamlindigo.css';
 
@@ -32,4 +34,5 @@
 		<span class="text-slate-500 text-xs">© 2023 Kei Oikawa.</span>
 	</footer>
 	<Modal />
+	<Toast />
 </div>

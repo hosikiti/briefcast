@@ -8,6 +8,7 @@
 	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
 	import { modalStore } from '@skeletonlabs/skeleton';
 	import AddEditPodcastModal from '$lib/components/AddEditPodcastModal.svelte';
+	import { showToast } from '$lib/toast';
 
 	export let data: PageData;
 
@@ -64,6 +65,7 @@
 			}
 
 			await addDoc(ref, podcast);
+			showToast('Podcast added!');
 		} catch (e) {
 			alert('save failed');
 			console.error(e);
