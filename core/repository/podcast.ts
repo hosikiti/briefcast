@@ -17,15 +17,19 @@ import { PodcastDefinition } from "../types.ts";
 export class PodcastRepository {
   constructor(private db: Firestore) {}
 
-  async updateLastGeneratedDate(uid: string, docId: string) {
+  async updateLastGeneratedDate(uid: string, docId: string, contentHash: string) {
     const ref = doc(this.db, "playlists", uid, "default", docId);
     const data = {
       lastGenerate: serverTimestamp(),
+      lastContentHash: contentHash,
     } as PodcastDefinition;
     await updateDoc(ref, data);
   }
 
-  async getPodcastsForAllUsers(count: number, startAfterAuthorID = ""): Promise<PodcastDefinition[]> {
+  async getPodcastsForAllUsers(
+    count: number,
+    startAfterAuthorID = "",
+  ): Promise<PodcastDefinition[]> {
     const result: PodcastDefinition[] = [];
     const ref = collection(this.db, "playlists");
     let q = query(ref, limit(count));
@@ -44,7 +48,9 @@ export class PodcastRepository {
 
     for (const authorId of authorIds) {
       // get default playlist
-      const playlistsSnapshot = await getDocs(collection(this.db, "playlists", authorId, "default"));
+      const playlistsSnapshot = await getDocs(
+        collection(this.db, "playlists", authorId, "default"),
+      );
 
       playlistsSnapshot.forEach((doc) => {
         const data = doc.data() as PodcastDefinition;

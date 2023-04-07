@@ -8,6 +8,7 @@ export interface PodcastDefinition {
   language: LanguageCode;
   prompt?: string;
   lastGenerate?: Timestamp;
+  lastContentHash?: string;
   authorId: string;
   docId: string;
 }

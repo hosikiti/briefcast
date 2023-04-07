@@ -3,7 +3,7 @@ import { GenerateOption } from "./generator_factory.ts";
 
 export interface BriefCastItem {
   feed: FeedData;
-  transcript: string;
+  content: string;
 }
 
 export interface BriefCastGenerator {

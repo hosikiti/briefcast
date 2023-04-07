@@ -40,7 +40,7 @@ export class PodcastController {
     const generator = new RSSGenerator({
       feedUrl: feedUrl,
       languageCode: languageCode,
-      useCache: false,
+      useCache: true,
       prompt: prompt,
       summarizer: new SummarizerRepository(getDB()),
       isPreview: isPreview,
@@ -49,11 +49,11 @@ export class PodcastController {
       console.log(`get feed for ${feedUrl}, ${languageCode} ... `);
       await deleteOldTrialPodcasts();
       const item = await generator.getLatest();
-      if (!item || item.transcript.length < 10) {
+      if (!item || item.content.length < 10) {
         setHttpNotFound(ctx);
         return;
       }
-      console.log(item.transcript);
+      console.log(item.content);
 
       console.log("summarize by gpt3 ... ");
       const briefTranscript = await generator.summarize(item);

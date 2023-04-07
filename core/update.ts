@@ -4,13 +4,15 @@ import { getDB, initFirebase } from "./util/firebase.ts";
 import { PodcastRepository } from "./repository/podcast.ts";
 import { PodcastDefinition } from "./types.ts";
 import { SummarizerRepository } from "./repository/summarizer.ts";
+import { getSHA256String } from "./util/hash.ts";
+import { logger } from "./util/logger.ts";
 
 // This is a batch command to update specific site feeds
 
 async function generate(
   pod: PodcastDefinition,
   summarizer: SummarizerRepository,
-): Promise<boolean> {
+): Promise<string | null> {
   const opts: GenerateOption = {
     useCache: true,
     languageCode: pod.language,
@@ -23,28 +25,36 @@ async function generate(
   const item = await generator.getLatest();
   if (!item) {
     console.log(`failed to get the feed. SKIP.`);
-    return false;
+    return null;
   }
-  console.log(item.transcript);
+  console.log(item.content);
 
   console.log("summarize by gpt3 ... ");
-  const briefTranscript = await generator.summarize(item);
-  console.log(briefTranscript);
-  console.log(briefTranscript.length);
+  const transcript = await generator.summarize(item);
+  console.log(transcript);
+  console.log(transcript.length);
 
-  if (briefTranscript.length == 0) {
+  if (transcript.length == 0) {
     console.warn("transcript is empty, something went wrong.");
-    return false;
+    return null;
+  }
+
+  // generate MP3 hash
+  const mp3Hash = getSHA256String(`${transcript}:${pod.prompt}:${pod.language}`);
+
+  if (pod.lastContentHash == mp3Hash) {
+    console.warn("mp3 content is same, so skip generation.");
+    return null;
   }
 
   console.log(`export to ${pod.docId}.mp3 ...`);
   await textToMP3({
-    text: briefTranscript,
+    text: transcript,
     languageCode: generator.options.languageCode,
     outDir: pod.authorId,
     fileNamePrefix: pod.docId,
   });
-  return true;
+  return mp3Hash;
 }
 
 async function main() {
@@ -59,9 +69,9 @@ async function main() {
     const podcasts = await podcastRepo.getPodcastsForAllUsers(limit, offsetCursor);
     for (const pod of podcasts) {
       try {
-        const isGenerated = await generate(pod, summarizerRepo);
-        if (isGenerated) {
-          await podcastRepo.updateLastGeneratedDate(pod.authorId, pod.docId);
+        const contentHash = await generate(pod, summarizerRepo);
+        if (contentHash) {
+          await podcastRepo.updateLastGeneratedDate(pod.authorId, pod.docId, contentHash);
         }
       } catch (e) {
         console.error(`failed to generate, ${e}`);
