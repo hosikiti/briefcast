@@ -2,6 +2,7 @@
 	import { signInFirebase, signInWithEmail } from '$lib/firebase';
 	import { onDestroy, onMount } from 'svelte';
 	import { globalStore } from '../store';
+	import { goto } from '$app/navigation';
 
 	let email = 'test@gmail.com';
 	let password = '';
@@ -23,7 +24,17 @@
 	});
 
 	async function signInWithGoogle() {
-		await signInFirebase('google');
+		goto('/signin/processing');
+		try {
+			await signInFirebase('google');
+			// redirect to top page
+			setTimeout(() => {
+				goto('/');
+			}, 500);
+		} catch (e) {
+			// if cancelled, go back to the sign-in page again.
+			goto('/signin');
+		}
 	}
 
 	async function signIn() {
