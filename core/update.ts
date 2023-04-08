@@ -1,6 +1,7 @@
 import { getDB, initFirebase } from "./util/firebase.ts";
 import { PodcastRepository } from "./repository/podcast.ts";
 import { SummarizerRepository } from "./repository/summarizer.ts";
+import { logger } from "./util/logger.ts";
 
 // This is a batch command to update specific site feeds
 
@@ -18,7 +19,7 @@ async function main() {
       try {
         await podcastRepo.generate(pod);
       } catch (e) {
-        console.error(`failed to generate, ${e}`);
+        logger.error(`failed to generate, ${e}`);
       }
     }
     if (podcasts.length < limit) {
