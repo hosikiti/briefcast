@@ -52,19 +52,14 @@ export class RSSGenerator implements BriefCastGenerator {
   async summarize(item: BriefCastItem): Promise<string> {
     let intro = "";
     let closing = "";
-    const { languageCode, prompt, summarizer, isPreview, useCache } = this.options;
+    const { languageCode, prompt, summarizer, isPreview, useCache, title } = this.options;
 
     if (!isPreview) {
       // Create intro part
-      intro = `This is from ${item.feed.title}. `;
+      intro = `This is from ${title || item.feed.title}. `;
       if (this.options.languageCode == "ja-JP") {
         intro = item.feed.title + "からお伝えします。";
       }
-      // const pubDate = new Date(item.feed.channel.lastBuildDate);
-      // const month = getEnglishMonthName(pubDate.getMonth());
-      // const day = pubDate.getDate();
-      // const year = pubDate.getFullYear();
-      // const intro = `Today's date is ${month}/${day}/${year}.`;
 
       // Create closing part
       closing = " That's all for today by BriefCast.";

@@ -42,6 +42,7 @@ export class PodcastRepository {
       useCache: true,
       languageCode: pod.language,
       feedUrl: pod.feedUrl,
+      title: pod.name,
       prompt: pod.prompt,
       summarizer: this.summarizer,
     };

@@ -8,6 +8,7 @@ export interface GenerateOption {
   feedUrl: string;
   prompt?: string;
   isPreview?: boolean; // Summarize first two topics from the feed for preview purpose
+  title?: string;
   languageCode: LanguageCode;
   summarizer: SummarizerRepository;
 }
