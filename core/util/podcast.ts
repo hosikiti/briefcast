@@ -11,7 +11,6 @@ export const deleteOldTrialPodcasts = async () => {
     }
     const filePath = baseDir + "/" + f.name;
     const fileInfo = await Deno.stat(filePath);
-    console.log(f.name, fileInfo.mtime);
     if (!fileInfo.mtime) {
       return;
     }
