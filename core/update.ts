@@ -19,7 +19,7 @@ async function main() {
       try {
         await podcastRepo.generate(pod);
       } catch (e) {
-        logger.error(`failed to generate, ${e}`);
+        console.error(`failed to generate, ${e}`);
       }
     }
     if (podcasts.length < limit) {
