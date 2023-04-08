@@ -117,7 +117,7 @@
 				<span>Name: </span>
 				<input type="text" class="input p-2" placeholder="Feed title" bind:value={formData.name} />
 			</label>
-			<label class="label">
+			<label class="label flex-1">
 				<span>Feed URL: </span>
 				<input
 					type="url"

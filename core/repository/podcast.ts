@@ -72,7 +72,7 @@ export class PodcastRepository {
       return false;
     }
 
-    console.log(`export to ${pod.docId}.mp3 ...`);
+    console.log(`export to ${pod.authorId}/${pod.docId}.mp3 ...`);
     await textToMP3({
       text: transcript,
       languageCode: generator.options.languageCode,
