@@ -20,10 +20,7 @@ async function main() {
     const podcasts = await podcastRepo.getPodcastsForAllUsers(limit, offsetCursor);
     for (const pod of podcasts) {
       try {
-        const contentHash = await podcastRepo.generate(pod);
-        if (contentHash) {
-          await podcastRepo.updateLastGeneratedDate(pod.authorId, pod.docId, contentHash);
-        }
+        await podcastRepo.generate(pod);
       } catch (e) {
         console.error(`failed to generate, ${e}`);
       }

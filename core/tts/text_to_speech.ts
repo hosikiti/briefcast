@@ -49,12 +49,14 @@ export const textToMP3 = async (option: TextToMP3Option) => {
   let ssmlInput = `${input}`;
   let ssmlParts: string[] = [];
   if (option.languageCode == "en-US") {
-    ssmlInput = `<speak>${ssmlInput}</speak>`;
+    ssmlInput = `<speak>${ssmlInput}<break time="2000ms"/></speak>`;
     ssmlParts = ssmlSplit.split(ssmlInput).filter((part) => part != "<speak></speak>");
   } else {
     // As Google TTS API cannot process long Japanese sentence more than around 100 words,
     // split text into small chunks using original algorithm.
-    ssmlParts = splitJapanese(ssmlInput, 100).map((s) => `<speak>${s}</speak>`);
+    ssmlParts = splitJapanese(ssmlInput, 100).map((s) =>
+      `<speak>${s}<break time="500ms"/></speak>`
+    );
   }
 
   const textSynthesizePromises = ssmlParts.map((ssml) => {

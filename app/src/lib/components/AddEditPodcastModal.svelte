@@ -8,9 +8,10 @@
 	import LoadingSpinner from './LoadingSpinner.svelte';
 	import StopPlayIcon from '$lib/icons/StopPlayIcon.svelte';
 
-	const DEFAULT_PROMPT_EN = `Summarize this into a transcript using the following steps:
-1. Summarize each topic into a 30 words English pod cast transcript. 
-2. Combine them into one string until it reaches 200 bytes.
+	const DEFAULT_PROMPT_EN = `Summarize this using the following steps:
+1. Summarize each topic into a 15-words podcast transcript in English. 
+2. Combine them into one string until it reaches 150 words.
+3. No numbering is needed.
 ---
 {feedItems}`;
 
@@ -80,6 +81,7 @@
 			previewAudio = new Audio();
 			previewAudio.addEventListener('ended', (ev) => {
 				isPreviewing = false;
+				previewAudio = null;
 			});
 
 			const resp = await axios.post('/api/podcast/trial', {

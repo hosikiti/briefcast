@@ -22,22 +22,22 @@ export class PodcastRepository {
   constructor(private db: Firestore, private summarizer: SummarizerRepository) {}
 
   // generate/update podcast by ID
-  async generateByID(uid: string, docId: string): Promise<string | null> {
+  async generateByID(uid: string, docId: string): Promise<boolean> {
     const ref = doc(this.db, "playlists", uid, "default", docId);
     const snapshot = await getDoc(ref);
     if (!snapshot.exists()) {
-      return null;
+      return false;
     }
     const podcast = snapshot.data() as PodcastDefinition;
     podcast.authorId = uid;
     podcast.docId = docId;
-    return this.generate(podcast);
+    return await this.generate(podcast);
   }
 
   // Generate podcast MP3
   async generate(
     pod: PodcastDefinition,
-  ): Promise<string | null> {
+  ): Promise<boolean> {
     const opts: GenerateOption = {
       useCache: true,
       languageCode: pod.language,
@@ -50,7 +50,7 @@ export class PodcastRepository {
     const item = await generator.getLatest();
     if (!item) {
       console.log(`failed to get the feed. SKIP.`);
-      return null;
+      return false;
     }
     console.log(item.content);
 
@@ -61,7 +61,7 @@ export class PodcastRepository {
 
     if (transcript.length == 0) {
       console.warn("transcript is empty, something went wrong.");
-      return null;
+      return false;
     }
 
     // generate MP3 hash
@@ -69,7 +69,7 @@ export class PodcastRepository {
 
     if (pod.lastContentHash == mp3Hash) {
       console.warn("mp3 content is same, so skip generation.");
-      return null;
+      return false;
     }
 
     console.log(`export to ${pod.docId}.mp3 ...`);
@@ -79,7 +79,9 @@ export class PodcastRepository {
       outDir: pod.authorId,
       fileNamePrefix: pod.docId,
     });
-    return mp3Hash;
+
+    await this.updateLastGeneratedDate(pod.authorId, pod.docId, mp3Hash);
+    return true;
   }
 
   async updateLastGeneratedDate(uid: string, docId: string, contentHash: string) {

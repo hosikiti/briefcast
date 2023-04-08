@@ -1,11 +1,12 @@
 import { LanguageCode } from "../constant.ts";
-import { Context, Status } from "../deps.ts";
+import { Context } from "../deps.ts";
 import { RSSGenerator } from "../generator/rss_generator.ts";
 import { PodcastRepository } from "../repository/podcast.ts";
 import { SummarizerRepository } from "../repository/summarizer.ts";
 import { textToMP3 } from "../tts/text_to_speech.ts";
 import { getDB } from "../util/firebase.ts";
 import { deleteOldTrialPodcasts } from "../util/podcast.ts";
+import { logger } from "../util/logger.ts";
 import {
   CommonParam,
   getPostBody,
@@ -28,6 +29,7 @@ interface UpdateParam {
 }
 
 export class PodcastController {
+  // update specific podcast
   static async update(ctx: Context) {
     const param = await getPostBody<UpdateParam>(ctx);
     if (param == null) {
@@ -37,10 +39,17 @@ export class PodcastController {
 
     const summarizerRepo = new SummarizerRepository(getDB());
     const podcastRepo = new PodcastRepository(getDB(), summarizerRepo);
-    podcastRepo.generateByID(param.uid, param.docId);
-    setHttpSuccess(ctx);
+    try {
+      await podcastRepo.generateByID(param.uid, param.docId);
+      setHttpSuccess(ctx);
+    } catch (e) {
+      logger.error(`failed to update podcast: ${e}`);
+      setHttpInternalServerError(ctx);
+      return;
+    }
   }
 
+  // generate podcast for trial
   static async trialGenerate(ctx: Context) {
     const param = await getPostBody<TrialGenerateParam>(ctx);
     if (param == null) {

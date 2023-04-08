@@ -230,9 +230,13 @@
 						<EllipsisHCircle />
 					</button>
 				</div>
-				<div class="flex text-xs text-slate-500">
-					<span class="text-slate-400">Generated: </span>
-					<span>{item.lastGenerateDate}</span>
+				<div class="flex text-xs text-slate-500 gap-1">
+					{#if item.lastGenerateDate}
+						<span class="text-slate-400">Generated:</span>
+						<span>{item.lastGenerateDate}</span>
+					{:else}
+						<span class="text-slate-400">Generating ...</span>
+					{/if}
 				</div>
 				<audio controls class="my-4 w-full" data-id={item.docId}>
 					<source src={item.audioSrc} type="audio/mpeg" />
