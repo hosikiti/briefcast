@@ -58,7 +58,7 @@ export class RSSGenerator implements BriefCastGenerator {
       // Create intro part
       intro = `This is from ${title || item.feed.title}. `;
       if (this.options.languageCode == "ja-JP") {
-        intro = item.feed.title + "からお伝えします。";
+        intro = (title || item.feed.title) + "からお伝えします。";
       }
 
       // Create closing part
