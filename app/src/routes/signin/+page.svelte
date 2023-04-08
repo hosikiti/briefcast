@@ -1,10 +1,30 @@
 <script lang="ts">
 	import { signInFirebase, signInWithEmail } from '$lib/firebase';
+	import { onDestroy, onMount } from 'svelte';
+	import { globalStore } from '../store';
 
 	let email = 'test@gmail.com';
 	let password = '';
 	let errorWithEmail = '';
 	let isProcessing = false;
+
+	onMount(() => {
+		globalStore.update((v) => {
+			v.showSignInNav = false;
+			return v;
+		});
+	});
+
+	onDestroy(() => {
+		globalStore.update((v) => {
+			v.showSignInNav = true;
+			return v;
+		});
+	});
+
+	async function signInWithGoogle() {
+		await signInFirebase('google');
+	}
 
 	async function signIn() {
 		try {
@@ -39,7 +59,7 @@
 	<div class="flex flex-col gap-4 my-4">
 		<button
 			class="mt-4 p-2 variant-ringed bg-white flex items-center justify-center w-full w-[320px] shadow-md"
-			on:click={() => signInFirebase('google')}
+			on:click={signInWithGoogle}
 		>
 			<svg
 				viewBox="0 0 20 20"
