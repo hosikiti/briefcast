@@ -1,6 +1,7 @@
 import { LanguageCode } from "../constant.ts";
 import { Context, Status } from "../deps.ts";
 import { RSSGenerator } from "../generator/rss_generator.ts";
+import { PodcastRepository } from "../repository/podcast.ts";
 import { SummarizerRepository } from "../repository/summarizer.ts";
 import { textToMP3 } from "../tts/text_to_speech.ts";
 import { getDB } from "../util/firebase.ts";
@@ -8,6 +9,7 @@ import { deleteOldTrialPodcasts } from "../util/podcast.ts";
 import {
   CommonParam,
   getPostBody,
+  setHttpBadRequest,
   setHttpInternalServerError,
   setHttpNotFound,
   setHttpSuccess,
@@ -20,16 +22,29 @@ interface TrialGenerateParam extends CommonParam {
   isPreview: boolean;
 }
 
-interface AddPodcastParam extends CommonParam {
-  feedUrl: string;
-  languageCode: LanguageCode;
+interface UpdateParam {
+  uid: string;
+  docId: string;
 }
 
 export class PodcastController {
+  static async update(ctx: Context) {
+    const param = await getPostBody<UpdateParam>(ctx);
+    if (param == null) {
+      setHttpBadRequest(ctx);
+      return;
+    }
+
+    const summarizerRepo = new SummarizerRepository(getDB());
+    const podcastRepo = new PodcastRepository(getDB(), summarizerRepo);
+    podcastRepo.generateByID(param.uid, param.docId);
+    setHttpSuccess(ctx);
+  }
+
   static async trialGenerate(ctx: Context) {
     const param = await getPostBody<TrialGenerateParam>(ctx);
     if (param == null) {
-      ctx.response.status = Status.BadRequest;
+      setHttpBadRequest(ctx);
       return;
     }
 

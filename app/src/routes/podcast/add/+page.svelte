@@ -9,6 +9,8 @@
 	import { modalStore } from '@skeletonlabs/skeleton';
 	import AddEditPodcastModal from '$lib/components/AddEditPodcastModal.svelte';
 	import { showToast } from '$lib/toast';
+	import { stringify } from 'postcss';
+	import axios from 'axios';
 
 	export let data: PageData;
 
@@ -64,10 +66,28 @@
 				}
 			}
 
-			await addDoc(ref, podcast);
+			const snapshot = await addDoc(ref, podcast);
+			// generate podcast
+			const docId = snapshot.id;
+			updatePodcast(data.userId, docId);
 			showToast('Podcast added!');
 		} catch (e) {
 			alert('save failed');
+			console.error(e);
+		}
+	}
+
+	async function updatePodcast(uid: string, docId: string) {
+		try {
+			const resp = await axios.post('/api/podcast/update', {
+				uid,
+				docId
+			});
+			if (resp.status != 200) {
+				console.error('update podcast failed', resp.status);
+				return;
+			}
+		} catch (e) {
 			console.error(e);
 		}
 	}

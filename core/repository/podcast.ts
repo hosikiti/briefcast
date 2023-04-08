@@ -12,10 +12,75 @@ import {
   startAfter,
   updateDoc,
 } from "../deps.ts";
+import { BriefCastGeneratorFactory, GenerateOption } from "../generator/generator_factory.ts";
+import { textToMP3 } from "../tts/text_to_speech.ts";
 import { PodcastDefinition } from "../types.ts";
+import { getSHA256String } from "../util/hash.ts";
+import { SummarizerRepository } from "./summarizer.ts";
 
 export class PodcastRepository {
-  constructor(private db: Firestore) {}
+  constructor(private db: Firestore, private summarizer: SummarizerRepository) {}
+
+  // generate/update podcast by ID
+  async generateByID(uid: string, docId: string): Promise<string | null> {
+    const ref = doc(this.db, "playlists", uid, "default", docId);
+    const snapshot = await getDoc(ref);
+    if (!snapshot.exists()) {
+      return null;
+    }
+    const podcast = snapshot.data() as PodcastDefinition;
+    podcast.authorId = uid;
+    podcast.docId = docId;
+    return this.generate(podcast);
+  }
+
+  // Generate podcast MP3
+  async generate(
+    pod: PodcastDefinition,
+  ): Promise<string | null> {
+    const opts: GenerateOption = {
+      useCache: true,
+      languageCode: pod.language,
+      feedUrl: pod.feedUrl,
+      prompt: pod.prompt,
+      summarizer: this.summarizer,
+    };
+    const generator = BriefCastGeneratorFactory(opts);
+    console.log(`get feed for ${pod.feedUrl} ... `);
+    const item = await generator.getLatest();
+    if (!item) {
+      console.log(`failed to get the feed. SKIP.`);
+      return null;
+    }
+    console.log(item.content);
+
+    console.log("summarize by gpt3 ... ");
+    const transcript = await generator.summarize(item);
+    console.log(transcript);
+    console.log(transcript.length);
+
+    if (transcript.length == 0) {
+      console.warn("transcript is empty, something went wrong.");
+      return null;
+    }
+
+    // generate MP3 hash
+    const mp3Hash = getSHA256String(`${transcript}:${pod.prompt}:${pod.language}`);
+
+    if (pod.lastContentHash == mp3Hash) {
+      console.warn("mp3 content is same, so skip generation.");
+      return null;
+    }
+
+    console.log(`export to ${pod.docId}.mp3 ...`);
+    await textToMP3({
+      text: transcript,
+      languageCode: generator.options.languageCode,
+      outDir: pod.authorId,
+      fileNamePrefix: pod.docId,
+    });
+    return mp3Hash;
+  }
 
   async updateLastGeneratedDate(uid: string, docId: string, contentHash: string) {
     const ref = doc(this.db, "playlists", uid, "default", docId);
