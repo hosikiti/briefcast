@@ -31,6 +31,7 @@ BriefCast is an AI-powered pod cast generator from any website.
 
 - Fix 'Visit website' does not work when added from feed URL.
 - Add voice gender selection option.
+- Add confirm dialog on signing out.
 - Prompt to add a podcast after signing up.
 - Prepare production environment.
 - Add Google Analytics.
