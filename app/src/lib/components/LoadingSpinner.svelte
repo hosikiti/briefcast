@@ -4,6 +4,9 @@
 	export let size = 60;
 	export let duration = '2s';
 	export let color = '#FF3E00';
+	export let show = true;
 </script>
 
-<Jumper {size} {color} unit="px" {duration} />
+{#if show}
+	<Jumper {size} {color} unit="px" {duration} />
+{/if}

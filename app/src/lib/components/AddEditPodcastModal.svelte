@@ -2,7 +2,7 @@
 	import { getAudioSrcFromId, isEnglish, supportedLanguages, type LanguageCode } from '$lib/util';
 	import LangSelect from './LangSelect.svelte';
 	import { modalStore, type ModalSettings } from '@skeletonlabs/skeleton';
-	import type { Podcast, TrialPodcastResult } from '$lib/types';
+	import type { FeedData, Podcast, TrialPodcastResult } from '$lib/types';
 	import PlayIcon from '$lib/icons/PlayIcon.svelte';
 	import axios from 'axios';
 	import LoadingSpinner from './LoadingSpinner.svelte';
@@ -23,6 +23,7 @@
 
 	export let parent: any;
 	export let formData: Podcast;
+	let isProcessing = false;
 	let isPreviewing = false;
 	let isPreviewGenerating = false;
 	let previewAudio: HTMLAudioElement | null = null;
@@ -42,10 +43,32 @@
 
 	setPromptBasedOnLanguage();
 
-	function onSubmit(): void {
+	async function getFeed(url: string): Promise<FeedData | null> {
+		try {
+			const resp = await axios.get(`/api/feed/content?url=${encodeURIComponent(url)}`);
+			return resp.data as FeedData;
+		} catch (e) {
+			return null;
+		}
+	}
+
+	async function onSubmit() {
 		if (!formData.feedUrl || !formData.name) {
 			alert('set feed url and title');
 			return;
+		}
+
+		isProcessing = true;
+		// check if the feed URL is valid
+		const feed = await getFeed(formData.feedUrl);
+		isProcessing = false;
+		if (!feed) {
+			alert(`Failed to load from URL: ${formData.feedUrl}`);
+			return;
+		}
+
+		if (!formData.websiteUrl) {
+			formData.websiteUrl = feed.link || formData.feedUrl;
 		}
 
 		formData.language = selectedLanguage.code;
@@ -166,8 +189,13 @@
 	<div class="flex-1" />
 	<div class="flex justify-between items-center" />
 
-	<div class="mt-4 flex justify-end gap-2 items-end">
-		<button class="btn variant-soft" on:click={onCancel}>Cancel</button>
-		<button class="btn variant-filled bg-orange-500 text-white" on:click={onSubmit}>Add</button>
+	<div class="mt-4 flex justify-end gap-2 items-center">
+		<LoadingSpinner show={isProcessing} />
+		<button class="btn variant-soft" on:click={onCancel} disabled={isProcessing}>Cancel</button>
+		<button
+			class="btn variant-filled bg-orange-500 text-white"
+			on:click={onSubmit}
+			disabled={isProcessing}>Add</button
+		>
 	</div>
 </div>

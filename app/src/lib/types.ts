@@ -1,5 +1,15 @@
 import type { Timestamp } from "firebase/firestore";
 
+export interface FeedData {
+    link?: string;
+    title?: string;
+    description?: string;
+    generator?: string;
+    language?: string;
+    published?: Date;
+    entries?: any;
+}
+
 export interface FeedTemplate {
     name: string;
     description: string;

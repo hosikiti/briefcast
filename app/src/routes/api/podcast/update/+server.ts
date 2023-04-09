@@ -1,16 +1,10 @@
 import { coreApiEndpoint } from "$lib/util";
 import { json } from "@sveltejs/kit";
-import type { RequestHandler } from "./$types";
+import type { RequestEvent, RequestHandler } from "./$types";
+import { proxyCoreAPI } from "$lib/server/api";
 
-export const POST: RequestHandler = async ({ request, fetch, getClientAddress }) => {
-    await fetch(`${coreApiEndpoint}/podcast/update`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-Forwarded-For": request.headers.get("X-Forwarded-For") || getClientAddress(),
-            "User-Agent": request.headers.get("User-Agent") || 'unknown'
-        },
-        body: await request.text(),
-    });
+export const POST: RequestHandler = async (ev) => {
+    await proxyCoreAPI(ev, "podcast/update", await ev.request.text())
     return json({})
 }
+

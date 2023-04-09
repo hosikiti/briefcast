@@ -57,13 +57,13 @@ export class RSSGenerator implements BriefCastGenerator {
     if (!isPreview) {
       // Create intro part
       intro = `This is from ${title || item.feed.title}. `;
-      if (this.options.languageCode == "ja-JP") {
+      if (languageCode == "ja-JP") {
         intro = (title || item.feed.title) + "からお伝えします。";
       }
 
       // Create closing part
       closing = " That's all for today by BriefCast.";
-      if (this.options.languageCode == "ja-JP") {
+      if (languageCode == "ja-JP") {
         closing = " 以上、BriefCastがお伝えしました。";
       }
     }

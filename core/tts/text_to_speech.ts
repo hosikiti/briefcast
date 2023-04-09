@@ -35,20 +35,20 @@ export const textToMP3 = async (option: TextToMP3Option) => {
     input = input.replace(/。/g, '。<break time="1500ms"/> ');
   }
 
-  // To avoid following error, split the input text into smaller chunks.
-  // Uncaught GoogleApiError: 400: This request contains sentences that are too long.
-  const ssmlSplit = new SSMLSplit({
-    synthesizer: "google",
-    softLimit: 400,
-    hardLimit: 5000,
-    breakParagraphsAboveHardLimit: false,
-    extraSplitChars: ",;.",
-  });
-
   const client = new texttospeech(authClient);
   let ssmlInput = `${input}`;
   let ssmlParts: string[] = [];
   if (option.languageCode == "en-US") {
+    // To avoid following error, split the input text into smaller chunks.
+    // Uncaught GoogleApiError: 400: This request contains sentences that are too long.
+    const ssmlSplit = new SSMLSplit({
+      synthesizer: "google",
+      softLimit: 50,
+      hardLimit: 300,
+      breakParagraphsAboveHardLimit: false,
+      extraSplitChars: ",;.",
+    });
+
     ssmlInput = `<speak>${ssmlInput}<break time="2000ms"/></speak>`;
     ssmlParts = ssmlSplit.split(ssmlInput).filter((part) => part != "<speak></speak>");
   } else {
