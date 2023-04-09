@@ -2,7 +2,6 @@
 	import type { FeedTemplate, TrialPodcastResult } from '$lib/types';
 	import { getAudioSrcFromId, supportedLanguages, type LanguageCode } from '$lib/util';
 	import axios from 'axios';
-	import { Jumper } from 'svelte-loading-spinners';
 	import LangSelect from './LangSelect.svelte';
 	import LoadingSpinner from './LoadingSpinner.svelte';
 	import { goto } from '$app/navigation';
@@ -19,7 +18,7 @@
 			feedUrl: 'http://rss.cnn.com/rss/edition.rss',
 			languageCode: 'en-US',
 			websiteUrl: '',
-			language: ''
+			language: 'en'
 		},
 		{
 			name: 'NHK',
@@ -27,7 +26,7 @@
 			feedUrl: 'https://www.nhk.or.jp/rss/news/cat0.xml',
 			languageCode: 'ja-JP',
 			websiteUrl: '',
-			language: ''
+			language: 'ja'
 		},
 		{
 			name: 'Custom',
