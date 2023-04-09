@@ -7,8 +7,8 @@
 	import LoadingSpinner from './LoadingSpinner.svelte';
 	import { goto } from '$app/navigation';
 
-	let trialPodcastTitle = 'xxx';
-	let trialPodcastSrc = 'xxx';
+	let trialPodcastTitle = '';
+	let trialPodcastSrc = '';
 	let trialGenerating = false;
 	let selectedLanguage: LanguageCode = supportedLanguages[0];
 
