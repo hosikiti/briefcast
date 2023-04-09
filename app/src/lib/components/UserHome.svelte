@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import type { Podcast } from '$lib/types';
+	import { showConfirm } from '$lib/modal';
 	import { formatDistance } from 'date-fns';
 	import {
 		ListBox,
@@ -82,24 +83,20 @@
 		modalStore.trigger(d);
 	}
 
-	function removeSelectedItem() {
+	async function removeSelectedItem() {
 		if (!selectedItem) return;
-		const confirm: ModalSettings = {
-			type: 'confirm',
-			title: `Remove '${selectedItem.name}' from your playlist?`,
-			buttonTextConfirm: 'Yes, Remove',
-			response: async (yes: boolean) => {
-				if (!yes) {
-					return;
-				}
-				const docId = selectedItem!.docId;
-				const uid = $page.data.userId;
-				await deleteDoc(doc(db, `playlists/${uid}/default/${docId}`));
-				// remove from the list
-				items = items.filter((item) => item.docId != docId);
-			}
-		};
-		modalStore.trigger(confirm);
+		const yes = await showConfirm(
+			`Remove '${selectedItem.name}' from your playlist?`,
+			`Yes, Remove`
+		);
+		if (!yes) {
+			return;
+		}
+		const docId = selectedItem!.docId;
+		const uid = $page.data.userId;
+		await deleteDoc(doc(db, `playlists/${uid}/default/${docId}`));
+		// remove from the list
+		items = items.filter((item) => item.docId != docId);
 	}
 
 	function openMenu(ev: Event, podcast: PodcastItem) {
