@@ -1,13 +1,11 @@
 <script lang="ts">
 	import type { FeedTemplate, TrialPodcastResult } from '$lib/types';
 	import { getAudioSrcFromId, supportedLanguages, type LanguageCode } from '$lib/util';
-	import axios from 'axios';
+	import axios, { HttpStatusCode } from 'axios';
 	import LangSelect from './LangSelect.svelte';
 	import LoadingSpinner from './LoadingSpinner.svelte';
 	import { goto } from '$app/navigation';
 
-	let trialPodcastTitle = '';
-	let trialPodcastSrc = '';
 	let trialGenerating = false;
 	let selectedLanguage: LanguageCode = supportedLanguages[0];
 
@@ -61,17 +59,15 @@
 				feedUrl: feedUrl,
 				languageCode: langCode
 			});
-			if (resp.status != 200) {
+			if (resp.status != HttpStatusCode.Ok) {
 				alert('import failed from: ' + feedUrl);
 				return;
 			}
 			const result = resp.data.result as TrialPodcastResult;
-			trialPodcastSrc = getAudioSrcFromId(result.id);
-			trialPodcastTitle = result.title;
-			const el = document.querySelector('#trialPodcast');
-			if (el instanceof HTMLAudioElement) {
-				el.load();
-			}
+
+			goto(
+				`/trial/ready?id=${encodeURIComponent(result.id)}&title=${encodeURIComponent(result.title)}`
+			);
 		} catch (e) {
 			alert('import failed from: ' + feedUrl);
 			console.error(e);
@@ -83,115 +79,49 @@
 
 <div class="flex w-full flex-col justify-center items-center">
 	<div class="p-4">
-		{#if trialPodcastSrc == ''}
-			<div class="flex flex-col">
-				<div class="font-serif flex-1 text-6xl py-16 pr-8">Less news, more life</div>
-				<div>
-					<div class="shadow-md mb-16 p-8 bg-slate-100 flex flex-col gap-2">
-						<h3 class="mb-4">Choose website and generate your podcast.</h3>
-						<div class="flex gap-4 flex-wrap">
-							{#each feedTemplates as tmpl}
-								<label class="flex items-center space-x-2">
-									<input
-										class="radio"
-										type="radio"
-										bind:group={feed}
-										name="radio-direct"
-										value={tmpl}
-									/>
-									<p>{tmpl.name}</p>
-								</label>
-							{/each}
-						</div>
-						<input
-							class="input p-2"
-							type="text"
-							readonly={feed.name != 'Custom'}
-							bind:value={feed.feedUrl}
-							placeholder="RSS or Atom feed URL"
-							disabled={trialGenerating}
-						/>
-						{#if feed.name == 'Custom'}
-							<label class="label my-2" for="">
-								<span>Podcast Language: </span>
-								<LangSelect bind:selectedLanguage />
+		<div class="flex flex-col">
+			<div class="font-serif flex-1 text-6xl py-16 pl-8">Less news, more life</div>
+			<div>
+				<div class="shadow-md mb-16 p-8 bg-slate-100 flex flex-col gap-2">
+					<h3 class="mb-4">Choose website and generate your podcast.</h3>
+					<div class="flex gap-4 flex-wrap">
+						{#each feedTemplates as tmpl}
+							<label class="flex items-center space-x-2">
+								<input
+									class="radio"
+									type="radio"
+									bind:group={feed}
+									name="radio-direct"
+									value={tmpl}
+								/>
+								<p>{tmpl.name}</p>
 							</label>
-						{/if}
-						<button
-							class="mt-4 btn variant-filled bg-orange-500 text-white flex items-center gap-1"
-							on:click={createTrialPodCast}
-							disabled={trialGenerating}
-						>
-							<LoadingSpinner show={trialGenerating} color="white" size={20} duration="1000ms" />
-							{trialGenerating ? 'Generating...' : 'Generate'}
-						</button>
+						{/each}
 					</div>
+					<input
+						class="input p-2"
+						type="text"
+						readonly={feed.name != 'Custom'}
+						bind:value={feed.feedUrl}
+						placeholder="RSS or Atom feed URL"
+						disabled={trialGenerating}
+					/>
+					{#if feed.name == 'Custom'}
+						<label class="label my-2" for="">
+							<span>Podcast Language: </span>
+							<LangSelect bind:selectedLanguage />
+						</label>
+					{/if}
+					<button
+						class="mt-4 btn variant-filled bg-orange-500 text-white flex items-center gap-1"
+						on:click={createTrialPodCast}
+						disabled={trialGenerating}
+					>
+						<LoadingSpinner show={trialGenerating} color="white" size={20} duration="1000ms" />
+						{trialGenerating ? 'Generating...' : 'Generate'}
+					</button>
 				</div>
 			</div>
-		{/if}
-		{#if trialPodcastSrc != '' && !trialGenerating}
-			<div class="">
-				<div class="flex justify-center flex-col md:flex-row md:gap-16">
-					<div class="flex flex-col">
-						<h1 class="py-8 md:py-16">Your podcast is ready!</h1>
-						<div class="w-full shadow-md p-4 bg-white flex flex-col gap-2">
-							<p class="font-serif font-bold text-slate-700 py-4">{trialPodcastTitle}</p>
-							<audio controls id="trialPodcast" class="w-full mb-4">
-								<source src={trialPodcastSrc} type="audio/mpeg" />
-								<em>Sorry, your browser doesn't support HTML5 audio.</em>
-							</audio>
-
-							<div class="flex justify-center gap-2">
-								<button class="btn variant-soft-primary" on:click={() => (trialPodcastSrc = '')}>
-									Try Again</button
-								>
-								<button
-									class="btn variant-filled bg-orange-500 text-white"
-									on:click={() => goto('/signin')}
-								>
-									Sign In</button
-								>
-							</div>
-						</div>
-					</div>
-					<div class="flex flex-col w-full md:w-[30%]">
-						<h2 class="mt-12 mb-4">What is BriefCast?</h2>
-						<p>
-							BriefCast is an AI-powered podcast generator that creates a podcast from a RSS feed.
-						</p>
-						<h3 class="mt-16 mb-4">Features</h3>
-						<ul>
-							<li>Generate podcasts from any website.</li>
-							<li>Automatically update podcasts.</li>
-							<li>Add multiple podcasts.</li>
-							<li>Customize podcast content.</li>
-							<li>Compatible with iOS, Android, and PC browsers.</li>
-							<li>Completely free.</li>
-						</ul>
-						<h3 class="mt-16 mb-4">Join us today</h3>
-						<p>
-							Staying informed shouldn't take hours of your day. Join us today and start enjoying
-							the "brief" podcasts that keep you informed and up-to-date without sacrificing your
-							life.
-						</p>
-						<div class="w-full flex justify-center my-8">
-							<button
-								class="btn variant-filled bg-orange-500 text-white"
-								on:click={() => goto('/signin')}
-							>
-								Sign In</button
-							>
-						</div>
-					</div>
-				</div>
-			</div>
-		{/if}
+		</div>
 	</div>
 </div>
-
-<style lang="scss">
-	li {
-		list-style-type: disc;
-		margin-left: 1rem;
-	}
-</style>
