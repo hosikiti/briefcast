@@ -22,14 +22,14 @@
 						</audio>
 
 						<div class="flex justify-center gap-2">
-							<button class="btn variant-soft-primary" on:click={() => goto('/')}>
+							<button class="btn variant-soft-primary rounded-xl" on:click={() => goto('/')}>
 								Try Again</button
 							>
 							<button
-								class="btn variant-filled bg-orange-500 text-white"
+								class="btn variant-filled bg-orange-500 text-white rounded-xl"
 								on:click={() => goto('/signin')}
 							>
-								Sign In</button
+								Get started</button
 							>
 						</div>
 					</div>
@@ -55,10 +55,10 @@
 					</p>
 					<div class="w-full flex justify-center my-8">
 						<button
-							class="btn variant-filled bg-orange-500 text-white"
+							class="btn variant-filled bg-orange-500 text-white rounded-xl"
 							on:click={() => goto('/signin')}
 						>
-							Sign In</button
+							Get started</button
 						>
 					</div>
 				</div>

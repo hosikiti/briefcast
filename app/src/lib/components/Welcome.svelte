@@ -79,8 +79,11 @@
 
 <div class="flex w-full flex-col justify-center items-center">
 	<div class="p-4">
-		<div class="flex flex-col">
-			<div class="font-serif flex-1 text-6xl py-16 pl-8">Less news, more life</div>
+		<div class="flex flex-col md:items-center">
+			<div class="font-serif flex-1 text-5xl pt-10 pb-8 pl-8 md:pt-16">Less news, more life</div>
+			<div class="font-serif flex-1 text-xl pb-10 pl-8 md:pb-16">
+				BriefCast creates short podcasts from any website.
+			</div>
 			<div>
 				<div class="shadow-md mb-16 p-8 bg-slate-100 flex flex-col gap-2">
 					<h3 class="mb-4">Choose website and generate your podcast.</h3>
@@ -113,7 +116,7 @@
 						</label>
 					{/if}
 					<button
-						class="mt-4 btn variant-filled bg-orange-500 text-white flex items-center gap-1"
+						class="mt-4 btn rounded-xl variant-filled bg-orange-500 text-white flex items-center gap-1"
 						on:click={createTrialPodCast}
 						disabled={trialGenerating}
 					>
