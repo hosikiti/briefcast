@@ -13,7 +13,7 @@
 
 	const feedTemplates: FeedTemplate[] = [
 		{
-			name: 'CNN',
+			name: 'CNN(English)',
 			description: 'CNN World News',
 			feedUrl: 'http://rss.cnn.com/rss/edition.rss',
 			languageCode: 'en-US',
@@ -21,7 +21,15 @@
 			language: 'en'
 		},
 		{
-			name: 'NHK',
+			name: 'BBC(English)',
+			description: 'BBC World News',
+			feedUrl: 'http://feeds.bbci.co.uk/news/world/rss.xml',
+			languageCode: 'en-US',
+			websiteUrl: '',
+			language: 'en'
+		},
+		{
+			name: 'NHK(Japanese)',
 			description: 'NHKニュース',
 			feedUrl: 'https://www.nhk.or.jp/rss/news/cat0.xml',
 			languageCode: 'ja-JP',
@@ -37,11 +45,11 @@
 			websiteUrl: ''
 		}
 	];
-	let feedGroup = feedTemplates[0];
+	let feed = feedTemplates[0];
 
 	const createTrialPodCast = async () => {
-		const feedUrl = feedGroup.feedUrl;
-		const langCode = selectedLanguage.code;
+		const feedUrl = feed.feedUrl;
+		const langCode = feed.languageCode || selectedLanguage.code;
 
 		if (!feedUrl) {
 			alert('Provide a feed URL of your favorite website');
@@ -81,13 +89,13 @@
 				<div>
 					<div class="shadow-md mb-16 p-8 bg-slate-100 flex flex-col gap-2">
 						<h3 class="mb-4">Choose website and generate your podcast.</h3>
-						<div class="flex gap-4">
+						<div class="flex gap-4 flex-wrap">
 							{#each feedTemplates as tmpl}
 								<label class="flex items-center space-x-2">
 									<input
 										class="radio"
 										type="radio"
-										bind:group={feedGroup}
+										bind:group={feed}
 										name="radio-direct"
 										value={tmpl}
 									/>
@@ -98,28 +106,25 @@
 						<input
 							class="input p-2"
 							type="text"
-							readonly={feedGroup.name != 'Custom'}
-							bind:value={feedGroup.feedUrl}
+							readonly={feed.name != 'Custom'}
+							bind:value={feed.feedUrl}
 							placeholder="RSS or Atom feed URL"
 							disabled={trialGenerating}
 						/>
-						{#if feedGroup.name == 'Custom'}
+						{#if feed.name == 'Custom'}
 							<label class="label my-2" for="">
 								<span>Podcast Language: </span>
 								<LangSelect bind:selectedLanguage />
 							</label>
 						{/if}
 						<button
-							class="mt-4 btn variant-filled bg-orange-500 text-white"
+							class="mt-4 btn variant-filled bg-orange-500 text-white flex items-center gap-1"
 							on:click={createTrialPodCast}
-							disabled={trialGenerating}>Generate</button
+							disabled={trialGenerating}
 						>
-						{#if trialGenerating}
-							<div class="flex justify-center flex-col items-center p-4 text-slate-800">
-								<h3>Generating your podcast ...</h3>
-								<LoadingSpinner />
-							</div>
-						{/if}
+							<LoadingSpinner show={trialGenerating} color="white" size={20} duration="1000ms" />
+							{trialGenerating ? 'Generating...' : 'Generate'}
+						</button>
 					</div>
 				</div>
 			</div>
