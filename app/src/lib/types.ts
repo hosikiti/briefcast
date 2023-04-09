@@ -1,4 +1,5 @@
 import type { Timestamp } from "firebase/firestore";
+import type { Gender } from "./util";
 
 export interface FeedData {
     link?: string;
@@ -27,6 +28,7 @@ export interface Podcast {
     websiteUrl: string
     lastGenerate?: Timestamp
     language: string
+    gender: Gender
     prompt?: string
 }
 

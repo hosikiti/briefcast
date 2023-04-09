@@ -1,4 +1,4 @@
-import { LanguageCode } from "../constant.ts";
+import { Gender, LanguageCode } from "../constant.ts";
 import { Context } from "../deps.ts";
 import { RSSGenerator } from "../generator/rss_generator.ts";
 import { PodcastRepository } from "../repository/podcast.ts";
@@ -20,6 +20,7 @@ interface TrialGenerateParam extends CommonParam {
   feedUrl: string;
   languageCode: LanguageCode;
   prompt: string;
+  gender: Gender;
   isPreview: boolean;
 }
 
@@ -61,6 +62,7 @@ export class PodcastController {
     const languageCode = param["languageCode"] || LanguageCode.enUS;
     const isPreview = param["isPreview"] || false;
     const prompt = param["prompt"] || "";
+    const gender = param["gender"] || Gender.male;
     const generator = new RSSGenerator({
       feedUrl: feedUrl,
       languageCode: languageCode,
@@ -94,6 +96,7 @@ export class PodcastController {
       await textToMP3({
         text: briefTranscript,
         languageCode: languageCode,
+        gender: gender,
         fileNamePrefix: udid,
       });
       setHttpSuccess(ctx, { "id": udid, "title": item.feed.title });

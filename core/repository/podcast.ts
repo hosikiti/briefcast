@@ -66,7 +66,7 @@ export class PodcastRepository {
     }
 
     // generate MP3 hash
-    const mp3Hash = getSHA256String(`${transcript}:${pod.prompt}:${pod.language}`);
+    const mp3Hash = getSHA256String(`${transcript}:${pod.prompt}:${pod.language}:${pod.gender}`);
 
     if (pod.lastContentHash == mp3Hash) {
       console.warn("mp3 content is same, so skip generation.");

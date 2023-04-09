@@ -6,3 +6,8 @@ export enum LanguageCode {
   jaJP = "ja-JP",
   enUS = "en-US",
 }
+
+export enum Gender {
+  male = "male",
+  female = "female",
+}

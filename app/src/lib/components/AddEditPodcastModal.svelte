@@ -7,6 +7,7 @@
 	import axios from 'axios';
 	import LoadingSpinner from './LoadingSpinner.svelte';
 	import StopPlayIcon from '$lib/icons/StopPlayIcon.svelte';
+	import GenderSelect from './GenderSelect.svelte';
 
 	const DEFAULT_PROMPT_EN = `Summarize this using the following steps:
 1. Summarize each topic into a 15-words podcast transcript in English. 
@@ -110,6 +111,7 @@
 			const resp = await axios.post('/api/podcast/trial', {
 				feedUrl: formData.feedUrl,
 				prompt: formData.prompt,
+				gender: formData.gender,
 				languageCode: selectedLanguage.code,
 				isPreview: true
 			});
@@ -150,10 +152,17 @@
 				/>
 			</label>
 		</div>
-		<label class="label" for="">
-			<span>Podcast Language: </span>
-			<LangSelect bind:selectedLanguage />
-		</label>
+		<div class="flex flex-col md:flex-row gap-2">
+			<label class="label flex-1" for="">
+				<span>Podcast Voice Language: </span>
+				<LangSelect bind:selectedLanguage />
+			</label>
+			<label class="label flex-1" for="">
+				<span>Podcast Voice Gender: </span>
+				<GenderSelect bind:selectedGender={formData.gender} />
+			</label>
+		</div>
+
 		<label class="label">
 			<span>Prompt for your podcast transcript: </span>
 			<textarea class="textarea text-sm" rows="5" bind:value={formData.prompt} />

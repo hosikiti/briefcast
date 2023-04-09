@@ -17,6 +17,21 @@ export interface LanguageCode {
     title: string;
 }
 
+export enum Gender {
+    male = "male",
+    female = "female"
+}
+
+export interface GenderItem {
+    label: string,
+    gender: Gender
+}
+
+export const genders: GenderItem[] = [
+    { label: "Male", gender: Gender.male },
+    { label: "Female", gender: Gender.female }
+]
+
 export const supportedLanguages: LanguageCode[] = [
     { code: 'en-US', title: 'English (US)' },
     { code: 'ja-JP', title: '日本語' }

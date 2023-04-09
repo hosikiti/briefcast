@@ -1,6 +1,6 @@
 import { ensureDir } from "https://deno.land/std@0.170.0/fs/ensure_dir.ts";
 import { GoogleAuth, texttospeech } from "https://googleapis.deno.dev/v1/texttospeech:v1.ts";
-import { LanguageCode, MEDIA_PATH } from "../constant.ts";
+import { Gender, LanguageCode, MEDIA_PATH } from "../constant.ts";
 import { SSMLSplit } from "https://esm.sh/ssml-split@0.5.0";
 import { Buffer } from "../deps.ts";
 import { splitJapanese } from "./text_splitter.ts";
@@ -15,12 +15,21 @@ export interface TextToMP3Option {
   languageCode: string;
   fileNamePrefix: string;
   outDir?: string;
+  gender?: Gender;
 }
 
-const defaultVoiceNameMap: { [key: string]: string } = {
-  [LanguageCode.jaJP]: "ja-JP-Neural2-C",
-  [LanguageCode.enUS]: "en-US-Neural2-G",
-};
+interface GoogleVoice {
+  languageCode: LanguageCode;
+  gender: Gender;
+  voiceName: string;
+}
+
+const voices: GoogleVoice[] = [
+  { languageCode: LanguageCode.jaJP, gender: Gender.male, voiceName: "ja-JP-Neural2-C" },
+  { languageCode: LanguageCode.jaJP, gender: Gender.female, voiceName: "ja-JP-Neural2-B" },
+  { languageCode: LanguageCode.enUS, gender: Gender.male, voiceName: "en-US-Neural2-D" },
+  { languageCode: LanguageCode.enUS, gender: Gender.female, voiceName: "en-US-Neural2-G" },
+];
 
 export const textToMP3 = async (option: TextToMP3Option) => {
   let mediaPath = MEDIA_PATH;
@@ -59,12 +68,20 @@ export const textToMP3 = async (option: TextToMP3Option) => {
     );
   }
 
+  const gender = option.gender || Gender.male;
+  const voice = voices.find((voice) =>
+    voice.gender == gender && voice.languageCode == option.languageCode
+  );
+  if (!voice) {
+    throw `Google Voice not found for ${gender}, ${option.languageCode}`;
+  }
+
   const textSynthesizePromises = ssmlParts.map((ssml) => {
     return client.textSynthesize({
       input: { ssml: ssml },
       voice: {
         languageCode: option.languageCode,
-        name: defaultVoiceNameMap[option.languageCode],
+        name: voice.voiceName,
       },
       audioConfig: { audioEncoding: "MP3", pitch: -2 },
     });
