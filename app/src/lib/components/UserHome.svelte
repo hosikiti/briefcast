@@ -23,6 +23,7 @@
 	import PlayIcon from '$lib/icons/PlayIcon.svelte';
 	import LoadingSpinner from './LoadingSpinner.svelte';
 	import StopPlayIcon from '$lib/icons/StopPlayIcon.svelte';
+	import { goto } from '$app/navigation';
 
 	interface PodcastItem extends Podcast {
 		audioSrc: string;
@@ -190,31 +191,33 @@
 <div class="p-4">
 	<div class="flex justify-between items-center py-4">
 		<h2 class="text-left ">Podcasts</h2>
-		<div class="flex justify-center gap-2">
-			{#if !isPlayingAll}
-				<button
-					on:click={playAll}
-					class="btn variant-filled rounded-3xl bg-orange-500 shadow-md text-white flex gap-2"
+		{#if items.length > 0}
+			<div class="flex justify-center gap-2">
+				{#if !isPlayingAll}
+					<button
+						on:click={playAll}
+						class="btn variant-filled rounded-3xl bg-orange-500 shadow-md text-white flex gap-2"
+					>
+						<PlayIcon />
+						Play All</button
+					>
+				{:else}
+					<button
+						on:click={stopPlayAll}
+						class="btn variant-filled rounded-3xl bg-orange-500 shadow-md text-white flex gap-2"
+					>
+						<StopPlayIcon />
+						Stop</button
+					>
+				{/if}
+				<a
+					href="/podcast/add"
+					class="btn variant-ringed bg-white rounded-3xl shadow-md text-slate-700"
 				>
-					<PlayIcon />
-					Play All</button
-				>
-			{:else}
-				<button
-					on:click={stopPlayAll}
-					class="btn variant-filled rounded-3xl bg-orange-500 shadow-md text-white flex gap-2"
-				>
-					<StopPlayIcon />
-					Stop</button
-				>
-			{/if}
-			<a
-				href="/podcast/add"
-				class="btn variant-ringed bg-white rounded-3xl shadow-md text-slate-700"
-			>
-				<PlusIcon />
-			</a>
-		</div>
+					<PlusIcon />
+				</a>
+			</div>
+		{/if}
 	</div>
 	<hr class="" />
 
@@ -267,6 +270,16 @@
 	{#if isLoading}
 		<div class="flex justify-center items-center h-[10rem]">
 			<LoadingSpinner />
+		</div>
+	{/if}
+	{#if !isLoading && items.length == 0}
+		<div class="py-16 w-full flex flex-col items-center">
+			<span class="py-10 text-xl font-serif text-slate-400">No podcasts yet</span>
+			<button
+				on:click={() => goto('/podcast/add')}
+				class="my-4 btn variant-filled bg-orange-500 text-white rounded-xl shadow-md flex gap-2"
+				><PlusIcon /> Generate</button
+			>
 		</div>
 	{/if}
 	<div id="popup" class="popup card shadow-md py-2 bg-white">

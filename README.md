@@ -6,6 +6,7 @@ BriefCast is an AI-powered pod cast generator from any website.
 
 ### April 2023
 
+- Add voice gender selection option.
 - Use podcast title in the transcript instead of the feed's title.
 - Generate 'all-combined mp3' for 'Play All'.
 - Generate a podcast on add.
@@ -15,6 +16,8 @@ BriefCast is an AI-powered pod cast generator from any website.
 - Add 'Play All' button.
 - Add loading spinners.
 - Fix Google Text-to-Speech API fails on a long text.
+- Prompt to add a podcast after signing up.
+- Add logger.
 
 ### March 2023
 
@@ -29,11 +32,8 @@ BriefCast is an AI-powered pod cast generator from any website.
 
 ## TODOs
 
-- Add voice gender selection option.
-- Prompt to add a podcast after signing up.
 - Prepare production environment.
 - Add Google Analytics.
-- Add logger.
 - Limit the total number of generations within a day (300 times a day would be the upper limit for my budget).
 - Add 'Add Website' button, allowing users to easily add a podcast by specifying a website URL.
 - ...
