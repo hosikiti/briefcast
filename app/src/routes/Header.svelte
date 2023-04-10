@@ -18,7 +18,7 @@
 <header class="h-12 flex justify-between p-2 px-4 bg-slate-500 items-center shadow-md">
 	<div class="text-white">
 		<button class="no-underlin font-serif text-3xl font-bold" on:click={() => goto('/')}
-			>BriefCast</button
+			>BriefCast <span class="text-base text-slate-300">beta</span></button
 		>
 	</div>
 

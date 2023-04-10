@@ -18,6 +18,7 @@ BriefCast is an AI-powered pod cast generator from any website.
 - Fix Google Text-to-Speech API fails on a long text.
 - Prompt to add a podcast after signing up.
 - Add logger.
+- Add 'beta' to the title.
 
 ### March 2023
 
@@ -32,7 +33,6 @@ BriefCast is an AI-powered pod cast generator from any website.
 
 ## TODOs
 
-- Add 'beta' to the title.
 - Show a message that edited podcast setting will be applied to the upcoming automatic update.
 - Prepare production environment.
   - Add dev subdomain.
