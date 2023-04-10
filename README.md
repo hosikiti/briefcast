@@ -35,6 +35,8 @@ BriefCast is an AI-powered pod cast generator from any website.
 - Add 'beta' to the title.
 - Show a message that edited podcast setting will be applied to the upcoming automatic update.
 - Prepare production environment.
+  - Add dev subdomain.
+  - Create Firebase project, setup authentication and firestore.
 - Add Google Analytics.
 - Limit the total number of generations within a day (300 times a day would be the upper limit for my budget).
 - Add 'Add Website' button, allowing users to easily add a podcast by specifying a website URL.
