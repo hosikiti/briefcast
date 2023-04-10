@@ -23,6 +23,7 @@
 {feedItems}`;
 
 	export let parent: any;
+	export let isUpdate = false;
 	export let formData: Podcast;
 	let isProcessing = false;
 	let isPreviewing = false;
@@ -204,7 +205,7 @@
 		<button
 			class="btn variant-filled bg-orange-500 text-white"
 			on:click={onSubmit}
-			disabled={isProcessing}>Add</button
+			disabled={isProcessing}>{isUpdate ? 'Update' : 'Add'}</button
 		>
 	</div>
 </div>
