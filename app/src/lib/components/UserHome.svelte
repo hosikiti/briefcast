@@ -24,6 +24,7 @@
 	import LoadingSpinner from './LoadingSpinner.svelte';
 	import StopPlayIcon from '$lib/icons/StopPlayIcon.svelte';
 	import { goto } from '$app/navigation';
+	import { showToast } from '$lib/toast';
 
 	interface PodcastItem extends Podcast {
 		audioSrc: string;
@@ -54,7 +55,8 @@
 				ref: AddEditPodcastModal,
 				// Add the component properties as key/value pairs
 				props: {
-					formData: selectedItem
+					formData: selectedItem,
+					isUpdate: true
 				}
 			} as ModalComponent,
 			response: async (podcast: Podcast | boolean) => {
@@ -73,6 +75,7 @@
 						// update the item
 						items = [];
 						await loadDefaultPlaylist();
+						showToast('Changes will apply in next daily update.');
 					} catch (e) {
 						alert('save failed');
 						console.error(e);
