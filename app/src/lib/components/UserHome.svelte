@@ -25,6 +25,7 @@
 	import StopPlayIcon from '$lib/icons/StopPlayIcon.svelte';
 	import { goto } from '$app/navigation';
 	import { showToast } from '$lib/toast';
+	import { MAX_PODCAST_PER_PLAYLIST } from '$lib/constant';
 
 	interface PodcastItem extends Podcast {
 		audioSrc$: string;
@@ -215,12 +216,13 @@
 						Stop</button
 					>
 				{/if}
-				<a
-					href="/podcast/add"
+				<button
+					disabled={items.length >= MAX_PODCAST_PER_PLAYLIST}
+					on:click={() => goto('/podcast/add')}
 					class="btn variant-ringed bg-white rounded-3xl shadow-md text-slate-700"
 				>
 					<PlusIcon />
-				</a>
+				</button>
 			</div>
 		{/if}
 	</div>

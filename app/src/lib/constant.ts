@@ -1,0 +1,1 @@
+export const MAX_PODCAST_PER_PLAYLIST = 5;

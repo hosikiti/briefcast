@@ -9,14 +9,20 @@
 	import { modalStore } from '@skeletonlabs/skeleton';
 	import AddEditPodcastModal from '$lib/components/AddEditPodcastModal.svelte';
 	import { showToast } from '$lib/toast';
-	import { stringify } from 'postcss';
 	import axios from 'axios';
+	import { MAX_PODCAST_PER_PLAYLIST } from '$lib/constant';
+	import { showAlert } from '$lib/modal';
 
 	export let data: PageData;
 
 	let templates: FeedTemplate[] = [];
+	let canAdd = false;
 
 	function handleAdd(tmpl?: FeedTemplate) {
+		if (!canAdd) {
+			showAlert('You can add up to 5 podcasts. Remove one.');
+			return;
+		}
 		const podcast = {} as Podcast;
 
 		if (tmpl) {
@@ -70,6 +76,7 @@
 			// generate podcast
 			const docId = snapshot.id;
 			updatePodcast(data.userId, docId);
+			await updateCanAdd();
 			showToast('Podcast added!');
 		} catch (e) {
 			alert('save failed');
@@ -100,6 +107,14 @@
 			templates.push(data);
 		});
 		templates = templates;
+
+		await updateCanAdd();
+	}
+
+	async function updateCanAdd() {
+		const playlistRef = collection(db, `playlists/${data.userId}/default`);
+		const docs = await getDocs(playlistRef);
+		canAdd = docs.size < MAX_PODCAST_PER_PLAYLIST;
 	}
 
 	onMount(async () => {

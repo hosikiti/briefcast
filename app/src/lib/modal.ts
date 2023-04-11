@@ -13,3 +13,17 @@ export function showConfirm(title: string, buttonTextConfirm = 'OK') {
         modalStore.trigger(confirm);
     })
 }
+
+export function showAlert(title: string, buttonTextCancel = 'OK') {
+    return new Promise<boolean>((resolve) => {
+        const confirm: ModalSettings = {
+            type: 'alert',
+            title: title,
+            buttonTextCancel: buttonTextCancel,
+            response: async (yes: boolean) => {
+                resolve(yes);
+            }
+        };
+        modalStore.trigger(confirm);
+    })
+}
