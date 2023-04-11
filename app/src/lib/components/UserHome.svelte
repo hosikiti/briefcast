@@ -27,9 +27,9 @@
 	import { showToast } from '$lib/toast';
 
 	interface PodcastItem extends Podcast {
-		audioSrc: string;
-		lastGenerateDate: string;
-		docId: string;
+		audioSrc$: string;
+		lastGenerateDate$: string;
+		docId$: string;
 	}
 
 	let isLoading = true;
@@ -62,15 +62,17 @@
 			response: async (podcast: Podcast | boolean) => {
 				if (podcast instanceof Object) {
 					try {
-						const docId = selectedItem!.docId;
+						const docId = selectedItem!.docId$;
 						const docRef = doc(db, `playlists/${$page.data.userId}/default/${docId}`);
 						// set null values for undefined key
+						const data = {} as Podcast;
 						for (const key in podcast) {
-							if (podcast[key] === undefined) {
-								podcast[key] = null;
+							if (podcast[key] === undefined || key.endsWith('$')) {
+								continue;
 							}
+							data[key] = podcast[key];
 						}
-						await setDoc(docRef, podcast);
+						await setDoc(docRef, data);
 
 						// update the item
 						items = [];
@@ -96,11 +98,11 @@
 		if (!yes) {
 			return;
 		}
-		const docId = selectedItem!.docId;
+		const docId = selectedItem!.docId$;
 		const uid = $page.data.userId;
 		await deleteDoc(doc(db, `playlists/${uid}/default/${docId}`));
 		// remove from the list
-		items = items.filter((item) => item.docId != docId);
+		items = items.filter((item) => item.docId$ != docId);
 	}
 
 	function openMenu(ev: Event, podcast: PodcastItem) {
@@ -149,9 +151,9 @@
 				}
 
 				const id = `${uid}/${docId}`;
-				data.audioSrc = getAudioSrcFromId(id);
-				data.lastGenerateDate = lastGenerateDate;
-				data.docId = docId;
+				data.audioSrc$ = getAudioSrcFromId(id);
+				data.lastGenerateDate$ = lastGenerateDate;
+				data.docId$ = docId;
 				items.push(data);
 			});
 			items = items;
@@ -162,7 +164,7 @@
 
 	async function playAll() {
 		const uid = $page.data.userId!;
-		const ids = items.map((item) => item.docId);
+		const ids = items.map((item) => item.docId$);
 		isPlayingAll = true;
 		playAllAudio = new Audio(getCombinedAudioSrc(uid, ids));
 		await playAudio(playAllAudio);
@@ -234,15 +236,15 @@
 					</button>
 				</div>
 				<div class="flex text-xs text-slate-500 gap-1">
-					{#if item.lastGenerateDate}
+					{#if item.lastGenerateDate$}
 						<span class="text-slate-400">Generated:</span>
-						<span>{item.lastGenerateDate}</span>
+						<span>{item.lastGenerateDate$}</span>
 					{:else}
 						<span class="text-slate-400">Generating ...</span>
 					{/if}
 				</div>
-				<audio controls class="my-4 w-full" data-id={item.docId}>
-					<source src={item.audioSrc} type="audio/mpeg" />
+				<audio controls class="my-4 w-full" data-id={item.docId$}>
+					<source src={item.audioSrc$} type="audio/mpeg" />
 					<em>Sorry, your browser doesn't support HTML5 audio.</em>
 				</audio>
 				<div class="flex justify-end">
