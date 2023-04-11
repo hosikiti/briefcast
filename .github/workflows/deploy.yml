@@ -17,7 +17,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   deploy:
-    environment: dev
+    environment: production
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -80,6 +80,7 @@ jobs:
             echo "MEDIA_PATH=${{ secrets.MEDIA_PATH }}" >> .env
             echo "LOG_PATH=${{ secrets.LOG_PATH }}" >> .env
             echo "NPM_CACHE=${{ secrets.NPM_CACHE }}" >> .env
+            echo "HOST=${{ secrets.HOST }}" >> .env
             rm -rf app/build
             mv ../tmp_svelte/app/build app/
             rm -rf ../tmp_svelte

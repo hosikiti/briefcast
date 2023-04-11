@@ -9,8 +9,8 @@ services:
     ports:
       - "8088:8088"
     environment:
-      VIRTUAL_HOST: briefcast.net
-      LETSENCRYPT_HOST: briefcast.net
+      VIRTUAL_HOST: ${HOST}
+      LETSENCRYPT_HOST: ${HOST}
       GOOGLE_APPLICATION_CREDENTIALS: /key.json
       OPEN_AI_API_KEY: ${OPEN_AI_API_KEY}
       PUBLIC_FIREBASE_API_KEY: ${PUBLIC_FIREBASE_API_KEY}
