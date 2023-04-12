@@ -3,17 +3,22 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { globalStore } from '../store';
 	import { goto } from '$app/navigation';
+	import { browser } from '$app/environment';
 
 	let email = 'test@gmail.com';
 	let password = '';
 	let errorWithEmail = '';
 	let isProcessing = false;
+	let showEmailSignIn = false;
 
 	onMount(() => {
 		globalStore.update((v) => {
 			v.showSignInNav = false;
 			return v;
 		});
+		if (browser) {
+			showEmailSignIn = location.href.includes('email=true');
+		}
 	});
 
 	onDestroy(() => {
@@ -69,7 +74,7 @@
 	<h1 class="mt-12">Sign in</h1>
 	<div class="flex flex-col gap-4 my-4">
 		<button
-			class="mt-4 p-2 variant-ringed bg-white flex items-center justify-center w-full w-[320px] shadow-md"
+			class="mt-8 min-w-[20rem] p-2 variant-ringed bg-white flex items-center justify-center w-full w-[320px] shadow-md"
 			on:click={signInWithGoogle}
 		>
 			<svg
@@ -95,44 +100,46 @@
 			Continue with Google</button
 		>
 		<hr class="my-8" />
-		<label class="text-sm ">
-			Email
-			<input type="text" placeholder="Email" class="input p-2" bind:value={email} />
-		</label>
-		<label class="text-sm">
-			Password
-			<input type="password" placeholder="Password" class="input p-2" bind:value={password} />
-		</label>
-		{#if errorWithEmail}
-			<span class="p-2 text-red-700 variant-ringed-error">{errorWithEmail}</span>
-		{/if}
+		{#if showEmailSignIn}
+			<label class="text-sm ">
+				Email
+				<input type="text" placeholder="Email" class="input p-2" bind:value={email} />
+			</label>
+			<label class="text-sm">
+				Password
+				<input type="password" placeholder="Password" class="input p-2" bind:value={password} />
+			</label>
+			{#if errorWithEmail}
+				<span class="p-2 text-red-700 variant-ringed-error">{errorWithEmail}</span>
+			{/if}
 
-		<button
-			class="btn variant-ringed bg-white shadow-md flex items-center gap-2"
-			on:click={signIn}
-			disabled={isProcessing}
-		>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
-				viewBox="0 0 24 24"
-				stroke-width="1.5"
-				stroke="currentColor"
-				class="w-6 h-6"
+			<button
+				class="btn variant-ringed bg-white shadow-md flex items-center gap-2"
+				on:click={signIn}
+				disabled={isProcessing}
 			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-				/>
-			</svg>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="1.5"
+					stroke="currentColor"
+					class="w-6 h-6"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+					/>
+				</svg>
 
-			Continue with Email</button
-		>
+				Continue with Email</button
+			>
+		{/if}
 	</div>
 	<div class="p-2 mb-12 w-full md:w-[50%] text-sm text-slate-600">
-		By clicking "Continue with Google/Email" above, you acknowledge that you have read and
-		understood, and agree to BriefCast's <a href="/user_terms">Terms & Conditions</a> and
+		By clicking "Continue with Google" above, you acknowledge that you have read and understood, and
+		agree to BriefCast's <a href="/user_terms">Terms & Conditions</a> and
 		<a href="/privacy_policy">Privacy Policy</a>.
 	</div>
 </div>
