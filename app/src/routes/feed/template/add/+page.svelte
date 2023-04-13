@@ -1,8 +1,10 @@
 <script lang="ts">
 	import LangSelect from '$lib/components/LangSelect.svelte';
 	import { db } from '$lib/firebase';
-	import type { FeedTemplate } from '$lib/types';
+	import { showToast } from '$lib/toast';
+	import type { FeedData, FeedTemplate } from '$lib/types';
 	import { supportedLanguages } from '$lib/util';
+	import axios from 'axios';
 	import { addDoc, collection } from 'firebase/firestore';
 
 	let name = '';
@@ -29,16 +31,40 @@
 			alert('save done');
 		}
 	}
+
+	async function getInfo() {
+		try {
+			const resp = await axios.get(`/api/feed/content?url=${encodeURIComponent(feedUrl)}`);
+			const feed = resp.data as FeedData;
+			websiteUrl = feed.link || '';
+			name = feed.title || '';
+			description = feed.description || '';
+			showToast('Get info done');
+		} catch (e) {
+			showToast('Get info failed!');
+		}
+	}
 </script>
 
-<div class="p-2">
-	<h1>Add feed template</h1>
-	<div class="flex flex-col gap-2 py-4">
-		<input type="text" placeholder="name" bind:value={name} />
-		<input type="text" placeholder="description" bind:value={description} />
-		<input type="text" placeholder="feed URL" bind:value={feedUrl} />
-		<input type="text" placeholder="website URL" bind:value={websiteUrl} />
-		<LangSelect bind:selectedLanguage={selectedLangage} />
-		<button class="variant-filled p-2 text-white" on:click={add}>Add</button>
+<div class="p-2 w-full flex flex-col items-center">
+	<div class="w-full md:w-[50%]">
+		<h1 class="my-8 text-center">Add feed template</h1>
+		<div class="flex flex-col gap-2 py-4">
+			<div class="flex gap-2">
+				<input class="input p-2" type="text" placeholder="feed URL" bind:value={feedUrl} />
+				<button class="btn variant-filled-secondary" on:click={getInfo}>Get Info</button>
+			</div>
+			<label>
+				<span>Name</span>
+				<input class="input p-2" type="text" placeholder="name" bind:value={name} />
+			</label>
+			<label>
+				<span>Description</span>
+				<input class="input p-2" type="text" placeholder="description" bind:value={description} />
+			</label>
+			<input class="input p-2" type="text" placeholder="website URL" bind:value={websiteUrl} />
+			<LangSelect bind:selectedLanguage={selectedLangage} />
+			<button class="variant-filled p-2 text-white" on:click={add}>Add</button>
+		</div>
 	</div>
 </div>
