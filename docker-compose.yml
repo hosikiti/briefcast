@@ -1,7 +1,6 @@
 version: '3.2'
 services:
   briefcast:
-    container_name: briefcast
     build:
       context: ./app
       dockerfile: ./Dockerfile
@@ -24,7 +23,6 @@ services:
       - ./app:/app
       - ${NPM_CACHE}:/app/.npm
   briefcast_core:
-    container_name: briefcast_core
     build:
       context: ./core
       dockerfile: ./Dockerfile
