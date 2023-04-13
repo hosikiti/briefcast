@@ -46,7 +46,7 @@
 						<li>Add multiple podcasts.</li>
 						<li>Customize podcast content.</li>
 						<li>Compatible with iOS, Android, and PC browsers.</li>
-						<li>Completely free.</li>
+						<li>Free.</li>
 					</ul>
 					<h3 class="mt-16 mb-4">Join us today</h3>
 					<p>
