@@ -1,5 +1,6 @@
 import { type FirebaseApp, initializeApp } from "firebase/app";
 import { Firestore, getFirestore } from "firebase/firestore";
+import { getAnalytics, type Analytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signInWithRedirect, signOut, type Auth, type AuthProvider, signInWithEmailAndPassword } from "firebase/auth";
 import {
   PUBLIC_FIREBASE_API_KEY,
@@ -17,6 +18,7 @@ import { redirect } from "@sveltejs/kit";
 export let app: FirebaseApp
 export let db: Firestore
 export let auth: Auth
+let analytics: Analytics;
 let initialized = false;
 
 async function setToken(token: string, refreshToken: string) {
@@ -46,6 +48,7 @@ export function initializeFirebase() {
 
   db = getFirestore(app);
   auth = getAuth(app);
+  analytics = getAnalytics(app);
 
   onAuthStateChanged(auth, async (user) => {
     if (user) {
