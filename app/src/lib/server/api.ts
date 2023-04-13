@@ -12,7 +12,8 @@ export function proxyCoreAPI(ev: RequestEvent, apiPath: string, body: (BodyInit 
             ...{
                 "Content-Type": "application/json",
                 "X-Forwarded-For": request.headers.get("X-Forwarded-For") || getClientAddress(),
-                "User-Agent": request.headers.get("User-Agent") || 'unknown'
+                "User-Agent": request.headers.get("User-Agent") || 'unknown',
+                "X-User-ID": ev.locals.userId || ''
             }, ...headers
         },
         body: body,

@@ -4,6 +4,7 @@ import { BriefCastGenerator } from "./generator.ts";
 import { RSSGenerator } from "./rss_generator.ts";
 
 export interface GenerateOption {
+  clientId: string;
   useCache: boolean;
   feedUrl: string;
   prompt?: string;

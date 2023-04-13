@@ -1,5 +1,16 @@
 import { LanguageCode } from "../constant.ts";
-import { doc, Firestore, getDoc, openai, serverTimestamp, setDoc } from "../deps.ts";
+import {
+  addDoc,
+  collection,
+  doc,
+  Firestore,
+  getDoc,
+  increment,
+  openai,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from "../deps.ts";
 import { getSHA256String } from "../util/hash.ts";
 
 const defaultEnglishPrompt = `Summarize this into a transcript using the following steps:
@@ -21,16 +32,12 @@ export class SummarizerRepository {
 
   // Summarize text into podcast style transcription
   async execute(
+    clientId: string,
     input: string,
     languageCode: LanguageCode,
     prompt?: string,
     useCache = true,
   ): Promise<string> {
-    const configuration = new openai.Configuration({
-      apiKey: Deno.env.get("OPEN_AI_API_KEY"),
-    });
-    const api = new openai.OpenAIApi(configuration);
-
     if (!prompt) {
       prompt = languageCode == LanguageCode.jaJP ? defaultJapanesePrompt : defaultEnglishPrompt;
     }
@@ -44,12 +51,20 @@ export class SummarizerRepository {
       }
     }
 
+    const configuration = new openai.Configuration({
+      apiKey: Deno.env.get("OPEN_AI_API_KEY"),
+    });
+    const api = new openai.OpenAIApi(configuration);
     const resp = await api.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
         { role: "user", content: prompt },
       ],
     });
+
+    if (resp.data.usage) {
+      await this.saveStat(clientId, prompt, resp.data.usage.total_tokens);
+    }
 
     const result = resp.data.choices[0].message?.content || "";
     if (result) {
@@ -67,5 +82,32 @@ export class SummarizerRepository {
   private async setCache(key: string, val: string): Promise<void> {
     const ref = doc(this.db, "summarizerCaches", key);
     await setDoc(ref, { data: val, createdAt: serverTimestamp() });
+  }
+
+  private async saveStat(clientId: string, prompt: string, usedToken: number) {
+    // Increment monthly total token
+    const dt = new Date();
+    const monthKey = dt.getFullYear() + "-" + (dt.getMonth() + 1);
+    const monthlyTotalRef = doc(this.db, "monthlyTotalToken", monthKey);
+    await setDoc(monthlyTotalRef, {
+      requestCount: increment(1),
+      tokenCount: increment(usedToken),
+    }, { merge: true });
+
+    // Save usage
+    const historyRef = collection(this.db, "summarizeHistory");
+    await addDoc(historyRef, {
+      clientId,
+      prompt,
+      usedToken,
+      createdAt: serverTimestamp(),
+    });
+
+    // Save stat per user
+    const userStatRef = doc(this.db, "summarizeUserStat", clientId);
+    await setDoc(userStatRef, {
+      requestCount: increment(1),
+      tokenCount: increment(usedToken),
+    }, { merge: true });
   }
 }

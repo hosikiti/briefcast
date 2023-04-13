@@ -15,6 +15,7 @@ export {
   getDoc,
   getDocs,
   getFirestore,
+  increment,
   limit,
   orderBy,
   query,

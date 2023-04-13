@@ -52,6 +52,9 @@ export class PodcastController {
 
   // generate podcast for trial
   static async trialGenerate(ctx: Context) {
+    const { ip, headers } = ctx.request;
+    const clientId = headers.get("x-user-id") || headers.get("x-forwarded-for") || ip;
+
     const param = await getPostBody<TrialGenerateParam>(ctx);
     if (param == null) {
       setHttpBadRequest(ctx);
@@ -64,6 +67,7 @@ export class PodcastController {
     const prompt = param["prompt"] || "";
     const gender = param["gender"] || Gender.male;
     const generator = new RSSGenerator({
+      clientId: clientId,
       feedUrl: feedUrl,
       languageCode: languageCode,
       useCache: true,

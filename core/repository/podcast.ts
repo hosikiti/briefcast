@@ -39,6 +39,7 @@ export class PodcastRepository {
     pod: PodcastDefinition,
   ): Promise<boolean> {
     const opts: GenerateOption = {
+      clientId: pod.authorId,
       useCache: true,
       languageCode: pod.language,
       feedUrl: pod.feedUrl,

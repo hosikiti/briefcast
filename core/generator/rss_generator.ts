@@ -52,7 +52,7 @@ export class RSSGenerator implements BriefCastGenerator {
   async summarize(item: BriefCastItem): Promise<string> {
     let intro = "";
     let closing = "";
-    const { languageCode, prompt, summarizer, isPreview, useCache, title } = this.options;
+    const { languageCode, prompt, summarizer, isPreview, useCache, title, clientId } = this.options;
 
     if (!isPreview) {
       // Create intro part
@@ -69,7 +69,7 @@ export class RSSGenerator implements BriefCastGenerator {
     }
 
     // Summarize the transcript
-    const body = await summarizer.execute(item.content, languageCode, prompt, useCache);
+    const body = await summarizer.execute(clientId, item.content, languageCode, prompt, useCache);
 
     return intro + body + closing;
   }
