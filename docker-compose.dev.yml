@@ -1,5 +1,8 @@
 version: '3.2'
 services:
+  briefcast:
+    ports:
+      - "8088:8088"
   briefcast_core:
     volumes:
       - ./core:/app
