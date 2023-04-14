@@ -11,7 +11,6 @@
 		ListBox,
 		ListBoxItem,
 		modalStore,
-		popup,
 		type ModalComponent,
 		type ModalSettings,
 		type PopupSettings
@@ -37,6 +36,7 @@
 	let isPlayingAll = false;
 	let playAllAudio: HTMLAudioElement | null;
 	let items: PodcastItem[] = [];
+	let checkNewAudioTimer: NodeJS.Timer;
 
 	onMount(() => {
 		loadDefaultPlaylist();
@@ -78,7 +78,7 @@
 						// update the item
 						items = [];
 						await loadDefaultPlaylist();
-						showToast('Changes will apply in next daily update.');
+						showToast('Changes will apply in next daily update. Hang tight!');
 					} catch (e) {
 						alert('save failed');
 						console.error(e);
@@ -138,29 +138,73 @@
 	async function loadDefaultPlaylist() {
 		try {
 			isLoading = true;
-			const uid = $page.data.userId;
-			const playlistRef = collection(db, `playlists/${uid}/default`);
-			(await getDocs(playlistRef)).docs.forEach((doc) => {
-				const data = doc.data() as PodcastItem;
-				const docId = doc.id;
+			items = await getDefaultPlaylist();
 
-				// format last generate date
-				const lastGenerate = data.lastGenerate?.toDate();
-				let lastGenerateDate = '';
-				if (lastGenerate) {
-					lastGenerateDate = formatDistance(lastGenerate, new Date(), { addSuffix: true });
+			// New podcast that is just added may not have audio yet.
+			// so, check new generated audio by using timer.
+			const hasNotGenerated = items.findIndex((item) => !item.lastGenerate) >= 0;
+			if (hasNotGenerated) {
+				if (checkNewAudioTimer) {
+					clearInterval(checkNewAudioTimer);
 				}
-
-				const id = `${uid}/${docId}`;
-				data.audioSrc$ = getAudioSrcFromId(id);
-				data.lastGenerateDate$ = lastGenerateDate;
-				data.docId$ = docId;
-				items.push(data);
-			});
-			items = items;
+				checkNewAudioTimer = setInterval(() => {
+					updateGeneratedAudio();
+				}, 10000);
+			}
 		} finally {
 			isLoading = false;
 		}
+	}
+
+	async function updateGeneratedAudio() {
+		const notYetGenerated = items.find((item) => !item.lastGenerate);
+		if (!notYetGenerated) {
+			clearInterval(checkNewAudioTimer);
+			return;
+		}
+		const newItems = await getDefaultPlaylist();
+		items = items.map((item) => {
+			if (!item.lastGenerate) {
+				const newItem = newItems.find(
+					(newItem) => newItem.docId$ == item.docId$ && newItem.lastGenerate
+				);
+				if (newItem) {
+					// force reload audio
+					setTimeout(() => {
+						const audio = document.querySelector(`audio[data-id='${newItem.docId$}']`);
+						if (audio instanceof HTMLAudioElement) {
+							audio.load();
+						}
+					}, 100);
+					return newItem;
+				}
+			}
+			return item;
+		});
+	}
+
+	async function getDefaultPlaylist() {
+		const newItems: PodcastItem[] = [];
+		const uid = $page.data.userId;
+		const playlistRef = collection(db, `playlists/${uid}/default`);
+		(await getDocs(playlistRef)).docs.forEach((doc) => {
+			const data = doc.data() as PodcastItem;
+			const docId = doc.id;
+
+			// format last generate date
+			const lastGenerate = data.lastGenerate?.toDate();
+			let lastGenerateDate = '';
+			if (lastGenerate) {
+				lastGenerateDate = formatDistance(lastGenerate, new Date(), { addSuffix: true });
+			}
+
+			const id = `${uid}/${docId}`;
+			data.audioSrc$ = getAudioSrcFromId(id);
+			data.lastGenerateDate$ = lastGenerateDate;
+			data.docId$ = docId;
+			newItems.push(data);
+		});
+		return newItems;
 	}
 
 	async function playAll() {
@@ -242,7 +286,7 @@
 						<span class="text-slate-400">Generated:</span>
 						<span>{item.lastGenerateDate$}</span>
 					{:else}
-						<span class="text-slate-400">Generating ...</span>
+						<span class="text-slate-400">Generating ... It may take 20-30 seconds.</span>
 					{/if}
 				</div>
 				<audio controls class="my-4 w-full" data-id={item.docId$}>
