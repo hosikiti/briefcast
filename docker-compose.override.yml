@@ -1,6 +1,10 @@
 # Production
 version: '3.2'
 services:
+  briefcast:
+    networks:
+      - default
+      - internal
   briefcast_core:
     networks:
       - internal
