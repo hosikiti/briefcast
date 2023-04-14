@@ -229,7 +229,7 @@
 	<hr class="" />
 
 	<div class="flex flex-col flex-wrap md:flex-row gap-4 py-4">
-		{#each items as item}
+		{#each items as item (item.docId$)}
 			<div class="p-4 shadow-md bg-white flex flex-col items-stretch gap-2 min-w-[30vw]">
 				<div class="flex items-center justify-between">
 					<h3 class="">{item.name}</h3>
