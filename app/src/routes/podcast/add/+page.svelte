@@ -144,7 +144,7 @@
 		<h3 class="mt-8 mb-4">Explore</h3>
 		<div class="flex flex-wrap gap-2 items-center flex-col md:flex-row">
 			{#each templates as tmpl}
-				<div class="border p-4 w-full lg:w-[30%] h-[12rem] flex flex-col rounded-lg">
+				<div class="border p-4 w-full lg:w-[30%] h-[14rem] flex flex-col rounded-lg">
 					<div class="flex gap-2 items-center mb-2">
 						<span class="font-bold text-slate-700 text-lg">{tmpl.name}</span>
 					</div>
