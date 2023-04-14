@@ -20,6 +20,7 @@ BriefCast is an AI-powered pod cast generator from any website.
 - Add logger.
 - Add 'beta' to the title.
 - Add Google Analytics.
+- Prepare production environment.
 
 ### March 2023
 
@@ -34,8 +35,6 @@ BriefCast is an AI-powered pod cast generator from any website.
 
 ## TODOs
 
-- Prepare production environment.
-  - Add at least 30 famous RSS feeds.
 - Limit the total number of generations within a day (300 times a day would be the upper limit for my budget).
 - Add 'Add Website' button, allowing users to easily add a podcast by specifying a website URL.
 - ...
