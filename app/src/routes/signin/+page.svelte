@@ -74,7 +74,7 @@
 	<h1 class="mt-12">Sign in</h1>
 	<div class="flex flex-col gap-4 my-4">
 		<button
-			class="mt-8 min-w-[20rem] p-2 variant-ringed bg-white flex items-center justify-center w-full w-[320px] shadow-md"
+			class="rounded-xl mt-8 min-w-[20rem] p-2 variant-ringed bg-white flex items-center justify-center w-full w-[320px] shadow-md"
 			on:click={signInWithGoogle}
 		>
 			<svg

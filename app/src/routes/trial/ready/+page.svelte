@@ -8,61 +8,75 @@
 	const trialPodcastSrc = getAudioSrcFromId(data.id);
 </script>
 
-<div class="flex w-full flex-col justify-center items-center">
-	<div class="p-4">
-		<div class="">
-			<div class="flex justify-center flex-col md:flex-row md:gap-16">
-				<div class="flex flex-col">
-					<h1 class="py-8 md:py-16">Your podcast is ready!</h1>
-					<div class="w-full shadow-md p-4 bg-white flex flex-col gap-2">
-						<p class="font-serif font-bold text-slate-700 py-4">{trialPodcastTitle}</p>
-						<audio controls id="trialPodcast" class="w-full mb-4">
-							<source src={trialPodcastSrc} type="audio/mpeg" />
-							<em>Sorry, your browser doesn't support HTML5 audio.</em>
-						</audio>
+<div class="flex w-full flex-col justify-center">
+	<div class="px-8">
+		<div class="flex justify-center flex-col md:flex-row md:gap-16">
+			<div class="flex flex-col">
+				<span class="font-sans py-8 md:py-16 text-center font-bold text-xl text-slate-700"
+					>Your podcast is ready!</span
+				>
+				<div class="w-full shadow-md p-4 bg-white flex flex-col gap-2">
+					<p class="font-sans  text-slate-700 py-4">
+						Listen to a podcast generated from "{trialPodcastTitle}".
+					</p>
+					<audio controls id="trialPodcast" class="w-full mb-4">
+						<source src={trialPodcastSrc} type="audio/mpeg" />
+						<em>Sorry, your browser doesn't support HTML5 audio.</em>
+					</audio>
 
-						<div class="flex justify-center gap-2">
-							<button class="btn variant-soft-primary rounded-xl" on:click={() => goto('/')}>
-								Try Again</button
-							>
-							<button
-								class="btn variant-filled bg-orange-500 text-white rounded-xl"
-								on:click={() => goto('/signin')}
-							>
-								Get started</button
-							>
-						</div>
-					</div>
-				</div>
-				<div class="flex flex-col w-full md:w-[30%]">
-					<h2 class="mt-12 mb-4">What is BriefCast?</h2>
-					<p>
-						BriefCast is an AI-powered podcast generator that creates a podcast from a RSS feed.
-					</p>
-					<h3 class="mt-16 mb-4">Features</h3>
-					<ul>
-						<li>Generate podcasts from any website.</li>
-						<li>Automatically update podcasts.</li>
-						<li>Add multiple podcasts.</li>
-						<li>Customize podcast content.</li>
-						<li>Compatible with iOS, Android, and PC browsers.</li>
-						<li>Free.</li>
-					</ul>
-					<h3 class="mt-16 mb-4">Join us today</h3>
-					<p>
-						Staying informed shouldn't take hours of your day. Join us today and start enjoying the
-						"brief" podcasts that keep you informed and up-to-date without sacrificing your life.
-					</p>
-					<div class="w-full flex justify-center my-8">
-						<button
-							class="btn variant-filled bg-orange-500 text-white rounded-xl"
-							on:click={() => goto('/signin')}
-						>
-							Get started</button
+					<div class="flex justify-center gap-2">
+						<button class="btn variant-soft-primary rounded-xl" on:click={() => goto('/')}>
+							Try Again</button
 						>
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div class="bg-slate-50 mt-8 flex flex-col md:items-center">
+		<div class="flex flex-col w-full md:w-[60%] text-center items-center">
+			<span class="mt-8 p-4 font-semibold text-3xl md:text-4xl">
+				BriefCast turns any website into a tiny podcast with the help of AI.
+			</span>
+			<span class="py-8 px-8 md:px-16">
+				Staying informed shouldn't take hours of your day. Join us today and start enjoying the
+				"brief" podcasts that keep you informed and up-to-date without sacrificing your life.
+			</span>
+
+			<div class="my-8 px-8 md:w-[240px] flex-col flex">
+				<button
+					class="btn variant-filled bg-orange-500 text-white rounded-xl"
+					on:click={() => goto('/signin')}
+				>
+					Get started</button
+				>
+				<span class="py-4 text-center text-slate-600 font-semibold text-sm"
+					>No credit card required</span
+				>
+			</div>
+		</div>
+	</div>
+	<div class="bg-slate-700 text-white flex flex-col md:items-center">
+		<div class="flex flex-col w-ful md:w-[60%] items-start md:items-center px-8">
+			<span class="my-8 font-bold text-slate-50">Sign-up for free, and:</span>
+			<div class="text-left md:px-16">
+				<ul>
+					<li>You can create multiple podcasts from news and blog or whatever website you like.</li>
+					<li>Your podcasts are saved in a playlist.</li>
+					<li>Your podcasts are customizable and updated automatically.</li>
+				</ul>
+			</div>
+		</div>
+		<div class="my-8 px-8 flex-col flex">
+			<button
+				class="btn variant-filled bg-orange-500 text-white rounded-xl"
+				on:click={() => goto('/signin')}
+			>
+				Get started</button
+			>
+			<span class="py-4 text-center text-slate-400 font-semibold text-sm"
+				>No credit card required</span
+			>
 		</div>
 	</div>
 </div>
