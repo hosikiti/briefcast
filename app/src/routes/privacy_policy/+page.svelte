@@ -59,7 +59,7 @@
 
 		<p>
 			If you have any questions or concerns about our privacy policy, please contact us at <a
-				href="mailto:contact@briefcast.com">contact@briefcast.com</a
+				href="mailto:briefcast.official@gmail.com">briefcast.official@gmail.com</a
 			>.
 		</p>
 	</div>
