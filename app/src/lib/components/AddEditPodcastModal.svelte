@@ -8,6 +8,7 @@
 	import LoadingSpinner from './LoadingSpinner.svelte';
 	import StopPlayIcon from '$lib/icons/StopPlayIcon.svelte';
 	import GenderSelect from './GenderSelect.svelte';
+	import { focusTrap } from '@skeletonlabs/skeleton';
 
 	const DEFAULT_PROMPT_EN = `Summarize this using the following steps:
 1. Summarize each topic into a 15-words podcast transcript in English. 
@@ -139,6 +140,9 @@
 <div class="bg-white border p-4 shadow-lg w-full lg:w-[60%] relative flex flex-col">
 	<div class="flex flex-col my-4 gap-4">
 		<div class="flex flex-col md:flex-row gap-2">
+			<!-- Disable auto focus to prevent keyboard UI showing up on show -->
+			<!-- svelte-ignore a11y-autofocus -->
+			<input type="hidden" autofocus={true} />
 			<label class="label">
 				<span>Name: </span>
 				<input type="text" class="input p-2" placeholder="Feed title" bind:value={formData.name} />
