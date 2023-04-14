@@ -5,6 +5,7 @@
 	import LangSelect from './LangSelect.svelte';
 	import LoadingSpinner from './LoadingSpinner.svelte';
 	import { goto } from '$app/navigation';
+	import WhatIsIt from './WhatIsIt.svelte';
 
 	let trialGenerating = false;
 	let selectedLanguage: LanguageCode = supportedLanguages[0];
@@ -80,13 +81,15 @@
 <div class="flex w-full flex-col justify-center items-center">
 	<div class="p-4">
 		<div class="flex flex-col md:items-center">
-			<div class="font-serif flex-1 text-5xl pt-10 pb-8 pl-8 md:pt-16">Less news, more life</div>
-			<div class="font-serif flex-1 text-xl pb-10 pl-8 md:pb-16">
-				BriefCast creates short podcasts from any website.
+			<div class="font-sans text-center font-bold flex-1 text-6xl pt-10 md:pt-16 mb-8">
+				Less news, more life
+			</div>
+			<div class="font-sans font-semibold text-slate-600 flex-1 text-xl pb-10 md:pb-16 text-center">
+				Spand many hours on news every day? BriefCast saves you.
 			</div>
 			<div>
-				<div class="shadow-md mb-16 p-8 bg-slate-100 flex flex-col gap-2">
-					<h3 class="mb-4">Choose website and generate your podcast.</h3>
+				<div class="shadow-md mb-8 p-8 bg-slate-100 flex flex-col gap-2">
+					<span class="mb-4">Choose website and generate a short podcast.</span>
 					<div class="flex gap-4 flex-wrap">
 						{#each feedTemplates as tmpl}
 							<label class="flex items-center space-x-2">
@@ -127,4 +130,5 @@
 			</div>
 		</div>
 	</div>
+	<WhatIsIt />
 </div>
