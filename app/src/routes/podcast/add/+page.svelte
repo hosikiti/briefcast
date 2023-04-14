@@ -14,13 +14,19 @@
 	import type { PageData } from './$types';
 	import type { FeedTemplate, Podcast } from '$lib/types';
 	import { onMount } from 'svelte';
-	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
+	import {
+		type ModalSettings,
+		type ModalComponent,
+		type ToastSettings,
+		toastStore
+	} from '@skeletonlabs/skeleton';
 	import { modalStore } from '@skeletonlabs/skeleton';
 	import AddEditPodcastModal from '$lib/components/AddEditPodcastModal.svelte';
 	import { showToast } from '$lib/toast';
 	import axios from 'axios';
 	import { MAX_PODCAST_PER_PLAYLIST } from '$lib/constant';
 	import { showAlert } from '$lib/modal';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 
@@ -86,7 +92,17 @@
 			const docId = snapshot.id;
 			updatePodcast(data.userId, docId);
 			await updateCanAdd();
-			showToast('Podcast added!');
+
+			const t: ToastSettings = {
+				message: 'Added!',
+				timeout: 10000,
+				action: {
+					label: 'Show my playlist',
+					response: () => goto('/')
+				},
+				background: 'variant-filled-primary'
+			};
+			toastStore.trigger(t);
 		} catch (e) {
 			alert('save failed');
 			console.error(e);
