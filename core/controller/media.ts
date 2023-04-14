@@ -10,6 +10,7 @@ export class MediaController {
       const query = ctx.request.url.searchParams;
       const filePath = MEDIA_PATH + "/" + query.get("id") + ".mp3";
       ctx.response.headers.set("Content-Type", "audio/mp3");
+      ctx.response.headers.set("Cache-Control", "no-store");
       ctx.response.body = Deno.readFileSync(filePath);
     } catch (e) {
       logger.error(e);
@@ -43,6 +44,7 @@ export class MediaController {
       }
 
       ctx.response.headers.set("Content-Type", "audio/mp3");
+      ctx.response.headers.set("Cache-Control", "no-store");
       ctx.response.body = buf.bytes();
     } catch (e) {
       logger.error(e);
