@@ -11,6 +11,7 @@
 	let description = '';
 	let feedUrl = '';
 	let websiteUrl = '';
+	let prompt = '';
 	let selectedLangage = supportedLanguages[0];
 
 	async function add() {
@@ -21,6 +22,7 @@
 				websiteUrl,
 				description,
 				name,
+				prompt,
 				languageCode: selectedLangage.code,
 				language: selectedLangage.code.split('-')[1]
 			} as FeedTemplate);
@@ -61,6 +63,10 @@
 			<label>
 				<span>Description</span>
 				<input class="input p-2" type="text" placeholder="description" bind:value={description} />
+			</label>
+			<label>
+				<span>Prompt</span>
+				<input class="input p-2" type="text" placeholder="prompt" bind:value={prompt} />
 			</label>
 			<input class="input p-2" type="text" placeholder="website URL" bind:value={websiteUrl} />
 			<LangSelect bind:selectedLanguage={selectedLangage} />

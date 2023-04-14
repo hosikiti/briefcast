@@ -1,7 +1,16 @@
 <script lang="ts">
 	import { db } from '$lib/firebase';
-	import { supportedLanguages, type LanguageCode } from '$lib/util';
-	import { addDoc, collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
+	import { supportedLanguages, type LanguageCode, languageShortNameMap } from '$lib/util';
+	import {
+		addDoc,
+		collection,
+		doc,
+		getDoc,
+		getDocs,
+		orderBy,
+		query,
+		setDoc
+	} from 'firebase/firestore';
 	import type { PageData } from './$types';
 	import type { FeedTemplate, Podcast } from '$lib/types';
 	import { onMount } from 'svelte';
@@ -101,7 +110,8 @@
 
 	async function loadFeedTemplates() {
 		const ref = collection(db, `feedTemplates`);
-		const querySnapshot = await getDocs(ref);
+		const q = query(ref, orderBy('name'));
+		const querySnapshot = await getDocs(q);
 		querySnapshot.forEach((doc) => {
 			const data = doc.data() as FeedTemplate;
 			templates.push(data);
@@ -135,7 +145,14 @@
 		<div class="flex flex-wrap gap-2 items-center flex-col md:flex-row">
 			{#each templates as tmpl}
 				<div class="border p-4 w-full lg:w-[30%] h-[12rem] flex flex-col rounded-lg">
-					<span class="font-bold text-slate-700 text-lg mb-2">{tmpl.name}</span>
+					<div class="flex gap-2 items-center mb-2">
+						<span class="font-bold text-slate-700 text-lg">{tmpl.name}</span>
+					</div>
+					<div class="mb-2">
+						<span class="p-1 text-xs text-white bg-slate-400"
+							>{languageShortNameMap[tmpl.languageCode]}</span
+						>
+					</div>
 					<div class="flex-1">
 						<span class="text-slate-500 text-sm line-clamp-2">{tmpl.description}</span>
 					</div>

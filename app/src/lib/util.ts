@@ -15,6 +15,7 @@ export const getCombinedAudioSrc = (uid: string, ids: string[]): string => {
 export interface LanguageCode {
     code: string;
     title: string;
+    languageShortName: string;
 }
 
 export enum Gender {
@@ -33,9 +34,14 @@ export const genders: GenderItem[] = [
 ]
 
 export const supportedLanguages: LanguageCode[] = [
-    { code: 'en-US', title: 'English (US)' },
-    { code: 'ja-JP', title: '日本語' }
+    { code: 'en-US', title: 'English (US)', languageShortName: 'English' },
+    { code: 'ja-JP', title: '日本語', languageShortName: 'Japanese' }
 ];
+
+export const languageShortNameMap = supportedLanguages.reduce((prev, current) => {
+    prev[current.code] = current.languageShortName
+    return prev;
+}, {} as { [key: string]: string })
 
 export const isEnglish = (code: string) => {
     return code.startsWith("en-");

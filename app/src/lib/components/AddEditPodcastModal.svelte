@@ -14,13 +14,13 @@
 2. Combine them into one string until it reaches 150 words.
 3. No numbering is needed.
 ---
-{feedItems}`;
+"""{feedItems}"""`;
 
 	const DEFAULT_PROMPT_JA = `次のトピックのリストを150文字以内のラジオ原稿に変換してください。以下の手順で実施してください。
 1) トピック毎に、25文字以内の「ですます調」のラジオ原稿に変換する。
 2) 全てのトピックを結合し、150文字を超えたら処理を終える。
 ---
-{feedItems}`;
+"""{feedItems}"""`;
 
 	export let parent: any;
 	export let isUpdate = false;
