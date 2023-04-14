@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Toast, toastStore } from '@skeletonlabs/skeleton';
-	import type { ToastSettings } from '@skeletonlabs/skeleton';
 	import { Modal } from '@skeletonlabs/skeleton';
 	import '@skeletonlabs/skeleton/themes/theme-hamlindigo.css';
 
@@ -9,11 +8,20 @@
 	import '../app.postcss';
 	import Header from './Header.svelte';
 	import { browser } from '$app/environment';
-	import { initializeFirebase } from '$lib/firebase';
+	import { analytics, initializeFirebase, logScreenView } from '$lib/firebase';
+	import { navigating } from '$app/stores';
+
+	$: if ($navigating) {
+		// record new screen when navigating to new route
+		logScreenView($navigating.to?.url.pathname || '');
+	}
 
 	if (browser) {
 		try {
 			initializeFirebase();
+
+			const currentUrl = new URL(location.href).pathname;
+			logScreenView(currentUrl);
 		} catch (e) {
 			console.error(e);
 		}

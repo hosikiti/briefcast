@@ -1,6 +1,6 @@
 import { type FirebaseApp, initializeApp } from "firebase/app";
 import { Firestore, getFirestore } from "firebase/firestore";
-import { getAnalytics, type Analytics } from "firebase/analytics";
+import { getAnalytics, type Analytics, logEvent } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signInWithRedirect, signOut, type Auth, type AuthProvider, signInWithEmailAndPassword } from "firebase/auth";
 import {
   PUBLIC_FIREBASE_API_KEY,
@@ -18,7 +18,7 @@ import { redirect } from "@sveltejs/kit";
 export let app: FirebaseApp
 export let db: Firestore
 export let auth: Auth
-let analytics: Analytics;
+export let analytics: Analytics;
 let initialized = false;
 
 async function setToken(token: string, refreshToken: string) {
@@ -85,5 +85,12 @@ export async function signOutFirebase() {
   await signOut(getAuth(app))
   goto("/", {
     invalidateAll: true,
+  });
+}
+
+export function logScreenView(screenPath: string) {
+  logEvent(analytics, 'screen_view', {
+    firebase_screen: screenPath,
+    firebase_screen_class: ''
   });
 }
