@@ -85,7 +85,7 @@
 				Less news, more life
 			</div>
 			<div class="font-sans font-semibold text-slate-600 flex-1 text-xl pb-10 md:pb-16 text-center">
-				Spand many hours on news every day? BriefCast saves you.
+				Spend many hours on news every day? BriefCast saves you.
 			</div>
 			<div>
 				<div class="shadow-md mb-8 p-8 bg-slate-100 flex flex-col gap-2">
