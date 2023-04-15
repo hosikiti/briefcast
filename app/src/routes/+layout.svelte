@@ -10,6 +10,7 @@
 	import { browser } from '$app/environment';
 	import { analytics, initializeFirebase, logScreenView } from '$lib/firebase';
 	import { navigating } from '$app/stores';
+	import { MetaTags } from 'svelte-meta-tags';
 
 	$: if ($navigating) {
 		// record new screen when navigating to new route
@@ -27,6 +28,11 @@
 		}
 	}
 </script>
+
+<MetaTags
+	title="BriefCast: Less news, more life"
+	description="BriefCast turns any website into a tiny podcast with the help of AI."
+/>
 
 <div class="app">
 	<Header />

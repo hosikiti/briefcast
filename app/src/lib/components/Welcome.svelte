@@ -6,6 +6,7 @@
 	import LoadingSpinner from './LoadingSpinner.svelte';
 	import { goto } from '$app/navigation';
 	import WhatIsIt from './WhatIsIt.svelte';
+	import { MetaTags } from 'svelte-meta-tags';
 
 	let trialGenerating = false;
 	let selectedLanguage: LanguageCode = supportedLanguages[0];
@@ -77,6 +78,8 @@
 		}
 	};
 </script>
+
+<MetaTags title="BriefCast: Less news, more life" />
 
 <div class="flex w-full flex-col justify-center items-center">
 	<div class="p-4">

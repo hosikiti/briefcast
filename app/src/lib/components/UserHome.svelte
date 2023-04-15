@@ -25,6 +25,7 @@
 	import { goto } from '$app/navigation';
 	import { showToast } from '$lib/toast';
 	import { MAX_PODCAST_PER_PLAYLIST } from '$lib/constant';
+	import { MetaTags } from 'svelte-meta-tags';
 
 	interface PodcastItem extends Podcast {
 		audioSrc$: string;
@@ -237,6 +238,8 @@
 		});
 	}
 </script>
+
+<MetaTags title="BriefCast" />
 
 <div class="p-4">
 	<div class="flex justify-between items-center py-4">

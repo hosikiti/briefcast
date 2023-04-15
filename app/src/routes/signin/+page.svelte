@@ -4,6 +4,7 @@
 	import { globalStore } from '../store';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
+	import { MetaTags } from 'svelte-meta-tags';
 
 	let email = 'test@gmail.com';
 	let password = '';
@@ -69,6 +70,8 @@
 		}
 	}
 </script>
+
+<MetaTags title="Sign in - BriefCast" />
 
 <div class="p-2 flex flex-col justify-center items-center w-full">
 	<h1 class="mt-12">Sign in</h1>
