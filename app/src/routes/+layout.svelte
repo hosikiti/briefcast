@@ -9,7 +9,7 @@
 	import Header from './Header.svelte';
 	import { browser } from '$app/environment';
 	import { analytics, initializeFirebase, logScreenView } from '$lib/firebase';
-	import { navigating } from '$app/stores';
+	import { navigating, page } from '$app/stores';
 	import { MetaTags } from 'svelte-meta-tags';
 
 	$: if ($navigating) {
@@ -19,10 +19,11 @@
 
 	if (browser) {
 		try {
-			initializeFirebase();
-
-			const currentUrl = new URL(location.href).pathname;
-			logScreenView(currentUrl);
+			if (!$page.error) {
+				initializeFirebase();
+				const currentUrl = new URL(location.href).pathname;
+				logScreenView(currentUrl);
+			}
 		} catch (e) {
 			console.error(e);
 		}
