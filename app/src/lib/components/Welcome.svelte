@@ -92,7 +92,7 @@
 			</div>
 			<div>
 				<div class="shadow-md mb-8 p-8 bg-slate-100 flex flex-col gap-2">
-					<span class="mb-4">Choose website and generate a short podcast.</span>
+					<span class="mb-4">Choose a website and generate a short podcast.</span>
 					<div class="flex gap-4 flex-wrap">
 						{#each feedTemplates as tmpl}
 							<label class="flex items-center space-x-2">

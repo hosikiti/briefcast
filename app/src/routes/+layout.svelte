@@ -8,7 +8,7 @@
 	import '../app.postcss';
 	import Header from './Header.svelte';
 	import { browser } from '$app/environment';
-	import { analytics, initializeFirebase, logScreenView } from '$lib/firebase';
+	import { initializeFirebase, logScreenView } from '$lib/firebase';
 	import { navigating, page } from '$app/stores';
 	import { MetaTags } from 'svelte-meta-tags';
 
