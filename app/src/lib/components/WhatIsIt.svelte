@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 </script>
 
-<div class="bg-slate-50 flex flex-col md:items-center">
+<div class="bg-slate-50 w-full flex flex-col md:items-center">
 	<div class="flex flex-col w-full md:w-[60%] text-center items-center">
 		<span class="mt-8 p-4 font-semibold text-3xl md:text-4xl">
 			BriefCast turns any website into a tiny podcast with the help of AI.
