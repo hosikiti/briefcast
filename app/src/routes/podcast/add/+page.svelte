@@ -1,6 +1,12 @@
 <script lang="ts">
 	import { db } from '$lib/firebase';
-	import { supportedLanguages, type LanguageCode, languageShortNameMap } from '$lib/util';
+	import {
+		supportedLanguages,
+		type LanguageCode,
+		languageShortNameMap,
+		getBrowserLanguage,
+		isJapaneseBrowser
+	} from '$lib/util';
 	import {
 		addDoc,
 		collection,
@@ -9,29 +15,26 @@
 		getDocs,
 		orderBy,
 		query,
-		setDoc
+		setDoc,
+		where
 	} from 'firebase/firestore';
 	import type { PageData } from './$types';
 	import type { FeedTemplate, Podcast } from '$lib/types';
 	import { onMount } from 'svelte';
-	import {
-		type ModalSettings,
-		type ModalComponent,
-		type ToastSettings,
-		toastStore
-	} from '@skeletonlabs/skeleton';
-	import { modalStore } from '@skeletonlabs/skeleton';
+	import { modalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
 	import AddEditPodcastModal from '$lib/components/AddEditPodcastModal.svelte';
 	import { showToast } from '$lib/toast';
 	import axios from 'axios';
 	import { MAX_PODCAST_PER_PLAYLIST } from '$lib/constant';
 	import { showAlert } from '$lib/modal';
 	import { goto } from '$app/navigation';
+	import LangSelect from '$lib/components/LangSelect.svelte';
 
 	export let data: PageData;
 
 	let templates: FeedTemplate[] = [];
 	let canAdd = false;
+	let selectedLanguage = supportedLanguages[0];
 
 	function handleAdd(tmpl?: FeedTemplate) {
 		if (!canAdd) {
@@ -93,16 +96,7 @@
 			updatePodcast(data.userId, docId);
 			await updateCanAdd();
 
-			const t: ToastSettings = {
-				message: 'Added!',
-				timeout: 10000,
-				action: {
-					label: 'Show my playlist',
-					response: () => goto('/')
-				},
-				background: 'variant-filled-primary'
-			};
-			toastStore.trigger(t);
+			showToast('Added!');
 		} catch (e) {
 			alert('save failed');
 			console.error(e);
@@ -125,8 +119,9 @@
 	}
 
 	async function loadFeedTemplates() {
+		templates = [];
 		const ref = collection(db, `feedTemplates`);
-		const q = query(ref, orderBy('name'));
+		const q = query(ref, orderBy('name'), where('languageCode', '==', selectedLanguage.code));
 		const querySnapshot = await getDocs(q);
 		querySnapshot.forEach((doc) => {
 			const data = doc.data() as FeedTemplate;
@@ -144,8 +139,14 @@
 	}
 
 	onMount(async () => {
+		isJapaneseBrowser() ? supportedLanguages[1] : supportedLanguages[0];
 		await loadFeedTemplates();
 	});
+
+	function onLanguChanged(lang: LanguageCode) {
+		selectedLanguage = lang;
+		loadFeedTemplates();
+	}
 </script>
 
 <div class="p-4 flex justify-center relative">
@@ -157,7 +158,14 @@
 			>
 		</div>
 		<hr />
-		<h3 class="mt-8 mb-4">Explore</h3>
+		<div class="flex justify-between items-center">
+			<div>
+				<h3 class="mt-8 mb-4">Explore</h3>
+			</div>
+			<div>
+				<LangSelect useShortName {selectedLanguage} onChange={onLanguChanged} />
+			</div>
+		</div>
 		<div class="flex flex-wrap gap-2 items-center flex-col md:flex-row">
 			{#each templates as tmpl}
 				<div class="border p-4 w-full lg:w-[30%] h-[14rem] flex flex-col rounded-lg">

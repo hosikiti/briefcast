@@ -55,3 +55,8 @@ export const getBrowserLanguage = (): string => {
     const language = navigator.language || navigator.languages[0];
     return language;
 }
+
+export const isJapaneseBrowser = (): boolean => {
+    const language = getBrowserLanguage();
+    return language.startsWith("ja");
+}
