@@ -37,6 +37,7 @@ BriefCast is an AI-powered pod cast generator from any website.
 ## TODOs
 
 - Add "How it works" on top page.
+- Add pause after line break in a transcript.
 - Show a transript.
 - Add a share feature that.
 - Limit trial generation based on the IP address.
