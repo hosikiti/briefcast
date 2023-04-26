@@ -46,6 +46,9 @@ export const textToMP3 = async (option: TextToMP3Option) => {
 
   const client = new texttospeech(authClient);
   let ssmlInput = `${input}`;
+  // Replace line break into space to add pause after each line break
+  ssmlInput = ssmlInput.replace(/\n/g, " ");
+
   let ssmlParts: string[] = [];
   if (option.languageCode == "en-US") {
     // To avoid following error, split the input text into smaller chunks.
