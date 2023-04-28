@@ -40,9 +40,8 @@ BriefCast is an AI-powered pod cast generator from any website.
 
 - Improve overall UI.
 - Add "How it works" on top page.
-- Add pause after line break in a transcript.
 - Show a transript.
-- Add a share feature that.
+- Add sharing my podcast recipe feature.
 - Limit trial generation based on the IP address.
 - Limit the total number of generations within a day (300 times a day would be the upper limit for my budget).
 - Add 'Add Website' button, allowing users to easily add a podcast by specifying a website URL.
