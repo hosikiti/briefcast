@@ -23,7 +23,7 @@
 	</div>
 
 	{#if $globalStore.showSignInNav}
-		<div class="">
+		<div>
 			{#if $page.data.isLoggedIn}
 				<button type="button" class="btn variant-soft btn-sm text-slate-50" on:click={signOut}
 					>Sign out</button

@@ -1,5 +1,4 @@
 import { proxyCoreAPI } from "$lib/server/api";
-import { coreApiEndpoint } from "$lib/util";
 import type { RequestHandler } from "./$types";
 
 export const GET: RequestHandler = async (ev) => {
