@@ -143,7 +143,7 @@
 		await loadFeedTemplates();
 	});
 
-	function onLanguChanged(lang: LanguageCode) {
+	function onLanguageChanged(lang: LanguageCode) {
 		selectedLanguage = lang;
 		loadFeedTemplates();
 	}
@@ -163,7 +163,7 @@
 				<h3 class="mt-8 mb-4">Explore</h3>
 			</div>
 			<div>
-				<LangSelect useShortName {selectedLanguage} onChange={onLanguChanged} />
+				<LangSelect useShortName {selectedLanguage} onChange={onLanguageChanged} />
 			</div>
 		</div>
 		<div class="flex flex-wrap gap-2 items-center flex-col md:flex-row">
