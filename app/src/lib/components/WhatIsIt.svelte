@@ -16,7 +16,7 @@
 			<div class="py-8 mb-16 flex flex-col items-center md:items-start">
 				<span class="text-3xl font-bold text-slate-800">Listen to a website's summary</span>
 				<span class="py-2"
-					>BriefCast automatically summarizes the content of the website with the help of AI and
+					>BriefCast automatically summarizes the website with AI's help and
 					converts it into a podcast.</span
 				>
 				<PlayIcon size={20} additionalClass="text-slate-700" />
@@ -24,7 +24,7 @@
 			<div class="py-8 mb-16 flex flex-col items-center md:items-start">
 				<span class="text-3xl font-bold text-slate-800">Tailor your podcast content</span>
 				<span class="py-2"
-					>Want to exclude specific topic from the news? Want to generate an English learning
+					>Want to exclude a specific topic from the news? Want to generate an English learning
 					podcast from the latest BBC news?</span
 				>
 				<span class="py-4">You can ask BriefCast whatever you want.</span>
@@ -46,7 +46,7 @@
 			<div class="py-8 mb-16 flex flex-col items-center md:items-start">
 				<span class="text-3xl font-bold text-slate-800">Get updates automatically</span>
 				<span class="py-2"
-					>Podcasts in your playlist are automatically updated with the latest content of the site.</span
+					>Podcasts in your playlist are automatically updated with the site's latest content.</span
 				>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
