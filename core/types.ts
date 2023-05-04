@@ -10,6 +10,7 @@ export interface PodcastDefinition {
   prompt?: string;
   lastGenerate?: Timestamp;
   lastContentHash?: string;
+  lastTranscriptHash?: string;
   authorId: string;
   docId: string;
 }

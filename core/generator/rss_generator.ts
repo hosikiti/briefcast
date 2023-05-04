@@ -1,5 +1,5 @@
 import { parseFeed } from "./common/feed_parser.ts";
-import { BriefCastGenerator, BriefCastItem } from "./generator.ts";
+import { BriefCastGenerator, BriefCastItem, TranscriptResult } from "./generator.ts";
 import { GenerateOption } from "./generator_factory.ts";
 import { MAX_TRANSCRIPT_LENGTH } from "../constant.ts";
 
@@ -49,7 +49,7 @@ export class RSSGenerator implements BriefCastGenerator {
     };
   }
 
-  async summarize(item: BriefCastItem): Promise<string> {
+  async makeTranscript(item: BriefCastItem): Promise<TranscriptResult> {
     let intro = "";
     let closing = "";
     const { languageCode, prompt, summarizer, isPreview, useCache, title, clientId } = this.options;
@@ -69,8 +69,18 @@ export class RSSGenerator implements BriefCastGenerator {
     }
 
     // Summarize the transcript
-    const body = await summarizer.execute(clientId, item.content, languageCode, prompt, useCache);
+    const sumResult = await summarizer.execute(
+      clientId,
+      item.content,
+      languageCode,
+      prompt,
+      useCache,
+    );
+    const transcript = intro + sumResult.summary + closing;
 
-    return intro + body + closing;
+    return {
+      transcript,
+      cacheKey: sumResult.cacheKey,
+    };
   }
 }

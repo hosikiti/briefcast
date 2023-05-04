@@ -86,10 +86,10 @@ export class PodcastController {
       console.log(item.content);
 
       console.log("summarize by gpt3 ... ");
-      const briefTranscript = await generator.summarize(item);
-      console.log(briefTranscript);
+      const result = await generator.makeTranscript(item);
+      console.log(result.transcript);
 
-      if (briefTranscript.length == 0) {
+      if (result.transcript.length == 0) {
         console.warn("transcript is empty, something went wrong.");
         setHttpSuccess(ctx);
         return;
@@ -98,7 +98,7 @@ export class PodcastController {
       const udid = "trial-" + globalThis.crypto.randomUUID();
 
       await textToMP3({
-        text: briefTranscript,
+        text: result.transcript,
         languageCode: languageCode,
         gender: gender,
         fileNamePrefix: udid,

@@ -57,17 +57,18 @@ export class PodcastRepository {
     console.log(item.content);
 
     console.log("summarize by gpt3 ... ");
-    const transcript = await generator.summarize(item);
-    console.log(transcript);
-    console.log(transcript.length);
+    const result = await generator.makeTranscript(item);
+    console.log(result.transcript);
 
-    if (transcript.length == 0) {
+    if (result.transcript.length == 0) {
       console.warn("transcript is empty, something went wrong.");
       return false;
     }
 
     // generate MP3 hash
-    const mp3Hash = getSHA256String(`${transcript}:${pod.prompt}:${pod.language}:${pod.gender}`);
+    const mp3Hash = getSHA256String(
+      `${result.transcript}:${pod.prompt}:${pod.language}:${pod.gender}`,
+    );
 
     if (pod.lastContentHash == mp3Hash) {
       console.warn("mp3 content is same, so skip generation.");
@@ -76,21 +77,27 @@ export class PodcastRepository {
 
     console.log(`export to ${pod.authorId}/${pod.docId}.mp3 ...`);
     await textToMP3({
-      text: transcript,
+      text: result.transcript,
       languageCode: generator.options.languageCode,
       outDir: pod.authorId,
       fileNamePrefix: pod.docId,
     });
 
-    await this.updateLastGeneratedDate(pod.authorId, pod.docId, mp3Hash);
+    await this.updateLastGeneratedDate(pod.authorId, pod.docId, mp3Hash, result.cacheKey);
     return true;
   }
 
-  async updateLastGeneratedDate(uid: string, docId: string, contentHash: string) {
+  async updateLastGeneratedDate(
+    uid: string,
+    docId: string,
+    contentHash: string,
+    transcriptHash: string,
+  ) {
     const ref = doc(this.db, "playlists", uid, "default", docId);
     const data = {
       lastGenerate: serverTimestamp(),
       lastContentHash: contentHash,
+      lastTranscriptHash: transcriptHash,
     } as PodcastDefinition;
     await updateDoc(ref, data);
   }

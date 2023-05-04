@@ -6,8 +6,13 @@ export interface BriefCastItem {
   content: string;
 }
 
+export interface TranscriptResult {
+  transcript: string;
+  cacheKey: string;
+}
+
 export interface BriefCastGenerator {
   getLatest(): Promise<BriefCastItem | null>;
-  summarize(feed: BriefCastItem): Promise<string>;
+  makeTranscript(feed: BriefCastItem): Promise<TranscriptResult>;
   get options(): GenerateOption;
 }

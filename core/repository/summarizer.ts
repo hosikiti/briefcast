@@ -9,7 +9,6 @@ import {
   openai,
   serverTimestamp,
   setDoc,
-  updateDoc,
 } from "../deps.ts";
 import { getSHA256String } from "../util/hash.ts";
 
@@ -27,6 +26,11 @@ const defaultJapanesePrompt =
   {feedItems}
   `;
 
+export interface SummarizeResult {
+  summary: string;
+  cacheKey: string;
+}
+
 export class SummarizerRepository {
   constructor(private db: Firestore) {}
 
@@ -37,7 +41,7 @@ export class SummarizerRepository {
     languageCode: LanguageCode,
     prompt?: string,
     useCache = true,
-  ): Promise<string> {
+  ): Promise<SummarizeResult> {
     if (!prompt) {
       prompt = languageCode == LanguageCode.jaJP ? defaultJapanesePrompt : defaultEnglishPrompt;
     }
@@ -47,7 +51,10 @@ export class SummarizerRepository {
     if (useCache) {
       const cachedResult = await this.getCache(cacheKey);
       if (cachedResult) {
-        return cachedResult;
+        return {
+          summary: cachedResult,
+          cacheKey,
+        };
       }
     }
 
@@ -70,7 +77,10 @@ export class SummarizerRepository {
     if (result) {
       this.setCache(cacheKey, result);
     }
-    return result;
+    return {
+      summary: result,
+      cacheKey,
+    };
   }
 
   private async getCache(key: string): Promise<string | null> {
