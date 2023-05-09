@@ -92,9 +92,6 @@
 			margin-bottom: 2rem;
 		}
 
-		h2 {
-			margin-bottom: 1rem;
-		}
 		p {
 			margin: 1rem 0;
 			font-family: serif;
