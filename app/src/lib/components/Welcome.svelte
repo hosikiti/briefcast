@@ -13,9 +13,9 @@
 
 	const feedTemplates: FeedTemplate[] = [
 		{
-			name: 'CNN(English)',
-			description: 'CNN World News',
-			feedUrl: 'http://rss.cnn.com/rss/edition.rss',
+			name: 'New York Times(English)',
+			description: 'New York Times World News',
+			feedUrl: 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml',
 			languageCode: 'en-US',
 			websiteUrl: '',
 			language: 'en'

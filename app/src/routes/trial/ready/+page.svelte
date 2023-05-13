@@ -29,8 +29,8 @@
 
 						<hr class="my-4" />
 						<span class="text-md font-semibold text-slate-700 py-2 md:py-8">
-							If you sign-up for free, you can add up to 5 websites, including New York Times,
-							Guardian, NPR, and more.
+							If you sign-up for free, you can add up to 5 websites, including BBC, CNN, New York
+							Times, Guardian, NPR, and more.
 						</span>
 						<div class="my-2 flex justify-center gap-2">
 							<button
