@@ -38,7 +38,6 @@ BriefCast is an AI-powered podcast generator from any website.
 
 ## TODOs
 
-- Remove CNN from the trial website and add NYT instead.
 - Improve overall UI.
 - Add UI to show a transript.
 - Add sharing my podcast recipe feature.
