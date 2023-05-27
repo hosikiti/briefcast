@@ -27,6 +27,7 @@ export interface Podcast {
     feedUrl: string
     websiteUrl: string
     lastGenerate?: Timestamp
+    lastTranscriptHash?: string
     language: string
     gender: Gender
     prompt?: string
@@ -35,4 +36,8 @@ export interface Podcast {
 export interface TrialPodcastResult {
     id: string;
     title: string;
+}
+
+export interface SummarizerCache {
+    data: string
 }

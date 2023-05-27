@@ -1,11 +1,19 @@
 <script lang="ts">
 	import { db } from '$lib/firebase';
 	import { getAudioSrcFromId, getCombinedAudioSrc, sleep } from '$lib/util';
-	import { collection, deleteDoc, doc, getDocs, setDoc, Timestamp } from 'firebase/firestore';
+	import {
+		collection,
+		deleteDoc,
+		doc,
+		getDoc,
+		getDocs,
+		setDoc,
+		Timestamp
+	} from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import type { Podcast } from '$lib/types';
-	import { showConfirm } from '$lib/modal';
+	import type { Podcast, SummarizerCache } from '$lib/types';
+	import { showAlert, showConfirm } from '$lib/modal';
 	import { formatDistance } from 'date-fns';
 	import {
 		ListBox,
@@ -26,6 +34,8 @@
 	import { showToast } from '$lib/toast';
 	import { MAX_PODCAST_PER_PLAYLIST } from '$lib/constant';
 	import { MetaTags } from 'svelte-meta-tags';
+	import GoExternalIcon from '$lib/icons/GoExternalIcon.svelte';
+	import { getSummarizerCache } from '$lib/repository/summarizer_cache.repository';
 
 	interface PodcastItem extends Podcast {
 		audioSrc$: string;
@@ -237,6 +247,15 @@
 			await audio.play();
 		});
 	}
+
+	async function showTranscript(item: PodcastItem) {
+		if (!item.lastTranscriptHash) {
+			return;
+		}
+		const transcript = await getSummarizerCache(item.lastTranscriptHash);
+		const html = `<div class="max-h-[200px] overflow-scroll">${transcript}</div>`;
+		showAlert(item.name, '', html, 'modal-transcript');
+	}
 </script>
 
 <MetaTags title="BriefCast" />
@@ -297,22 +316,28 @@
 					<em>Sorry, your browser doesn't support HTML5 audio.</em>
 				</audio>
 				<div class="flex justify-end gap-4">
-					<button class="text-slate-700" title="Show transcript">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke-width="1.5"
-							stroke="currentColor"
-							class="w-6 h-6"
+					{#if item.lastTranscriptHash}
+						<button
+							class="text-slate-700"
+							title="Show transcript"
+							on:click={() => showTranscript(item)}
 						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
-							/>
-						</svg>
-					</button>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke-width="1.5"
+								stroke="currentColor"
+								class="w-6 h-6"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+								/>
+							</svg>
+						</button>
+					{/if}
 					<a
 						href={item.websiteUrl}
 						target="_blank"
@@ -320,18 +345,7 @@
 						class="flex items-center gap-1"
 					>
 						Visit website
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20"
-							fill="currentColor"
-							class="w-5 h-5"
-						>
-							<path
-								fill-rule="evenodd"
-								d="M10 18a8 8 0 100-16 8 8 0 000 16zM6.75 9.25a.75.75 0 000 1.5h4.59l-2.1 1.95a.75.75 0 001.02 1.1l3.5-3.25a.75.75 0 000-1.1l-3.5-3.25a.75.75 0 10-1.02 1.1l2.1 1.95H6.75z"
-								clip-rule="evenodd"
-							/>
-						</svg>
+						<GoExternalIcon />
 					</a>
 				</div>
 			</div>
