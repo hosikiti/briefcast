@@ -4,6 +4,10 @@ BriefCast is an AI-powered podcast generator from any website.
 
 ## What's Changed
 
+### May 2023
+
+- Add UI to show a transript.
+
 ### April 2023
 
 - Add pause after line break in a transcript.
@@ -39,7 +43,6 @@ BriefCast is an AI-powered podcast generator from any website.
 ## TODOs
 
 - Improve overall UI.
-- Add UI to show a transript.
 - Delete too old caches periodically.
 - Add sharing my podcast recipe feature.
 - Limit trial generation based on the IP address.
