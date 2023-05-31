@@ -1,5 +1,5 @@
-import { getDB, initFirebase } from "./util/firebase.ts";
-import { Application, collection, getDocs, oakCors, Router } from "./deps.ts";
+import { initFirebase } from "./util/firebase.ts";
+import { Application, oakCors } from "./deps.ts";
 import { appRouter } from "./router.ts";
 import { logger } from "./util/logger.ts";
 

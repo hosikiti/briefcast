@@ -1,4 +1,4 @@
-import { Context, jose, Status } from "../deps.ts";
+import { Context, Status } from "../deps.ts";
 
 export interface CommonParam {
   uid?: string;
