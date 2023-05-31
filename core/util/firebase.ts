@@ -41,7 +41,6 @@ export const initFirebase = async () => {
 
   db = getFirestore(app);
   console.log("db init done");
-
   console.log("firebase initialized done");
 };
 
