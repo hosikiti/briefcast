@@ -1,4 +1,3 @@
-import { milliseconds } from "date-fns";
 
 export const coreApiEndpoint = 'http://briefcast_core:18088';
 
