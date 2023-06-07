@@ -5,7 +5,7 @@ BriefCast is an AI-powered podcast generator from any website.
 ## How it works
 
 1. You pick a website that offers a RSS feed.
-2. BriefCast fetches the feed and makes a short podcast transcript from it.
+2. BriefCast fetches the feed and coverts it to a short podcast transcript.
 3. Finally, the transcript is converted into MP3 audio that you can listen to on any device.
 
 ## What's Changed
