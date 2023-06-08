@@ -16,8 +16,8 @@
 			<div class="py-8 mb-16 flex flex-col items-center md:items-start">
 				<span class="text-3xl font-bold text-slate-800">Listen to a website's summary</span>
 				<span class="py-2"
-					>BriefCast automatically summarizes the website with AI's help and
-					converts it into a podcast.</span
+					>BriefCast automatically summarizes the website with AI's help and converts it into a
+					podcast.</span
 				>
 				<PlayIcon size={20} additionalClass="text-slate-700" />
 			</div>
@@ -87,9 +87,9 @@
 		<span class="my-8 font-bold text-slate-50">Sign-up for free, and:</span>
 		<div class="text-left md:px-16">
 			<ul>
-				<li>You can create multiple podcasts from news, blog, and whatever.</li>
-				<li>Your podcasts are saved in a playlist.</li>
-				<li>Your podcasts are customizable and updated every day.</li>
+				<li>Any website containing RSS can be a podcast.</li>
+				<li>Multiple podcasts can be saved in a playlist.</li>
+				<li>Podcasts are updated daily with the latest feed content.</li>
 			</ul>
 		</div>
 		<div class="my-8 px-8 md:w-[240px] flex-col flex">

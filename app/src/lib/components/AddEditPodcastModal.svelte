@@ -8,7 +8,6 @@
 	import LoadingSpinner from './LoadingSpinner.svelte';
 	import StopPlayIcon from '$lib/icons/StopPlayIcon.svelte';
 	import GenderSelect from './GenderSelect.svelte';
-	import { focusTrap } from '@skeletonlabs/skeleton';
 
 	const DEFAULT_PROMPT_EN = `Summarize this using the following steps:
 1. Summarize each topic into a 15-words podcast transcript in English. 
