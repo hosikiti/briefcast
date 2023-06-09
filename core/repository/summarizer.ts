@@ -2,11 +2,16 @@ import { LanguageCode } from "../constant.ts";
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
+  endAt,
   Firestore,
   getDoc,
+  getDocs,
   increment,
   openai,
+  orderBy,
+  query,
   serverTimestamp,
   setDoc,
 } from "../deps.ts";
@@ -81,6 +86,25 @@ export class SummarizerRepository {
       summary: result,
       cacheKey,
     };
+  }
+
+  async removeOldCaches(olderThanInDays: number) {
+    const now = new Date();
+    const olderThan = new Date(now.valueOf() - (olderThanInDays * 24 * 60 * 60 * 1000));
+    console.log(`Removing caches older than ${olderThan}`);
+    const q = query(
+      collection(this.db, "summarizerCaches"),
+      orderBy("createdAt"),
+      endAt(olderThan),
+    );
+    const deletedCacheIds: string[] = [];
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      console.log(`Deleting cache ${doc.id}`);
+      deletedCacheIds.push(doc.id);
+      deleteDoc(doc.ref);
+    });
+    console.log("remove done");
   }
 
   private async getCache(key: string): Promise<string | null> {

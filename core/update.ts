@@ -26,6 +26,7 @@ async function main() {
     }
     offsetCursor = podcasts[podcasts.length - 1].authorId!;
   }
+  await summarizerRepo.removeOldCaches(30);
   Deno.exit();
 }
 

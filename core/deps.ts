@@ -9,8 +9,10 @@ export {
   arrayUnion,
   collection,
   collectionGroup,
+  deleteDoc,
   doc,
   documentId,
+  endAt,
   Firestore,
   getDoc,
   getDocs,
@@ -25,6 +27,7 @@ export {
   startAt,
   Timestamp,
   updateDoc,
+  where,
 } from "https://esm.sh/@firebase/firestore@v3.9.0";
 export * as jose from "https://deno.land/x/jose@v4.13.1/index.ts";
 export type { FirebaseApp } from "https://esm.sh/@firebase/app@v0.9.9";
