@@ -26,36 +26,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
-      # - name: Build a svelte frontend
-      #   run: |
-      #     cd $GITHUB_WORKSPACE
-      #     cd app
-      #     echo "=== Building a svelte frontend ==="
-      #     docker build -t svelte .
-      #     echo "PUBLIC_FIREBASE_API_KEY=${{ secrets.PUBLIC_FIREBASE_API_KEY }}" > .env
-      #     echo "PUBLIC_FIREBASE_AUTH_DOMAIN=${{ secrets.PUBLIC_FIREBASE_AUTH_DOMAIN }}" >> .env
-      #     echo "PUBLIC_FIREBASE_PROJECT_ID=${{ secrets.PUBLIC_FIREBASE_PROJECT_ID }}" >> .env
-      #     echo "PUBLIC_FIREBASE_STORAGE_BUCKET=${{ secrets.PUBLIC_FIREBASE_STORAGE_BUCKET }}" >> .env
-      #     echo "PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}" >> .env
-      #     echo "PUBLIC_FIREBASE_APP_ID=${{ secrets.PUBLIC_FIREBASE_APP_ID }}" >> .env
-      #     echo "PUBLIC_FIREBASE_MEASUREMENT_ID=${{ secrets.PUBLIC_FIREBASE_MEASUREMENT_ID }}" >> .env
-      #     echo "ENCRYPT_KEY=${{ secrets.ENCRYPT_KEY }}" >> .env
-      #     docker run --rm --env-file .env -v $(pwd):/app svelte npm install
-      #     docker run --rm --env-file .env -v $(pwd):/app svelte npm run build
-
-      # - name: Copy build files to VPS
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     key: ${{ secrets.SK }}
-      #     host: ${{ secrets.SSH_HOST }}
-      #     username: ${{ secrets.SSH_USERNAME }}
-      #     port: ${{ secrets.SSH_PORT }}
-      #     source: "app/build"
-      #     target: "./tmp_svelte/"
-      #     overwrite: true
-
-      - name: Restart server
+      - name: Build & Restart server
         uses: appleboy/ssh-action@master
         with:
           key: ${{ secrets.SK }}
@@ -85,10 +56,10 @@ jobs:
             cp .env ./app/
             echo "service restarting ..."
             docker-compose up -d --build
+            docker-compose exec -T briefcast npm ci --cache .npm
+            docker-compose exec -T briefcast npm run build
             echo "shutdown core server ..."
             docker-compose exec -T briefcast_core pkill deno
             echo "start server ..."
             nohup docker-compose exec -T briefcast_core ./run_dev.sh > /tmp/briefcast_core.log 2>&1 &
-            docker-compose exec -T briefcast npm ci --cache .npm
-            docker-compose exec -T briefcast npm run build
             nohup docker-compose exec -T briefcast npm run serve > /tmp/briefcast.log 2>&1 &
