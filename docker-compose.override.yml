@@ -10,6 +10,6 @@ services:
       - internal
 networks:
   default:
-    external:
-      name: myservices_default
+    name: myservices_default
+    external: true      
   internal:
