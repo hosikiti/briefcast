@@ -24,5 +24,6 @@
       "lineWidth": 100,
       "singleQuote": false
     }
-  }
+  },
+  "lock": false
 }

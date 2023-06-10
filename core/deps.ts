@@ -1,5 +1,5 @@
-export type { FeedData, FeedEntry } from "https://esm.sh/@extractus/feed-extractor@6.2.1";
-export { extract } from "https://esm.sh/@extractus/feed-extractor@6.2.1";
+export type { FeedData, FeedEntry } from "https://esm.sh/@extractus/feed-extractor@6.2.1?pin=v125";
+export { extract } from "https://esm.sh/@extractus/feed-extractor@6.2.1?pin=v125";
 export { Context } from "https://deno.land/x/oak@v11.1.0/mod.ts";
 export { Application, helpers, Router } from "https://deno.land/x/oak@v11.1.0/mod.ts";
 export { oakCors } from "https://deno.land/x/cors/mod.ts";
