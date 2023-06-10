@@ -58,8 +58,9 @@ jobs:
             docker-compose up -d --build
             docker-compose exec -T briefcast npm ci --cache .npm
             docker-compose exec -T briefcast npm run build
-            echo "shutdown core server ..."
+            echo "restart core server ..."
             docker-compose exec -T briefcast_core pkill deno
-            echo "start server ..."
             nohup docker-compose exec -T briefcast_core ./run_dev.sh > /tmp/briefcast_core.log 2>&1 &
+            echo "restart web server ..."
+            docker-compose exec -T briefcast pkill npm
             nohup docker-compose exec -T briefcast npm run serve > /tmp/briefcast.log 2>&1 &
