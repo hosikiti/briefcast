@@ -1,5 +1,5 @@
 export type { FeedData, FeedEntry } from "https://esm.sh/@extractus/feed-extractor@6.2.1";
-export { extract } from "https://esm.sh/@extractus/feed-extractor";
+export { extract } from "https://esm.sh/@extractus/feed-extractor@6.2.1";
 export { Context } from "https://deno.land/x/oak@v11.1.0/mod.ts";
 export { Application, helpers, Router } from "https://deno.land/x/oak@v11.1.0/mod.ts";
 export { oakCors } from "https://deno.land/x/cors/mod.ts";
@@ -28,11 +28,11 @@ export {
   Timestamp,
   updateDoc,
   where,
-} from "https://esm.sh/@firebase/firestore@v3.9.0";
+} from "https://esm.sh/@firebase/firestore@v3.8.4";
 export * as jose from "https://deno.land/x/jose@v4.13.1/index.ts";
-export type { FirebaseApp } from "https://esm.sh/@firebase/app@v0.9.9";
-export { initializeApp } from "https://esm.sh/@firebase/app@v0.9.9";
-export { getAuth, signInWithEmailAndPassword } from "https://esm.sh/@firebase/auth@0.23.1";
+export type { FirebaseApp } from "https://esm.sh/@firebase/app@v0.9.12";
+export { initializeApp } from "https://esm.sh/@firebase/app@v0.9.12";
+export { getAuth, signInWithEmailAndPassword } from "https://esm.sh/@firebase/auth@0.23.0";
 export * as openai from "https://esm.sh/openai@3.2.1";
 export * as asserts from "https://deno.land/std@0.178.0/testing/asserts.ts";
 export { Buffer } from "https://deno.land/std@0.182.0/io/buffer.ts";
