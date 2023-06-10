@@ -82,6 +82,7 @@ jobs:
             echo "LOG_PATH=${{ secrets.LOG_PATH }}" >> .env
             echo "NPM_CACHE=${{ secrets.NPM_CACHE }}" >> .env
             echo "HOST=${{ secrets.HOST }}" >> .env
+            cp .env ./app/
             echo "service restarting ..."
             docker-compose up -d --build
             echo "shutdown core server ..."
