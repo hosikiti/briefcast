@@ -254,7 +254,7 @@
 		}
 		const transcript = await getSummarizerCache(item.lastTranscriptHash);
 		const html = `<div class="max-h-[200px] overflow-scroll">${transcript}</div>`;
-		showAlert(item.name, '', html, 'modal-transcript');
+		showAlert(item.name, 'Close', html, 'modal-transcript');
 	}
 </script>
 
