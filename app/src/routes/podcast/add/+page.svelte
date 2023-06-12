@@ -24,11 +24,10 @@
 	import { modalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
 	import AddEditPodcastModal from '$lib/components/AddEditPodcastModal.svelte';
 	import { showToast } from '$lib/toast';
-	import axios from 'axios';
 	import { MAX_PODCAST_PER_PLAYLIST } from '$lib/constant';
 	import { showAlert } from '$lib/modal';
-	import { goto } from '$app/navigation';
 	import LangSelect from '$lib/components/LangSelect.svelte';
+	import { updatePodcast } from '$lib/repository/podcast.repository';
 
 	export let data: PageData;
 
@@ -99,21 +98,6 @@
 			showToast('Added!');
 		} catch (e) {
 			alert('save failed');
-			console.error(e);
-		}
-	}
-
-	async function updatePodcast(uid: string, docId: string) {
-		try {
-			const resp = await axios.post('/api/podcast/update', {
-				uid,
-				docId
-			});
-			if (resp.status != 200) {
-				console.error('update podcast failed', resp.status);
-				return;
-			}
-		} catch (e) {
 			console.error(e);
 		}
 	}

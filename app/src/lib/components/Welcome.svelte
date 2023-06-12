@@ -7,6 +7,7 @@
 	import { goto } from '$app/navigation';
 	import WhatIsIt from './WhatIsIt.svelte';
 	import { MetaTags } from 'svelte-meta-tags';
+	import { generateTrialPodcast } from '$lib/repository/podcast.repository';
 
 	let trialGenerating = false;
 	let selectedLanguage: LanguageCode = supportedLanguages[0];
@@ -56,26 +57,15 @@
 			return;
 		}
 		trialGenerating = true;
-		try {
-			const resp = await axios.post('/api/podcast/trial', {
-				feedUrl: feedUrl,
-				languageCode: langCode
-			});
-			if (resp.status != HttpStatusCode.Ok) {
-				alert('import failed from: ' + feedUrl);
-				return;
-			}
-			const result = resp.data.result as TrialPodcastResult;
-
-			goto(
-				`/trial/ready?id=${encodeURIComponent(result.id)}&title=${encodeURIComponent(result.title)}`
-			);
-		} catch (e) {
+		const result = await generateTrialPodcast(feedUrl, langCode);
+		trialGenerating = false;
+		if (!result) {
 			alert('import failed from: ' + feedUrl);
-			console.error(e);
-		} finally {
-			trialGenerating = false;
+			return;
 		}
+		goto(
+			`/trial/ready?id=${encodeURIComponent(result.id)}&title=${encodeURIComponent(result.title)}`
+		);
 	};
 </script>
 
