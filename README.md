@@ -53,6 +53,7 @@ BriefCast is an AI-powered podcast generator from any website.
 ## TODOs
 
 - Improve overall UI.
+- Support HTTP range requests in streaming media.
 - Add sharing my podcast recipe feature.
 - Limit trial generation based on the IP address.
 - Limit the total number of generations within a day (300 times a day would be the upper limit for my budget).
