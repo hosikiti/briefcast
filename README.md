@@ -1,6 +1,6 @@
 # BriefCast
 
-BriefCast is an AI-powered podcast generator from any website.
+BriefCast is an AI-powered podcast generator from RSS feeds.
 
 ## How it works
 
