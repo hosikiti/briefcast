@@ -97,7 +97,7 @@
 
 			showToast('Added!');
 		} catch (e) {
-			alert('save failed');
+			showAlert('Save failed for unknown error');
 			console.error(e);
 		}
 	}

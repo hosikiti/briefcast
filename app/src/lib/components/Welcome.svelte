@@ -8,6 +8,7 @@
 	import WhatIsIt from './WhatIsIt.svelte';
 	import { MetaTags } from 'svelte-meta-tags';
 	import { generateTrialPodcast } from '$lib/repository/podcast.repository';
+	import { showAlert } from '$lib/modal';
 
 	let trialGenerating = false;
 	let selectedLanguage: LanguageCode = supportedLanguages[0];
@@ -53,14 +54,14 @@
 		const langCode = feed.languageCode || selectedLanguage.code;
 
 		if (!feedUrl) {
-			alert('Provide a feed URL of your favorite website');
+			showAlert('Provide feed URL to generate podcast');
 			return;
 		}
 		trialGenerating = true;
 		const result = await generateTrialPodcast(feedUrl, langCode);
 		trialGenerating = false;
 		if (!result) {
-			alert('import failed from: ' + feedUrl);
+			showAlert('import failed from: ' + feedUrl);
 			return;
 		}
 		goto(
