@@ -25,7 +25,7 @@
 	import AddEditPodcastModal from '$lib/components/AddEditPodcastModal.svelte';
 	import { showToast } from '$lib/toast';
 	import { MAX_PODCAST_PER_PLAYLIST } from '$lib/constant';
-	import { showAlert } from '$lib/modal';
+	import { showAlert, showCustomModel } from '$lib/modal';
 	import LangSelect from '$lib/components/LangSelect.svelte';
 	import { updatePodcast } from '$lib/repository/podcast.repository';
 
@@ -51,25 +51,17 @@
 			podcast.language = tmplLanguage?.code || supportedLanguages[0].code;
 		}
 
-		const d: ModalSettings = {
-			type: 'component',
-			// Pass the component directly:
-			component: {
-				// Pass a reference to your custom component
-				ref: AddEditPodcastModal,
-				// Add the component properties as key/value pairs
-				props: {
-					formData: podcast
-				}
-			} as ModalComponent,
-			response: async (podcast: Podcast | boolean) => {
+		showCustomModel(
+			AddEditPodcastModal,
+			{
+				formData: podcast
+			},
+			async (podcast: Podcast | boolean) => {
 				if (podcast instanceof Object) {
 					await add(podcast);
 				}
 			}
-		};
-
-		modalStore.trigger(d);
+		);
 	}
 
 	async function add(podcast: Podcast) {
