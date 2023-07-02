@@ -13,7 +13,6 @@ import {
 } from "$env/static/public";
 import { browser } from "$app/environment";
 import { goto, invalidateAll } from "$app/navigation";
-import { redirect } from "@sveltejs/kit";
 
 export let app: FirebaseApp
 export let db: Firestore

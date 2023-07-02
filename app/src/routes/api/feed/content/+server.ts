@@ -1,5 +1,4 @@
 import { proxyCoreAPI } from "$lib/server/api";
-import { coreApiEndpoint } from "$lib/util";
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import { HttpStatusCode } from "axios";

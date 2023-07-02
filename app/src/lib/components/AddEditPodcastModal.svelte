@@ -8,6 +8,7 @@
 	import LoadingSpinner from './LoadingSpinner.svelte';
 	import StopPlayIcon from '$lib/icons/StopPlayIcon.svelte';
 	import GenderSelect from './GenderSelect.svelte';
+	import { getFeed } from '$lib/repository/feed.repository';
 
 	const DEFAULT_PROMPT_EN = `Summarize this using the following steps:
 1. Summarize each topic into a 15-words podcast transcript in English. 
@@ -44,15 +45,6 @@
 	}
 
 	setPromptBasedOnLanguage();
-
-	async function getFeed(url: string): Promise<FeedData | null> {
-		try {
-			const resp = await axios.get(`/api/feed/content?url=${encodeURIComponent(url)}`);
-			return resp.data as FeedData;
-		} catch (e) {
-			return null;
-		}
-	}
 
 	async function onSubmit() {
 		if (!formData.feedUrl || !formData.name) {

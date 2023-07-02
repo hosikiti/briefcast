@@ -1,6 +1,7 @@
 <script lang="ts">
 	import LangSelect from '$lib/components/LangSelect.svelte';
 	import { db } from '$lib/firebase';
+	import { getFeed } from '$lib/repository/feed.repository';
 	import { showToast } from '$lib/toast';
 	import type { FeedData, FeedTemplate } from '$lib/types';
 	import { supportedLanguages } from '$lib/util';
@@ -36,8 +37,10 @@
 
 	async function getInfo() {
 		try {
-			const resp = await axios.get(`/api/feed/content?url=${encodeURIComponent(feedUrl)}`);
-			const feed = resp.data as FeedData;
+			const feed = await getFeed(feedUrl);
+			if (!feed) {
+				throw 'get feed failed';
+			}
 			websiteUrl = feed.link || '';
 			name = feed.title || '';
 			description = feed.description || '';
