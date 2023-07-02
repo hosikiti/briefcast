@@ -5,7 +5,6 @@
 	import { showToast } from '$lib/toast';
 	import type { FeedData, FeedTemplate } from '$lib/types';
 	import { supportedLanguages } from '$lib/util';
-	import axios from 'axios';
 	import { addDoc, collection } from 'firebase/firestore';
 
 	let name = '';
