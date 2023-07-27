@@ -11,5 +11,8 @@
                 "denoland.vscode-deno"
             ]
         }
-    }
+    },
+    "mounts": [
+        "source=${localWorkspaceFolder}/,target=/app,type=bind,consistency=cached"
+    ]
 }

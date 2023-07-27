@@ -28,11 +28,11 @@ export {
   Timestamp,
   updateDoc,
   where,
-} from "https://esm.sh/@firebase/firestore@v3.8.4";
+} from "https://esm.sh/firebase@10.1.0/firestore";
 export * as jose from "https://deno.land/x/jose@v4.13.1/index.ts";
-export type { FirebaseApp } from "https://esm.sh/@firebase/app@v0.9.12";
-export { initializeApp } from "https://esm.sh/@firebase/app@v0.9.12";
-export { getAuth, signInWithEmailAndPassword } from "https://esm.sh/@firebase/auth@0.23.0";
+export type { FirebaseApp } from "https://esm.sh/firebase@10.1.0/app";
+export { initializeApp } from "https://esm.sh/firebase@10.1.0/app";
+export { getAuth, signInWithEmailAndPassword } from "https://esm.sh/firebase@10.1.0/auth";
 export * as openai from "https://esm.sh/openai@3.2.1";
 export * as asserts from "https://deno.land/std@0.178.0/testing/asserts.ts";
 export { Buffer } from "https://deno.land/std@0.182.0/io/buffer.ts";
