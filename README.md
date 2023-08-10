@@ -8,12 +8,15 @@ BriefCast is an AI-powered podcast generator from RSS feeds.
 2. BriefCast fetches the feed and coverts it to a short podcast transcript.
 3. Finally, the transcript is converted into MP3 audio that you can listen to on any device.
 
-## What's Changed
+## What's Changed Recently
 
 ### June 2023
 
 - Delete too old caches periodically.
 
+<Details>
+  <Summary>Show old records</Summary>
+  
 ### May 2023
 
 - Add UI to show a transript.
@@ -38,7 +41,6 @@ BriefCast is an AI-powered podcast generator from RSS feeds.
 - Add Google Analytics.
 - Prepare production environment.
 
-
 ### March 2023
 
 - Supported updating user podcasts twice a day.
@@ -49,6 +51,9 @@ BriefCast is an AI-powered podcast generator from RSS feeds.
 - Inserted 2 second pause between topics so we can tell the beginning of the news more easily.
 - Added a Trial feature that supports one-time pod cast generation from any news feed for anyone.
 - Implemented automatic CI/CD pipeline with each new code update.
+  
+</Details>
+
 
 ## TODOs
 
