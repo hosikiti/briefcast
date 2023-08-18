@@ -30,10 +30,10 @@ jobs:
       - uses: actions/checkout@v3
 
       # Run tests
-      - name: Run Tests on Node ${{ NODE_VERSION }}
+      - name: Run Tests on Node ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ NODE_VERSION }}    
+          node-version: ${{ env.NODE_VERSION }}    
       - run: |
           cd app/
           echo "ENCRYPT_KEY=${{ secrets.ENCRYPT_KEY }}" >> .env
