@@ -1,4 +1,4 @@
-FROM node:lts-alpine3.16
+FROM node:20-alpine3.17
 EXPOSE 8088
 
 RUN apk add git

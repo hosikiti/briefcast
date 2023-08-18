@@ -23,7 +23,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x, 20.x]
+        node-version: [18.x, 20.x]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -35,8 +35,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}    
-      - run: cd app/ && npm i
-      - run: cd app/ && npm run vitest run  
+      - run: >
+          cd app/
+          echo "ENCRYPT_KEY=${{ secrets.ENCRYPT_KEY }}" >> .env
+          npm i
+          npm run vitest run  
 
       - name: Build & Restart server
         uses: appleboy/ssh-action@master
