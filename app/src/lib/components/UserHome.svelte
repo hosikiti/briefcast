@@ -36,6 +36,7 @@
 	import { MetaTags } from 'svelte-meta-tags';
 	import GoExternalIcon from '$lib/icons/GoExternalIcon.svelte';
 	import { getSummarizerCache } from '$lib/repository/summarizer_cache.repository';
+	import { Howl } from 'howler';
 
 	interface PodcastItem extends Podcast {
 		audioSrc$: string;
@@ -45,7 +46,7 @@
 
 	let isLoading = true;
 	let isPlayingAll = false;
-	let playAllAudio: HTMLAudioElement | null;
+	let player: Howl | null = null;
 	let items: PodcastItem[] = [];
 	let checkNewAudioTimer: NodeJS.Timer;
 
@@ -220,31 +221,33 @@
 
 	async function playAll() {
 		const uid = $page.data.userId!;
-		const ids = items.map((item) => item.docId$);
+		const audioSrcs = items.map((item) => getAudioSrcFromId(`${uid}/${item.docId$}`));
 		isPlayingAll = true;
-		playAllAudio = new Audio(getCombinedAudioSrc(uid, ids));
-		await playAudio(playAllAudio);
-		isPlayingAll = false;
-	}
-
-	async function stopPlayAll() {
-		if (playAllAudio) {
-			playAllAudio.pause();
-			playAllAudio = null;
+		for (const src of audioSrcs) {
+			await playMP3(src);
 		}
 		isPlayingAll = false;
 	}
 
-	async function playAudio(audio: HTMLAudioElement) {
+	async function stopPlayAll() {
+		if (player) {
+			player.stop();
+			player = null;
+		}
+		isPlayingAll = false;
+	}
+
+	async function playMP3(src: string) {
 		return new Promise<void>(async (resolve) => {
-			audio.addEventListener(
-				'ended',
-				() => {
-					resolve();
-				},
-				{ once: true }
-			);
-			await audio.play();
+			player = new Howl({
+				src: src,
+				html5: true,
+				format: 'audio/mp3'
+			});
+			player.once('end', () => {
+				resolve();
+			});
+			player.play();
 		});
 	}
 
@@ -262,7 +265,7 @@
 
 <div class="p-4">
 	<div class="flex justify-between items-center py-4">
-		<h2 class="text-left ">Podcasts</h2>
+		<h2 class="text-left">Podcasts</h2>
 		{#if items.length > 0}
 			<div class="flex justify-center gap-2">
 				{#if !isPlayingAll}
