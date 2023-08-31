@@ -1,4 +1,4 @@
-FROM lukechannings/deno:v1.36.2
+FROM lukechannings/deno:v1.36.3
 
 # The port that your application listens to.
 EXPOSE 18088
