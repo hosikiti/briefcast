@@ -1,18 +1,10 @@
 <script lang="ts">
 	import { db } from '$lib/firebase';
 	import { getAudioSrcFromId, getCombinedAudioSrc, sleep } from '$lib/util';
-	import {
-		collection,
-		deleteDoc,
-		doc,
-		getDoc,
-		getDocs,
-		setDoc,
-		Timestamp
-	} from 'firebase/firestore';
+	import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import type { Podcast, SummarizerCache } from '$lib/types';
+	import type { AudioPlayerItem, Podcast, SummarizerCache } from '$lib/types';
 	import { showAlert, showConfirm } from '$lib/modal';
 	import { formatDistance } from 'date-fns';
 	import {
@@ -36,7 +28,7 @@
 	import { MetaTags } from 'svelte-meta-tags';
 	import GoExternalIcon from '$lib/icons/GoExternalIcon.svelte';
 	import { getSummarizerCache } from '$lib/repository/summarizer_cache.repository';
-	import { Howl } from 'howler';
+	import AudioPlayer from './AudioPlayer.svelte';
 
 	interface PodcastItem extends Podcast {
 		audioSrc$: string;
@@ -49,6 +41,8 @@
 	let player: Howl | null = null;
 	let items: PodcastItem[] = [];
 	let checkNewAudioTimer: NodeJS.Timer;
+	let play: () => void;
+	let setPlaylist: (playlist: AudioPlayerItem[]) => void;
 
 	onMount(() => {
 		loadDefaultPlaylist();
@@ -152,6 +146,15 @@
 			isLoading = true;
 			items = await getDefaultPlaylist();
 
+			setPlaylist(
+				items.map((item) => {
+					return {
+						src: item.audioSrc$,
+						title: item.name
+					};
+				})
+			);
+
 			// New podcast that is just added may not have audio yet.
 			// so, check new generated audio by using timer.
 			const hasNotGenerated = items.findIndex((item) => !item.lastGenerate) >= 0;
@@ -219,38 +222,6 @@
 		return newItems;
 	}
 
-	async function playAll() {
-		const uid = $page.data.userId!;
-		const audioSrcs = items.map((item) => getAudioSrcFromId(`${uid}/${item.docId$}`));
-		isPlayingAll = true;
-		for (const src of audioSrcs) {
-			await playMP3(src);
-		}
-		isPlayingAll = false;
-	}
-
-	async function stopPlayAll() {
-		if (player) {
-			player.stop();
-			player = null;
-		}
-		isPlayingAll = false;
-	}
-
-	async function playMP3(src: string) {
-		return new Promise<void>(async (resolve) => {
-			player = new Howl({
-				src: src,
-				html5: true,
-				format: 'audio/mp3'
-			});
-			player.once('end', () => {
-				resolve();
-			});
-			player.play();
-		});
-	}
-
 	async function showTranscript(item: PodcastItem) {
 		if (!item.lastTranscriptHash) {
 			return;
@@ -268,23 +239,6 @@
 		<h2 class="text-left">Podcasts</h2>
 		{#if items.length > 0}
 			<div class="flex justify-center gap-2">
-				{#if !isPlayingAll}
-					<button
-						on:click={playAll}
-						class="btn variant-filled rounded-3xl bg-orange-500 shadow-md text-white flex gap-2"
-					>
-						<PlayIcon />
-						Play All</button
-					>
-				{:else}
-					<button
-						on:click={stopPlayAll}
-						class="btn variant-filled rounded-3xl bg-orange-500 shadow-md text-white flex gap-2"
-					>
-						<StopPlayIcon />
-						Stop</button
-					>
-				{/if}
 				<button
 					disabled={items.length >= MAX_PODCAST_PER_PLAYLIST}
 					on:click={() => goto('/podcast/add')}
@@ -380,6 +334,7 @@
 			>
 		</ListBox>
 	</div>
+	<AudioPlayer bind:play bind:setPlaylist />
 </div>
 
 <style lang="scss">

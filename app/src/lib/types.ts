@@ -1,6 +1,12 @@
 import type { Timestamp } from "firebase/firestore";
 import type { Gender } from "./util";
 
+
+export interface AudioPlayerItem {
+    title: string;
+    src: string;
+}
+
 export interface FeedData {
     link?: string;
     title?: string;
