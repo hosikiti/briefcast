@@ -10,6 +10,8 @@
 	let player: Howl;
 	let activeSrcIndex = 0;
 	let isPlaying = false;
+	let currentTime = '--:--';
+	let trackTime = '--:--';
 
 	$: currentTitle = srcs.length > 0 ? srcs[activeSrcIndex].title : '-';
 	$: isLast = srcs.length > 0 && activeSrcIndex === srcs.length - 1;
@@ -32,6 +34,9 @@
 			html5: true,
 			format: 'audio/mp3'
 		});
+		player.on('play', () => {
+			requestAnimationFrame(updateTime);
+		});
 		player.on('end', onPlayEnded);
 
 		if (autoPlay) {
@@ -40,12 +45,26 @@
 	}
 
 	function onPlayEnded() {
-		if (srcs.length > 0 && activeSrcIndex + 1 < srcs.length) {
+		if (!isLast) {
 			activeSrcIndex++;
 			setAudio(srcs[activeSrcIndex].src);
 			player.play();
 		} else {
 			isPlaying = false;
+		}
+	}
+
+	function formatTime(time: number) {
+		const minutes = Math.floor(time / 60);
+		const seconds = Math.floor(time % 60);
+		return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+	}
+
+	function updateTime() {
+		currentTime = formatTime(player.seek());
+		trackTime = formatTime(player.duration());
+		if (player.playing()) {
+			requestAnimationFrame(updateTime);
 		}
 	}
 
@@ -75,12 +94,16 @@
 </script>
 
 <div
-	class="fixed mb-4 left-0 bottom-0 bg-tranparent bg-white gap-4 w-full h-[15vh] flex items-center justify-center p-4 shadow-md"
+	class="fixed left-0 bottom-0 bg-tranparent bg-slate-500 bg-opacity-80 gap-4 w-full h-[20vh] flex justify-center p-4 shadow-md"
 >
-	<div class="">
+	<div class="w-full">
 		<div class="flex flex-col gap-2 items-center">
-			<div>
-				<span class="font-bold">{currentTitle}</span>
+			<div class="flex flex-col w-full items-center">
+				<span class="font-bold text-white">{currentTitle}</span>
+				<div class="flex text-sm text-white w-full justify-between">
+					<span>{currentTime}</span>
+					<span>{trackTime}</span>
+				</div>
 			</div>
 			<div class="flex gap-4">
 				<button
