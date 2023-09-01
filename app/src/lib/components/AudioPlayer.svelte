@@ -96,49 +96,49 @@
 <div
 	class="fixed left-0 bottom-0 bg-tranparent bg-slate-500 bg-opacity-80 gap-4 w-full h-[20vh] flex justify-center p-4 shadow-md"
 >
-	<div class="w-full">
-		<div class="flex flex-col gap-2 items-center">
-			<div class="flex flex-col w-full items-center">
-				<span class="font-bold text-white">{currentTitle}</span>
-				<div class="flex text-sm text-white w-full justify-between">
-					<span>{currentTime}</span>
-					<span>{trackTime}</span>
-				</div>
+	<div class="w-full flex flex-col gap-2 items-center justify-between">
+		<!-- Time info -->
+		<div class="flex flex-col w-full items-center">
+			<span class="font-bold text-white">{currentTitle}</span>
+			<div class="flex text-sm text-white w-full justify-between">
+				<span>{currentTime}</span>
+				<span>{trackTime}</span>
 			</div>
-			<div class="flex gap-4">
+		</div>
+		<!-- Controls -->
+		<div class="flex gap-4">
+			<button
+				class="btn variant-filled rounded-full bg-white shadow-md text-black flex gap-2"
+				on:click={goPrevTrack}
+				disabled={isFirst}
+			>
+				<PrevIcon />
+			</button>
+			{#if !isPlaying}
 				<button
-					class="btn variant-filled rounded-full bg-white shadow-md text-black flex gap-2"
-					on:click={goPrevTrack}
-					disabled={isFirst}
+					on:click={play}
+					class="btn variant-filled rounded-3xl bg-orange-500 shadow-md text-white flex gap-2"
 				>
-					<PrevIcon />
-				</button>
-				{#if !isPlaying}
-					<button
-						on:click={play}
-						class="btn variant-filled rounded-3xl bg-orange-500 shadow-md text-white flex gap-2"
-					>
-						<PlayIcon />
-						Play</button
-					>
-				{:else}
-					<button
-						on:click={play}
-						class="btn variant-filled rounded-3xl bg-orange-500 shadow-md text-white flex gap-2"
-					>
-						<StopPlayIcon />
-						Stop</button
-					>
-				{/if}
+					<PlayIcon />
+					Play</button
+				>
+			{:else}
+				<button
+					on:click={play}
+					class="btn variant-filled rounded-3xl bg-orange-500 shadow-md text-white flex gap-2"
+				>
+					<StopPlayIcon />
+					Stop</button
+				>
+			{/if}
 
-				<button
-					class="btn variant-filled rounded-full bg-white shadow-md text-black flex gap-2"
-					on:click={goNextTrack}
-					disabled={isLast}
-				>
-					<NextIcon />
-				</button>
-			</div>
+			<button
+				class="btn variant-filled rounded-full bg-white shadow-md text-black flex gap-2"
+				on:click={goNextTrack}
+				disabled={isLast}
+			>
+				<NextIcon />
+			</button>
 		</div>
 	</div>
 </div>
