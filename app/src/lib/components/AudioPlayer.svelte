@@ -4,6 +4,7 @@
 	import PrevIcon from '$lib/icons/PrevIcon.svelte';
 	import StopPlayIcon from '$lib/icons/StopPlayIcon.svelte';
 	import type { AudioPlayerItem } from '$lib/types';
+	import { set } from 'date-fns';
 	import { Howl } from 'howler';
 
 	export let srcs: AudioPlayerItem[] = [];
@@ -28,6 +29,7 @@
 		if (player != null) {
 			autoPlay = player.playing();
 			player.stop();
+			setSeekBar(0);
 		}
 		player = new Howl({
 			src: src,
@@ -61,10 +63,30 @@
 	}
 
 	function updateTime() {
+		const oldCurrentTime = currentTime;
 		currentTime = formatTime(player.seek());
 		trackTime = formatTime(player.duration());
+		if (oldCurrentTime !== currentTime) {
+			const percent = Math.floor((player.seek() / player.duration()) * 100);
+			setSeekBar(percent);
+		}
 		if (player.playing()) {
 			requestAnimationFrame(updateTime);
+		}
+	}
+
+	function seek(event: MouseEvent) {
+		const seekbar = document.getElementById('seekbar');
+		if (seekbar != null) {
+			// const percent = event.offsetX / seekbar.offsetWidth;
+			// player.seek(player.duration() * percent);
+		}
+	}
+
+	function setSeekBar(percent: number) {
+		const seekbar = document.getElementById('seekbar');
+		if (seekbar != null) {
+			seekbar.style.backgroundSize = `${percent}%`;
 		}
 	}
 
@@ -94,13 +116,15 @@
 </script>
 
 <div
-	class="fixed left-0 bottom-0 bg-tranparent bg-slate-500 bg-opacity-80 gap-4 w-full h-[20vh] flex justify-center p-4 shadow-md"
+	class="fixed left-0 bottom-0 bg-tranparent bg-slate-500 bg-opacity-80 gap-4 w-full h-[23vh] flex justify-center p-4 shadow-md"
 >
 	<div class="w-full flex flex-col gap-2 items-center justify-between">
 		<!-- Time info -->
 		<div class="flex flex-col w-full items-center">
 			<span class="font-bold text-white">{currentTitle}</span>
-			<div class="flex text-sm text-white w-full justify-between">
+			<!-- Seek bar -->
+			<div id="seekbar" on:pointerdown={seek} />
+			<div class="flex text-xs text-white w-full justify-between">
 				<span>{currentTime}</span>
 				<span>{trackTime}</span>
 			</div>
@@ -142,3 +166,13 @@
 		</div>
 	</div>
 </div>
+
+<style lang="scss">
+	#seekbar {
+		width: 100%;
+		height: 3px;
+		margin: 1rem 0 0.2rem 0;
+		border-radius: 5px;
+		background: linear-gradient(#eee, #eee) no-repeat #bbb;
+	}
+</style>
