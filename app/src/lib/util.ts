@@ -53,3 +53,11 @@ export const isJapaneseBrowser = (): boolean => {
     const language = getBrowserLanguage();
     return language.startsWith("ja");
 }
+
+export function formatTime(time: number) {
+    let h = Math.floor(time / 3600);
+    let m = Math.floor((time % 3600) / 60);
+    let s = Math.floor(time % 60);
+
+    return `${h > 0 ? h + ':' : ''}${h > 0 && m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`
+}

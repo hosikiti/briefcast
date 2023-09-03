@@ -4,6 +4,7 @@
 	import PrevIcon from '$lib/icons/PrevIcon.svelte';
 	import StopPlayIcon from '$lib/icons/StopPlayIcon.svelte';
 	import type { AudioPlayerItem } from '$lib/types';
+	import { formatTime } from '$lib/util';
 	import { set } from 'date-fns';
 	import { Howl } from 'howler';
 
@@ -11,7 +12,7 @@
 	let player: Howl;
 	let activeSrcIndex = 0;
 	let isPlaying = false;
-	let currentTime = '--:--';
+	let currentTime = '00:00';
 	let trackTime = '--:--';
 
 	$: currentTitle = srcs.length > 0 ? srcs[activeSrcIndex].title : '-';
@@ -26,10 +27,10 @@
 
 	function setAudio(src: string) {
 		let autoPlay = false;
+		setSeekBar(0);
 		if (player != null) {
 			autoPlay = player.playing();
 			player.stop();
-			setSeekBar(0);
 		}
 		player = new Howl({
 			src: src,
@@ -40,10 +41,23 @@
 			requestAnimationFrame(updateTime);
 		});
 		player.on('end', onPlayEnded);
+		setAudioMetaData(src);
 
 		if (autoPlay) {
 			player.play();
 		}
+	}
+
+	function setAudioMetaData(src: string) {
+		const audio = new Audio(src);
+		audio.addEventListener(
+			'loadedmetadata',
+			() => {
+				currentTime = formatTime(0);
+				trackTime = formatTime(audio.duration);
+			},
+			{ once: true }
+		);
 	}
 
 	function onPlayEnded() {
@@ -54,12 +68,6 @@
 		} else {
 			isPlaying = false;
 		}
-	}
-
-	function formatTime(time: number) {
-		const minutes = Math.floor(time / 60);
-		const seconds = Math.floor(time % 60);
-		return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 	}
 
 	function updateTime() {
