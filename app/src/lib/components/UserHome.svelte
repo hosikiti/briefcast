@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { db } from '$lib/firebase';
-	import { getAudioSrcFromId, getCombinedAudioSrc, sleep } from '$lib/util';
+	import { getAudioSrcFromId, sleep } from '$lib/util';
 	import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import type { AudioPlayerItem, Podcast, SummarizerCache } from '$lib/types';
+	import type { AudioPlayerItem, Podcast } from '$lib/types';
 	import { showAlert, showConfirm } from '$lib/modal';
 	import { formatDistance } from 'date-fns';
 	import {

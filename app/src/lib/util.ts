@@ -5,12 +5,6 @@ export const getAudioSrcFromId = (id: string): string => {
     return '/api/media?id=' + encodeURIComponent(id);
 };
 
-export const getCombinedAudioSrc = (uid: string, ids: string[]): string => {
-    const uidParam = encodeURIComponent(uid)
-    const idsParam = encodeURIComponent(ids.join(','))
-    return `/api/media/combined?uid=${uidParam}&ids=${idsParam}`
-}
-
 export interface LanguageCode {
     code: string;
     title: string;
