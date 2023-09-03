@@ -96,6 +96,10 @@
 		if (seekbar != null) {
 			seekbar.style.backgroundSize = `${percent}%`;
 		}
+		const knob = document.getElementById('seekbar_knob');
+		if (knob != null) {
+			knob.style.left = `${percent}%`;
+		}
 	}
 
 	export function play() {
@@ -124,14 +128,16 @@
 </script>
 
 <div
-	class="fixed left-0 bottom-0 bg-tranparent bg-slate-500 bg-opacity-80 gap-4 w-full h-[23vh] flex justify-center p-4 shadow-md"
+	class="fixed left-0 bottom-0 bg-tranparent bg-slate-500 bg-opacity-80 gap-4 w-full h-[23vh] md:h-[20vh] flex justify-center p-4 shadow-md"
 >
-	<div class="w-full flex flex-col gap-2 items-center justify-between">
+	<div class="w-full md:w-[50%] flex flex-col gap-2 items-center justify-between">
 		<!-- Time info -->
 		<div class="flex flex-col w-full items-center">
 			<span class="font-bold text-white">{currentTitle}</span>
 			<!-- Seek bar -->
-			<div id="seekbar" on:pointerdown={seek} />
+			<div id="seekbar" on:pointerdown={seek}>
+				<div id="seekbar_knob" />
+			</div>
 			<div class="flex text-xs text-white w-full justify-between">
 				<span>{currentTime}</span>
 				<span>{trackTime}</span>
@@ -179,8 +185,19 @@
 	#seekbar {
 		width: 100%;
 		height: 3px;
-		margin: 1rem 0 0.2rem 0;
+		margin: 1rem 0 0.3rem 0;
 		border-radius: 5px;
 		background: linear-gradient(#eee, #eee) no-repeat #bbb;
+		position: relative;
+	}
+
+	#seekbar_knob {
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+		background: #fff;
+		position: absolute;
+		top: -4px;
+		left: 0;
 	}
 </style>
