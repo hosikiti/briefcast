@@ -10,6 +10,11 @@ BriefCast is an AI-powered podcast generator from RSS feeds.
 
 ## What's Changed Recently
 
+### September 2023
+
+- Add player UI.
+- Use howler.js as a podcast player engine.
+
 ### June 2023
 
 - Delete too old caches periodically.
@@ -57,9 +62,7 @@ BriefCast is an AI-powered podcast generator from RSS feeds.
 
 ## TODOs
 
-- Consider using howler.js as a podcast player engine.
 - Improve overall UI.
-- Support HTTP range requests in streaming media.
 - Add sharing my podcast recipe feature.
 - Limit trial generation based on the IP address.
 - Limit the total number of generations within a day (300 times a day would be the upper limit for my budget).
