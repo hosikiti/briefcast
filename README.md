@@ -2,6 +2,8 @@
 
 BriefCast is an AI-powered podcast generator from RSS feeds.
 
+<img src="./docs/images/user_home.png" width="300">
+
 ## How it works
 
 1. You pick a website that offers a RSS feed.
