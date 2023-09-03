@@ -1,5 +1,4 @@
 import {
-  collection,
   FirebaseApp,
   Firestore,
   getAuth,
@@ -7,6 +6,7 @@ import {
   initializeApp,
   signInWithEmailAndPassword,
 } from "../deps.ts";
+import { logger } from "./logger.ts";
 
 let app: FirebaseApp;
 let db: Firestore;
@@ -29,7 +29,7 @@ export const initFirebase = async () => {
   app = initializeApp(firebaseConfig);
 
   initialized = true;
-  console.debug("firebase initialized");
+  logger.info("firebase init done");
 
   // Sign in with admin user
   const auth = getAuth(app);
@@ -38,11 +38,10 @@ export const initFirebase = async () => {
     Deno.env.get("FIREBASE_ADMIN_EMAIL") || "",
     Deno.env.get("FIREBASE_ADMIN_PASSWD") || "",
   );
-  console.log("sign in with admin account done");
+  logger.info("sign in with admin account done");
 
   db = getFirestore(app);
-  console.log("db init done");
-  console.log("firebase initialized done");
+  logger.info("db & firebase init done");
 };
 
 export const getDB = () => db;

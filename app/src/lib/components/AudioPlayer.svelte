@@ -78,8 +78,8 @@
 	function seek(event: MouseEvent) {
 		const seekbar = document.getElementById('seekbar');
 		if (seekbar != null) {
-			// const percent = event.offsetX / seekbar.offsetWidth;
-			// player.seek(player.duration() * percent);
+			const percent = event.offsetX / seekbar.offsetWidth;
+			player.seek(player.duration() * percent);
 		}
 	}
 
