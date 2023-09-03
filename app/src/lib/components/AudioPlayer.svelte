@@ -84,10 +84,16 @@
 	}
 
 	function seek(event: MouseEvent) {
+		if (!player) return;
 		const seekbar = document.getElementById('seekbar');
 		if (seekbar != null) {
+			const isPlaying = player.playing();
 			const percent = event.offsetX / seekbar.offsetWidth;
 			player.seek(player.duration() * percent);
+			updateTime();
+			if (isPlaying) {
+				player.play();
+			}
 		}
 	}
 
@@ -135,8 +141,10 @@
 		<div class="flex flex-col w-full items-center">
 			<span class="font-bold text-white">{currentTitle}</span>
 			<!-- Seek bar -->
-			<div id="seekbar" on:pointerdown={seek}>
-				<div id="seekbar_knob" />
+			<div class="h-[32px] w-full flex flex-col items-center" on:pointerdown={seek}>
+				<div id="seekbar" on:pointerdown={seek}>
+					<div id="seekbar_knob" />
+				</div>
 			</div>
 			<div class="flex text-xs text-white w-full justify-between">
 				<span>{currentTime}</span>
