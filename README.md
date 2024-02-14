@@ -27,9 +27,23 @@ BriefCast is an AI-powered podcast generator from RSS feeds.
 
 ### How Firebase is Integrated
 
-- Firebase Authentication is used to allow users to sign in/up with their Google accounts as well as Email addresses. `app/src/lib/firebase.ts` handles all utilities for Firebase Authentication. 
-- Firebase Firestore is used to store user generated data, including podcast playlists and generated transcripts. `core/lib/firebase.ts` initializes the Firestore client and `core/repository/*.ts` handles all Firestore operations.
-- Firebase Analytics is used to track user activities on our frontend application, such as screen views. `app/src/lib/firebase.ts` includes all necessary operations.
+- Firebase Authentication is used to allow users to sign in/out with their Google accounts as well as email addresses. `app/src/lib/firebase.ts` handles all utilities for Firebase Authentication.
+Firebase Firestore stores all transactional data, including podcast playlists, crawled feed contents, and generated transcripts. `core/lib/firebase.ts` initializes the Firestore client, and `core/repository/*.ts` handles all Firestore operations.
+Firebase Analytics tracks user activities on our frontend application, such as screen views. `app/src/lib/firebase.ts` includes all necessary operations.
+
+## Testing Strategy
+
+### Frontend
+
+- Unit tests are written for specifically important or complex logic.
+- Vitest is used.
+- `npm run vitest` runs all tests.
+
+### Backend
+
+- Unit tests are written for specifically important or complex logic.
+- Deno built-in test runner is used.
+- `deno task test` runs all tests.
 
 ## Getting Started
 
