@@ -21,9 +21,15 @@ BriefCast is an AI-powered podcast generator from RSS feeds.
 ### Backend
 
 - **Deno** for TypeScript built-in API server.
-- **Firebase** (Authentication, Firestore) for user management and data storage.
+- **Firebase** for user management and data storage. Details are below.
 - **OpenAI GPT-3.5** for generating a podcast transcription from the given RSS feed.
 - **Google Text-to-Speech API** for converting the transcription into podcast-sounding MP3.
+
+### How Firebase is Integrated
+
+- Firebase Authentication is used to allow users to sign in/up with their Google accounts as well as Email addresses. `app/src/lib/firebase.ts` handles all utilities for Firebase Authentication. 
+- Firebase Firestore is used to store user generated data, including podcast playlists and generated transcripts. `core/lib/firebase.ts` initializes the Firestore client and `core/repository/*.ts` handles all Firestore operations.
+- Firebase Analytics is used to track user activities on our frontend application, such as screen views. `app/src/lib/firebase.ts` includes all necessary operations.
 
 ## Getting Started
 
